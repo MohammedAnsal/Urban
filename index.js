@@ -1,0 +1,42 @@
+//  Connect Mongoose :-
+const mongoose = require('mongoose');
+mongoose.connect("mongodb://localhost:27017/ueban_dbs");
+
+const express = require('express');
+const app = express();
+
+
+//  Set Session :-
+const session = require('express-session');
+
+app.use(session({
+
+    secret: "&##$",
+    resave: false,
+    saveUninitialized: true
+
+}));
+
+//  Set Nocache :-
+const nocache = require('nocache');
+
+app.use(nocache());
+
+//  Set Path :-
+const path = require('path');
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+//  Set View Engine :-
+app.set('view engine', 'ejs');
+
+//  Set Body-Parser
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
+const userRoute = require('./routers/user_route');
+app.use('/', userRoute);
+
+
+app.listen(6006, () => { console.log("Server Running http://localhost:6006")});
