@@ -1,6 +1,9 @@
+//  Set env :-
+const dotenv = require('dotenv').config();
+
 //  Connect Mongoose :-
 const mongoose = require('mongoose');
-mongoose.connect("mongodb://localhost:27017/ueban_dbs");
+mongoose.connect(process.env.MONGO_URL);
 
 const express = require('express');
 const app = express();
@@ -38,5 +41,6 @@ app.use(express.urlencoded({ extended: true }));
 const userRoute = require('./routers/user_route');
 app.use('/', userRoute);
 
+const PORT = process.env.PORT || 7007;
 
-app.listen(6006, () => { console.log("Server Running http://localhost:6006")});
+app.listen(PORT, () => { console.log(`Server Running http://localhost:${PORT}`)});

@@ -37,7 +37,7 @@ const loadhome = async (req , res) => {
     
     try {
 
-        res.render('user/homePage');
+        res.render('homePage');
         
     } catch (error) {
 
@@ -55,7 +55,7 @@ const loadsignUp = async (req, res) => {
     
     try {
 
-        res.render('user/signUp');
+        res.render('signUp');
         
     } catch (error) {
 
@@ -81,31 +81,25 @@ const insertUser = async (req, res) => {
             phone: req.body.phone,
             password: securepassword,
             is_admin: 0
-
         });
 
-        const passwordd = req.body.password;
-        const confirmpasswordd = req.body.confirmPassword
-
-        if (passwordd == confirmpasswordd) {
+        const userData = await user.save();
+    
+        if (userData) {
             
-            const userData = await user.save();
-    
-            if (userData) {
+            const generatedOtp = generateOtp();    //   Assign OTP to Variable
+            console.log(generatedOtp);
 
-                // sendVerifyMail(req.body.fullname, req.body.email, userData._id);
-                
-                res.redirect('/');
-    
-            }
+            await sendOtpMail(req.body.fullname, req.body.email, generatedOtp);     //  Sended Otp
+
+            res.redirect('/otpVerification');
 
         } else {
 
-            res.redirect('/signup')
+            res.redirect('/signup');
 
-        }
+        };
 
-        
     } catch (error) {
 
         console.log(error.message);
@@ -116,11 +110,118 @@ const insertUser = async (req, res) => {
 
 //===============================//
 
+//  Load Verify Email (For Send Mail) (Get Method) :-
+
+const sendOtpMail = async (name , email , otpp) => {
+    
+    try {
+
+        const transporter = nodemailer.createTransport({
+
+            service: 'gmail',
+            
+            auth: {
+                
+                user: process.env.EMAIL_USER,   //  Email
+                pass:process.env.EMAIL_PASSWORD //  App Password
+            }
+        });
+
+        //  Compose Email :-
+
+        const mailOption = {
+
+            from: 'ansalshaah786@gmail.com',
+            to: email,
+            subject: 'For Otp Verification',
+            html: `<h3>Hello ${name}, Welcome to Urban Store Page</h3>
+            <br><p>Enter ${otpp} on the Signup Page to Register</p>`
+        };
+
+        //  Send Email :-
+
+        transporter.sendMail(mailOption, function (error, info) {
+
+            if (error) {
+
+                console.log('Error Sending Email:-' , error);
+
+            } else {
+
+                console.log("Email Has Been Sended:-" , info.response);
+            }
+        });
+
+        //  Otp Schema Adding
+
+        const newUserOtp = new Otp({
+
+            email: email,
+            otp: otpp,
+            createdAt: Date.now(),
+            expiresAt: Date.now() + 120000
+        });
+
+        await newUserOtp.save();    //  Otp Saved in Dbs
+
+        
+    } catch (error) {
+
+        console.log(error.message);
+        
+    }
+
+};
+
+//  Function to Generator Otp :-
+
+const generateOtp = () => {
+    
+    const digits = '0123456789';
+
+    let OTP = '';
+
+    for (let i = 0; i < 4; i++) {
+
+        OTP += digits[Math.floor(Math.random() * 10)];
+    };
+
+    return OTP;
+
+};
+
+//===============================//
+
 //  Load Otp (Get Method) :-
 
+const loadOtp = async (req , res) => {
+    
+    try {
 
+        res.render('otp');
+        
+    } catch (error) {
 
+        console.log(error.message);
+        
+    }
+};
 
+//  Load Otp (Post Method) :-
+
+const verifyOtpp = async () => {
+    
+    try {
+
+        res.redirect("/otpVerification");
+        
+    } catch (error) {
+
+        console.log(error);
+        
+    }
+
+}
 
 //===============================//
 
@@ -130,7 +231,7 @@ const loadlogin = async (req, res) => {
     
     try {
 
-        res.render('user/login');
+        res.render('login');
 
     } catch (error) {
 
@@ -163,5 +264,8 @@ module.exports = {
   verifylogin,
   loadsignUp,
   insertUser,
+  loadOtp,
+  verifyOtpp
+  
   
 };

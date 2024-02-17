@@ -31,16 +31,14 @@ const userSchema = new mongoose.Schema({
 
     is_verified: {
         
-        type: Number,
-        default:0
-
+        type: Boolean,
+        default:false
     },
 
     is_admin: {
         
         type: Boolean,
-        required: true
-        
+        default:false
     },
 
     datejoined: {

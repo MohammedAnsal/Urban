@@ -2,6 +2,10 @@ const express = require("express");
 
 const user_route = express();
 
+//  View Engine
+
+user_route.set('view engine' , 'ejs');
+user_route.set('views' , './views/user');
 
 //  userController
 const user_controller = require('../controllers/user_controller');
@@ -21,7 +25,10 @@ user_route.get('/signup', user_controller.loadsignUp);
 //  signup (post)
 user_route.post('/signup', user_controller.insertUser);
 
+//  otp (get)
+user_route.get("/otpVerification", user_controller.loadOtp);
 
-// user_route.get('/verify', user_controller.verifyLogin);
+// //  otp (post)
+user_route.post('/verify-otp', user_controller.verifyOtpp);
 
 module.exports = user_route;

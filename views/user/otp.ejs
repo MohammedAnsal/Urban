@@ -1,0 +1,146 @@
+<%- include('../layouts/header.ejs') %>
+
+    <div class="page-wrapper">
+
+         <%- include('../layouts/navbar-2.ejs') %>
+         <main class="main">
+            <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <!-- <li class="breadcrumb-item"><a href="#">sign up</a></li> -->
+                        <li class="breadcrumb-item active" aria-current="page">Otp</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+
+            <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17" style="background-image: url('assets/images/urban/show.jpg')">
+            	<div class="container">
+            		<div class="form-box">
+            			<div class="form-tab">
+	            			<ul class="nav nav-pills nav-fill" role="tablist">
+							    <li class="nav-item">
+							        <a class="nav-link active " id="signin-tab-2" data-toggle="tab" href="#signin-2" role="tab" aria-controls="signin-2" aria-selected="false">OTP</a>
+							    </li>
+							</ul>
+
+							<div class="tab-content">
+							    <div class="tab-pane show active" id="signin-2" role="tabpanel" aria-labelledby="signin-tab-2">
+
+							    	<form id="otpForm" action="/resOtp" method="post">
+
+							    		<div class="form-group text-center ">
+											<!-- <label for="otp1"><h4>Enter Otp</h4></label> -->
+
+											<div class="success-box" id="successBox">
+												Verification failed
+
+											</div><br>
+                                            <input type="" required id="otp1" class="otp-input" pattern="[0-9]" maxlength="1" onkeyup="moveToNext(this, 'otp2')"> - 
+        									<input type="" required id="otp2" class="otp-input" pattern="[0-9]" maxlength="1" onkeyup="moveToNext(this, 'otp3')"> - 
+       										<input type="" required id="otp3" class="otp-input" pattern="[0-9]" maxlength="1" onkeyup="moveToNext(this, 'otp4')"> - 
+        									<input type="text" required id="otp4" pattern="[0-9]" class="otp-input" maxlength="1">
+											<br><br>
+        									
+							    		</div><!-- End .form-group -->
+
+							    		<div class="form-footer justify-content-center ">
+							    			<a  class="btn btn-outline-primary-2 text-warning  ">
+			                					
+													<span id="verifyBtn">verify</span>
+			            						<i class="icon-long-arrow-right"></i>
+												
+											</a>
+											<div class="justify-content-center text-warning ">
+												
+												<a href="#" id="resendLink">Resend OTP</a>
+
+											</div>
+			                				<!-- <div class="custom-control custom-checkbox">
+												<input type="checkbox" class="custom-control-input" id="signin-remember-2">
+												<label class="custom-control-label" for="signin-remember-2">Remember Me</label> -->
+											<!-- </div>End .custom-checkbox -->
+
+											<!-- <a href="#" class="forgot-link">Forgot Your Password?</a> -->
+											
+							    		</div><!-- End .form-footer -->
+							    	</form>
+							    	
+							    </div><!-- .End .tab-pane -->
+							</div><!-- End .tab-content -->
+						</div><!-- End .form-tab -->
+            		</div><!-- End .form-box -->
+            	</div><!-- End .container -->
+            </div><!-- End .login-page section-bg -->
+            
+              
+
+
+
+
+         </main>
+
+
+ <%- include('../layouts/footbar-2') %>
+ <!-- Connect Footer -->
+
+</div><!-- End .page-wrapper -->
+
+
+<button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+
+<%- include('../layouts/mobileView.ejs') %>
+
+<style>
+    .otp-input {
+        width: 30px;
+        height: 40px;
+        text-align: center;
+        margin: 0 5px;
+        font-size: 1.5rem;
+		border: 0px;
+		border-radius: 5px;
+		box-shadow: rgba(4, 126, 40, 0.35) 0px 1px 10px;
+    }
+	.success-box {
+        padding: 10px;
+        background-color: #f1343459;
+        border: 1px solid #c3e6cb;
+        color: #0c0c0c;
+        margin-top: 10px;
+        display: none;
+    }
+</style>
+
+
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/jquery.hoverIntent.min.js"></script>
+<script src="assets/js/jquery.waypoints.min.js"></script>
+<script src="assets/js/superfish.min.js"></script>
+<script src="assets/js/owl.carousel.min.js"></script>
+<!-- Main JS File -->
+<script src="assets/js/main.js"></script>
+
+<!--column changing-->
+
+<script>
+
+	function moveToNext(current, nextFieldID) {
+		if (current.value.length >= current.maxLength) {
+			document.getElementById(nextFieldID).focus();
+		}
+	}
+	document.getElementById("verifyBtn").addEventListener("click", function() {
+            var successBox = document.getElementById("successBox");
+            successBox.style.display = "block";
+        });
+
+</script>
+
+
+
+<%- include('../layouts/footer.ejs') %>
