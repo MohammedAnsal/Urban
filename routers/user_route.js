@@ -4,7 +4,7 @@ const user_route = express();
 
 
 //  userController
-const user_controller = require('../controllers/user-controller');
+const user_controller = require('../controllers/user_controller');
 
 //  home (get)
 user_route.get('/', user_controller.loadhome);
@@ -21,5 +21,7 @@ user_route.get('/signup', user_controller.loadsignUp);
 //  signup (post)
 user_route.post('/signup', user_controller.insertUser);
 
+
+// user_route.get('/verify', user_controller.verifyLogin);
 
 module.exports = user_route;

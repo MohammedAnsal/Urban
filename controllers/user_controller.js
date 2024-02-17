@@ -1,10 +1,13 @@
-//  import module (Model)
+//  import module (user Model) :-
 const User = require("../models/user_model");
 
-//  set flash
+//  import module (otp Model) :-
+const Otp = require('../models/otp_model');
+
+//  set flash :-
 const flash = require('flash');
 
-//  set nodeMailer
+//  set nodeMailer :-
 const nodemailer = require('nodemailer');
 
 //  securely hash passwords :-
@@ -17,7 +20,6 @@ const securePassword = async (password) => {
 
         const passwordHash = await bcrypt.hash(password , 10);
         return passwordHash;
-
         
     } catch (error) {
 
@@ -90,6 +92,8 @@ const insertUser = async (req, res) => {
             const userData = await user.save();
     
             if (userData) {
+
+                // sendVerifyMail(req.body.fullname, req.body.email, userData._id);
                 
                 res.redirect('/');
     
@@ -112,44 +116,11 @@ const insertUser = async (req, res) => {
 
 //===============================//
 
-//  Send Email
+//  Load Otp (Get Method) :-
 
-const sendVerifyMail = async (req , res) => {
-    
-    try {
 
-        const trasport = nodemailer.createTransport({
 
-            host: "gmail",
-            port: 786,
-            secure: false,
-            requireTLS: true,
-            
-            auth: {
-                
-                user: "ansalshaah786@gmail.com",
-                pass: 'lhgt cyob emyv ogsj'
 
-            }
-
-        });
-        
-        const mailConfirm = {
-
-            from: 'demomail@gmail.com',
-            to: mail,
-            subject: 'for email verification...',
-            html:'<p> Hai  '+ name +' , please click here to <a herf = "http://loaclhost:6006/verify?id=' +user_id+'"> Verify </a> your mail </p>'
-
-        }
-
-    } catch (error) {
-
-        console.log(error.message);
-        
-    }
-
-};
 
 //===============================//
 
@@ -161,7 +132,6 @@ const loadlogin = async (req, res) => {
 
         res.render('user/login');
 
-        
     } catch (error) {
 
         console.log(error.message);
@@ -169,7 +139,7 @@ const loadlogin = async (req, res) => {
     }
 };
 
-//  Login (Post) :-
+//  Load Login (Post Method) :-
 
 const verifylogin = async (req, res) => {
     
@@ -193,6 +163,5 @@ module.exports = {
   verifylogin,
   loadsignUp,
   insertUser,
-  sendVerifyMail,
   
 };
