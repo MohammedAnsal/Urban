@@ -21,23 +21,30 @@
 
                     <li>
                         <a href="#">Category</a>
+
+                         <ul class="">                       
+
+                            <% categoryData.forEach(val => { %>
+
+                                <li><a href="/category/<%= val.name %>"><%= val.name %></a></li>
+                                                
+                            <%  }); %>
+
+                        </ul>
                        
-                           <ul>
-                                <li><a href="/category">Men's</a></li>
-                                <li><a href="/category">Women's</a></li>
-                            </ul>
+                           
                     </li>
 
                     <li>
-                        <a href="product.html" class="sf-with-ul">Product</a>
+                        <a href="/product" class="sf-with-ul">Product</a>
                     </li>
 
                     <li>
-                        <a href="blog.html">About</a>
+                        <a href="/about">About</a>
                     </li>
 
                     <li>
-                        <a href="elements-list.html">Contact</a>
+                        <a href="/contact">Contact</a>
                     </li>
 
                 </ul>

@@ -1,0 +1,216 @@
+<%- include('../layouts/header') %>
+
+<div class="page-wrapper">
+
+  <%- include('../layouts/navbar-2.ejs') %>
+
+  <main class="main">
+
+        <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+            <div class="container">
+                <h1 class="page-title">My Profile</h1>
+            </div><!-- End .container -->
+        </div><!-- End .page-header -->
+
+        <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="">Home</a></li>
+                    <!-- <li class="breadcrumb-item"><a href="#"></a></li> -->
+                    <li class="breadcrumb-item active" aria-current="page">Orders</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+
+              <div class="dashboard">
+          
+                  <div class="container">
+
+                      <div class="row">
+
+                          <aside class="col-md-4 col-lg-3">
+
+                              <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+
+                                  <li class="nav-item">
+                                      <a class="nav-link " id="tab-dashboard-link" href="/profile"> My Profile</a>
+                                  </li>
+
+                                  <li class="nav-item">
+                                      <a class="nav-link active" id="tab-orders-link" href="/orders" role="tab">Orders</a>
+                                  </li>
+
+                                  <li class="nav-item">
+                                      <a class="nav-link" id="tab-downloads-link" data-toggle="tab" href="#" role="tab">Wishlist</a>
+                                  </li>
+
+                                  <li class="nav-item">
+                                      <a class="nav-link" id="tab-address-link"  href="/address">Adresses</a>
+                                  </li>
+
+                                  <li class="nav-item">
+                                      <a class="nav-link" id="tab-wallet-link" data-toggle="tab" href="#" role="tab">Wallet</a>
+                                  </li>
+
+                                  <li class="nav-item">
+                                      <a class="nav-link" id="tab-coupons-link" data-toggle="tab" href="#" role="tab">Coupons</a>
+                                  </li>
+                                  
+                                  <li class="nav-item">
+                                    
+                                    <a class="nav-link " href="">Sigout</a>
+
+                                  </li>
+                                  
+                                </ul>
+
+                            </aside>
+
+                    <div class="col-md-8 col-lg-9">
+
+                        <div class="tab-content">
+
+                             <aside class="col col-xl-9 col-lg-8 col-md-6 col-sm-6 mb-4 mb-lg-0">
+
+                                <div class="row w-100" style="gap: 2rem">
+
+                                    <div class="container">
+
+                        <% if (orderData.find(obj => 'products' in obj)) { %>
+                                
+                                    <table class="table table-wishlist table-mobile text-center " style="width: 920px">
+
+                                        <thead>
+
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Order Id</th>
+                                            <th>Order Status</th>
+                                            <th>Patment Satus</th>
+                                            <th>Total price</th>
+                                            <th>Detailes</th>
+                                        </tr>
+
+                                        </thead>
+
+                                    <tbody class="text-center ">
+                                        
+                        <% orderData.forEach((ordVal , ind)=> {  %>
+                                            
+                                        <tr class="fs-4">
+
+                                            <td><%= ind + 1 %></td>
+
+                                            <td><%= ordVal?._id %></td>
+
+                                            <td class="text-primary "><%= ordVal?.orderStatus %></td>
+
+                                            <td class=""><%= ordVal?.payment %></td>
+
+                                            <td class="">$<%= ordVal?.orderAmount %></td>
+
+                                            <td>
+
+                                            <a
+                                                href="/orderDetails?id=<%= ordVal?._id  %>"
+                                                style="
+                                                border-radius: 5px;
+                                                border: 0px solid transparent;
+                                                outline: 0px;
+                                                transition: all ease 0.5s;
+                                                background-color: #c96;
+                                                "
+                                                class="p-3 rounded-2 text-white">Details</a>
+
+                                            </td>
+                                    </tr>
+
+                                </tbody>
+
+
+                        <% }); %>
+
+                        </table>
+
+                    <% } %>
+
+                            <% if(locals.orderData) {%>
+
+                                <div class="wishlist-share">
+
+                                    <div class="social-icons social-icons-sm mb-2"> 
+
+                                    <label class="social-label">Total Order:</label>
+
+                                    <%= orderData.length %>
+
+                                    </div>
+
+                                    <!-- End .soial-icons -->
+
+                                </div>
+
+                            <% }else{ %>
+
+                                <!-- <div class="wishlist-share">
+
+                                    <div class="social-icons social-icons-sm mb-2">
+                                    <label class="social-label">Total Order:</label>0</div> -->
+                                    
+                                    <!-- End .soial-icons -->
+                                <!-- </div> -->
+
+                            <% } %>
+
+                            </div>
+
+                        </div>
+
+                    </aside>
+
+                              </div>
+
+                          </div><!-- End .col-lg-9 -->
+                      </div><!-- End .row -->
+                  </div><!-- End .container -->
+              </div><!-- End .dashboard -->
+            </div>
+
+        </main>
+
+  <!-- Connect Footer -->
+  <%- include('../layouts/footbar-2') %>
+  <!-- Connect Footer -->
+
+</div>
+
+<button id="scroll-top" title="Back to Top">
+
+  <i class="icon-arrow-up"></i>
+
+</button>
+
+<!--Connect Mobaile View-->
+<%- include('../layouts/mobileView.ejs') %>
+<!--Connect Mobaile View-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Plugins JS File -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/jquery.hoverIntent.min.js"></script>
+<script src="assets/js/jquery.waypoints.min.js"></script>
+<script src="assets/js/superfish.min.js"></script>
+<script src="assets/js/owl.carousel.min.js"></script>
+<!-- Main JS File -->
+<script src="assets/js/main.js"></script>
+
+
+<script>
+
+    console.log('<%= orderData %>');
+
+</script>
+
+<%- include('../layouts/footer') %> 

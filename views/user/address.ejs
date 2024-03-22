@@ -1,0 +1,499 @@
+<%- include('../layouts/header') %>
+
+<div class="page-wrapper">
+
+  <%- include('../layouts/navbar-2.ejs') %>
+
+  <main class="main">
+
+        <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+            <div class="container">
+                <h1 class="page-title">My Profile</h1>
+            </div><!-- End .container -->
+        </div><!-- End .page-header -->
+
+        <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Address</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+
+            <div class="dashboard">
+        
+                <div class="container">
+
+                    <div class="row">
+
+                        <aside class="col-md-4 col-lg-3">
+
+                            <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-dashboard-link" href="/profile"> My Profile</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-orders-link" href="/orders" role="tab" >Orders</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-downloads-link" data-toggle="tab"  href="#" role="tab" >Wishlist</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="tab-address-link" data-toggle="tab"  href="/address" >Adresses</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-wallet-link" data-toggle="tab"  href="#" role="tab">Wallet</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-coupons-link" data-toggle="tab"  href="#" role="tab" >Coupons</a>
+                                </li>
+                                
+                                <li class="nav-item">
+                                  
+                                  <a class="nav-link " href="">Sigout</a>
+
+                                </li>
+                              </ul>
+                            </aside>
+
+                        <div class="col-md-8 col-lg-9">
+
+                            <div class="tab-content">
+
+                                <!--address-->
+
+                                <div class="" id="tab-address">
+
+                                  <div class="container-fluid px-3 d-flex justify-content-end ">
+
+                                    <% if (address?.addresss?.length >= 1) { %>
+
+                                        <button type="button" class="btn btn-primary mb-3 " data-bs-toggle="modal" data-bs-target="#address" data-bs-whatever="@mdo">Add Address</button>
+
+                                      <%  } %>
+
+                                        <!-- Modal For Address Add-->
+
+                                        <div class="modal fade" id="address" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">   <!-- Add Addres Modal -->
+
+                                          <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                              <div class="modal-header">
+                                                <h6 class="modal-title " id="exampleModalLabel">Add Address</h6>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                              </div>
+
+                                              <div class="modal-body">
+
+                                                <form method="post" style="padding-left: 15px;padding-right: 15px;" id="addform">
+
+                                                    <p class="" id="msg"><%= msgg %></p>
+                                                  
+                                                  <div class="row">
+
+                                                  <div class="col-lg-6">
+                                                      <label for="name" class="col-form-label text-black">Name *</label>
+                                                      <input type="text" class="form-control" name="name" id="namee" placeholder="Enter your Name" required>
+                                                  </div>
+
+                                                  <div class="col-lg-6">
+                                                      <label for="phone" class="col-form-label text-black">Mobile Number *</label>
+                                                      <input type="text" class="form-control" name="phone" id="phonee" placeholder="Enter your Mobile" required>
+                                                  </div>
+
+                                                  <div class="col-lg-6">
+                                                      <label for="locality" class="col-form-label text-black">Loacality *</label>
+                                                      <input type="text" class="form-control" name="locality" id="localityy" placeholder="Enter your Locality" required>
+                                                  </div>
+
+                                                  <div class="col-lg-6">
+                                                      <label for="pincode" class="col-form-label text-black">Pincode *</label>
+                                                      <input type="text" class="form-control" name="pincode" id="pincodee" placeholder="Enter your pincode" required>
+                                                  </div>
+
+                                                  </div>
+
+                                                  <div class="col-lg-11">
+
+                                                    <label for="display-name" class="requird text-dark"  >Address *</label>
+                                                    <textarea type="text"  id="add" cols="76" rows="3" placeholder="Enter your Address" name="addresss" required></textarea>
+
+                                                  </div>
+
+                                                  <div class="row mb-1">
+
+                                                     <div class="col-lg-6">
+                                                      <label for="city" class="col-form-label text-black">City *</label>
+                                                      <input type="text" class="form-control" name="city" id="cityy" placeholder="Enter your City" required>
+                                                  </div>
+
+                                                  <div class="col-lg-6">
+                                                      <label for="state" class="col-form-label text-black">State *</label>
+                                                      <input type="text" class="form-control" name="state" id="statee" placeholder="Enter your State" required>
+                                                  </div>
+
+                                                  </div>
+                                                  
+                                              </form>
+                                              
+                                              </div>
+
+                                              <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" onclick="addAddress('<%= userData._id %>')">Add</button>
+                                              </div>
+
+                                            </div>
+                                          </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+
+                                <% if (address !== null && address.addresss.length !== 0) { %>
+                                      
+                                  <% for (let i = 0; i < address.addresss.length; i++) { %>
+                                                                                                                                                                                                                                                                               
+
+                                        <div class="col-lg-5">
+
+                                            <div class="card card-dashboard">
+
+                                                <div class="card-body">
+                                                  
+                                                  <button type="button" class="close" aria-label="Close mb-2 " style="font-size: 23px;padding-bottom: 20px;" onclick="deleteAddress('<%= userData._id %>' , '<%= address.addresss[i]._id %>')">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+
+                                                    <h3 class="card-title">Address</h3><!-- End .card-title -->
+
+                                                         <p><span style="font-size: 1vw;"><%= address.addresss[i].name %></span></p>
+                                                          <p><span><%= address.addresss[i].address %></span>,
+                                                            <br><span><%= address.addresss[i].locality %>,</span>
+                                                            <span><%= address.addresss[i].city %>,</span>
+                                                            <span><%= address.addresss[i].state %>,</span>
+                                                            <span><%= address.addresss[i].pincode %> </span>
+                                                            <br>
+                                                            <span>Phone: <%= address.addresss[i].phone %> </span>
+                                                          </p>
+
+                                                    <a herf="#" style="cursor: pointer; color: rgb(207, 149, 77);" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="editAddress('<%= address.addresss[i]._id %>')">Edit<i class="icon-edit"></i></a>
+
+                                                 </div><!-- End .card-body -->
+
+                                            </div><!-- End .card-dashboard -->
+
+                                        </div><!-- End .col-lg-6 -->
+
+                                        <!--Edit Addres Modal-->
+
+                                                <!-- Modal -->
+
+                                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+                                                  <div class="modal-dialog">
+
+                                                    <div class="modal-content">
+
+                                                      <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Address</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                      </div>
+
+                                                      <div class="modal-body">
+
+                                                        <form action="/verifyEditAddress" method="post" style="padding-left: 15px;padding-right: 15px;" id="editForm">
+
+                                                          <p type="hiding" hidden id="msg"><%= msgg %></p>
+                                                        
+                                                        <div class="row">
+
+                                                        <div class="col-lg-6">
+                                                            <label for="name" class="col-form-label text-black">Name *</label>
+                                                            <input type="text" class="form-control" name="name" id="name" placeholder="Enter your Name" required>
+                                                        </div>
+
+                                                        <div class="col-lg-6">
+                                                            <label for="phone" class="col-form-label text-black">Mobile Number *</label>
+                                                            <input type="text" class="form-control" name="phone" id="phone" placeholder="Enter your Mobile" required>
+                                                        </div>
+
+                                                        <div class="col-lg-6">
+                                                            <label for="locality" class="col-form-label text-black">Loacality *</label>
+                                                            <input type="text" class="form-control" name="locality" id="locality" placeholder="Enter your Locality" required>
+                                                        </div>
+
+                                                        <div class="col-lg-6">
+                                                            <label for="pincode" class="col-form-label text-black">Pincode *</label>
+                                                            <input type="text" class="form-control" name="pincode" id="pincode" placeholder="Enter your pincode" required>
+                                                        </div>
+
+                                                        </div>
+
+                                                        <div class="col-lg-12">
+
+                                                          <label for="display-name" class="requird text-dark"  >Address *</label>
+                                                          <textarea type="text" style="color: gray;"  id="addresssss" class="form-control" rows="3" placeholder="Enter your Address" name="address" required></textarea>
+
+                                                        </div>
+
+                                                        <div class="row mb-1">
+
+                                                          <div class="col-lg-6">
+                                                            <label for="city" class="col-form-label text-black">City *</label>
+                                                            <input type="text" class="form-control" name="city" id="city" placeholder="Enter your City" required>
+                                                        </div>
+
+                                                        <div class="col-lg-6">
+                                                            <label for="state" class="col-form-label text-black">State *</label>
+                                                            <input type="text" class="form-control" name="state" id="state" placeholder="Enter your State" required>
+                                                        </div>
+
+                                                        </div>
+
+                                                        <input type="hidden" name="id" id="id">
+                                                        
+                                                        <div class="modal-footer">
+                                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                          <button type="submit"  class="btn btn-primary">Save changes</button>
+                                                        </div>
+
+                                                    </form>
+                                                                                                    
+                                                      </div>
+
+
+                                                    </div>
+
+                                                  </div>
+
+                                                </div>
+
+                                        <!-- <div class="col-lg-6">
+                                            <div class="card card-dashboard">
+                                                <div class="card-body">
+                                                    <h3 class="card-title">Shipping Address</h3>End .card-title
+
+                                                    <p>You have not set up this type of address yet.<br>
+                                                    <a href="#">Edit <i class="icon-edit"></i></a></p>
+                                                </div>End .card-body
+                                            </div>End .card-dashboard
+                                        </div>End .col-lg-6 -->
+
+                                        
+                                     <%  } %>
+                                        
+                                  <% } %>
+
+                                      </div><!-- End .row -->
+                                                                 
+                                </div><!-- .End .tab-pane -->
+
+                                <!--address End-->
+
+                            </div> <!--tab content-->
+                        </div><!-- End .col-lg-9 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .dashboard -->
+        </div><!-- End .page-content -->
+
+    </main><!-- End .main -->
+
+  <!-- End .main -->
+
+  <!-- Connect Footer -->
+  <%- include('../layouts/footbar-2') %>
+  <!-- Connect Footer -->
+
+</div>
+
+<button id="scroll-top" title="Back to Top">
+
+  <i class="icon-arrow-up"></i>
+
+</button>
+
+<!--Connect Mobaile View-->
+<%- include('../layouts/mobileView.ejs') %>
+<!--Connect Mobaile View-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Plugins JS File -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/jquery.hoverIntent.min.js"></script>
+<script src="assets/js/jquery.waypoints.min.js"></script>
+<script src="assets/js/superfish.min.js"></script>
+<script src="assets/js/owl.carousel.min.js"></script>
+<!-- Main JS File -->
+<script src="assets/js/main.js"></script>
+
+<script>
+
+//  Sweet Alert For Edit Address :-
+
+const msg = document.getElementById('msg');
+
+  if(msg.textContent == 'Address Edited'){
+
+    Swal.fire({
+     
+      title:'Address Edited',
+      text:'Address Edited Successfully',
+      icon:'success',
+      confirmButtonText: 'OK'
+     
+    })
+
+  };
+
+  //  Add Address Section :-
+
+  function addAddress(id){
+
+      const form = document.getElementById('addform');
+
+      const formData = new FormData(form)
+      const addressData = {}
+      
+      formData.forEach((value , key) => {
+
+        addressData[key] = value;
+        
+      });
+
+    fetch(`/addAddress?id=${id}` , {method : 'post' , headers : {'Content-Type' : 'application/json'} , body:JSON.stringify({addressData})})
+
+    .then(res => res.json()).then(data => {
+
+      if(data.success){
+
+        Swal.fire({
+     
+         title:'Address Added',
+         text:'Address Added Successfully',
+         icon:'success',
+         confirmButtonText: 'OK'
+     
+        }).then((result) => {
+ 
+         window.location.href = '/address'
+         
+        })
+
+      } else {
+    
+        Swal.fire({
+        
+          title:'Failed',
+          text:'Address Adding Failed',
+          icon:'error',
+          confirmButtonText: 'OK'
+        
+        }).then((result) => {
+    
+         window.location.href = '/address'
+            
+        })
+
+      }
+
+    })
+
+};
+
+//  Delete Address :-
+
+function deleteAddress(id , addId){
+
+  Swal.fire({
+
+  title: "Are you sure?",
+  text: "Delete this address",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Yes, delete it!"
+
+}).then((result) => {
+  
+    if (result.isConfirmed) {
+
+      Swal.fire({
+
+        title: "Deleted!",
+        text: "Your address has been deleted.",
+        icon: "success"
+
+      }).then(()=>{
+
+        fetch(`deleteAdd/?id=${id}&&addid=${addId}` , {method:"post" })
+
+        .then(data =>{
+
+          if(data.ok){
+
+            window.location.href = '/address'
+            
+          }
+          
+        })
+
+      })
+
+    }
+
+  });
+  
+}
+
+//  Edit Address :-
+
+function editAddress(edit){
+  
+  const namee = document.getElementById('name')
+  const phonee = document.getElementById('phone')
+  const localityy = document.getElementById('locality')
+  const pincodee = document.getElementById('pincode')
+  const addressss = document.getElementById('addresssss')
+  const cityy = document.getElementById('city')
+  const statee = document.getElementById('state')
+  const idd = document.getElementById('id');
+
+  fetch('/editAddress' , {method : 'put'  , headers : {'Content-Type': 'application/json'} , body : JSON.stringify({edit})})
+
+  .then((res) => res.json())
+
+  .then((data) =>{
+
+    const {name , phone , locality , pincode , address , city , state , _id} = data.editData.addresss[0];
+
+    namee.value = name
+    phonee.value = phone
+    pincodee.value = pincode
+    localityy.value = locality
+    addressss.value = address
+    cityy.value = city
+    statee.value = state
+    idd.value = _id
+
+  })
+
+};
+
+</script>
+
+<%- include('../layouts/footer') %> 

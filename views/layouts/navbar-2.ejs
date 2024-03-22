@@ -23,11 +23,16 @@
 
                                 <li>
 
-                                    <a href="#" class="sf-with-ul" style="padding-right: 10px;">Category</a>
+                                    <a href="#" class="sf-with-ul" style="padding-right: 11px;">Category</a>
                                     
-                                     <ul class="p-2 " >
-                                        <li><a href="/category">Men's</a></li>
-                                        <li><a href="/category">Women's</a></li>
+                                     <ul class="p-2" style="border-radius: 10px;">
+
+                                          <% categoryData.forEach(val => { %>
+
+                                            <li><a href="/category/<%= val.name %>"><%= val.name %></a></li>
+                                                
+                                        <%  }); %>
+                                  
                                     </ul>
 
                                 </li>
@@ -63,21 +68,45 @@
                         </div>
                         </div> -->
 
-                       
                         <div class="dropdown cart-dropdown">
 
-                            <a href="#" class="dropdown-toggle" style="padding-top: 5px;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                                <i class="fa-solid fa-circle-user" style="font-size: 28px; padding-right: 25px; "></i>
+                            <a href="<%= locals.login ? '/profile' : '/login' %>" class="dropdown-toggle sf-with-ul" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+
+                                <% if (locals.login) { %>
+
+                                    <div class="h" style="padding-top: 5px; margin-right: 5px;">
+                                    <a href="/profile">
+                                    <i class="fa-solid fa-circle-user" style="font-size: 28px; padding-right: 25px;"></i>
+                                    </a>
+                                    </div>
+
+                                <% } else { %>
+
+                                    <div class="hh" style="margin-top: 5px; margin-right: 30px;">
+                                    <a href="/login" class="text-dark ">LOGIN</a>
+                                    </div> 
+
+                                <% } %>
+
                             </a>
 
-                            <div class="dropdown-menu dropdown-menu-right text-center rounded-2" style="display: flex; flex-direction: column; width: fit-content;">
+                            <% if (locals.login) { %>
 
-                             <a href="" style="font-size: 15px;">Profile</a>
+                                <!-- <div class="dropdown-menu dropdown-menu-right text-center rounded-2" style="display: flex; flex-direction: column; width: fit-content;">
 
-                            <button class="logout-button rounded-pill mt-1 text-white " style="background-color: gray; width: fit-content;">Logout</button>
+                                    <p class="text-dark"></p>
 
+                                <a href="/profile" style="font-size: 15px; padding-top: 5px;">Profile</a>
+                            
+                                    <form action="/logout" method="post">
+
+                                        <button class="logout-button rounded-pill mt-1 text-white " style="background-color: gray; width: fit-content;" type="submit">logout</button>
+                                    
+                                    </form>
                                 
-                            </div><!-- End .dropdown-menu -->
+                                </div>End .dropdown-menu -->
+
+                            <% } %>
 
                         </div><!-- End .cart-dropdown -->
 
@@ -89,7 +118,7 @@
                             <form action="#" method="get">
                                 <div class="header-search-wrapper">
                                     <label for="q" class="sr-only">Search</label>
-                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search in..." required>
+                                    <input type="search" class="form-control" name="q" id="q" oninput="search(this)" placeholder="Search in..." required>
                                 </div><!-- End .header-search-wrapper -->
                             </form>
 
@@ -120,68 +149,42 @@
                             
                         <!-- </div>End .compare-dropdown -->
 
+                         <a href="/wishlist" class="wishlist-link pb-1 ">
+                            <i class="icon-heart-o pt-1"></i>
+                        </a>
+
                         <div class="dropdown cart-dropdown">
-                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                            <a href="/cart" class="dropdown-toggle" >
                                 <i class="icon-shopping-cart"></i>
-                                <span class="cart-count">2</span>
+                                <span id="cart" class="cart-count"></span>
                             </a>
 
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <div class="dropdown-cart-products">
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="product.html">Beige knitted elastic runner shoes</a>
-                                            </h4>
-
-                                            <span class="cart-product-info">
-                                                <span class="cart-product-qty">1</span>
-                                                x $84.00
-                                            </span>
-                                        </div><!-- End .product-cart-details -->
-
-                                        <figure class="product-image-container">
-                                            <a href="product.html" class="product-image">
-                                                <img src="assets/images/urban/newBalanceDemo-1.png" alt="product">
-                                            </a>
-                                        </figure>
-                                        <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                    </div><!-- End .product -->
-
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="product.html">Blue utility pinafore denim dress</a>
-                                            </h4>
-
-                                            <span class="cart-product-info">
-                                                <span class="cart-product-qty">1</span>
-                                                x $76.00
-                                            </span>
-                                        </div><!-- End .product-cart-details -->
-
-                                        <figure class="product-image-container">
-                                            <a href="product.html" class="product-image">
-                                                <img src="assets/images/urban/nikeScaiDemo-1.jpg" alt="product">
-                                            </a>
-                                        </figure>
-                                        <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                    </div><!-- End .product -->
-                                </div><!-- End .cart-product -->
-
-                                <div class="dropdown-cart-total">
-                                    <span>Total</span>
-
-                                    <span class="cart-total-price">$160.00</span>
-                                </div><!-- End .dropdown-cart-total -->
-
-                                <div class="dropdown-cart-action">
-                                    <a href="cart.html" class="btn btn-primary">View Cart</a>
-                                    <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
-                                </div><!-- End .dropdown-cart-total -->
-                            </div><!-- End .dropdown-menu -->
+                          
                         </div><!-- End .cart-dropdown -->
+
                     </div><!-- End .header-right -->
                 </div><!-- End .container -->
             </div><!-- End .header-middle -->
     </header><!-- End .header -->
+
+
+    <script>
+
+        //  Cart Count :-
+
+        cartAction()
+        
+        function cartAction(){
+
+            const cartt = document.getElementById('cart')
+
+            fetch('/cartAction' , {method : 'post'}).then(data=>data.json()).then(data =>{
+
+                cartt.textContent = data.success || 0
+
+                console.log(data.success,cartt );
+            })
+
+        };
+
+</script>

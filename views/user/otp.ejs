@@ -3,13 +3,15 @@
     <div class="page-wrapper">
 
          <%- include('../layouts/navbar-2.ejs') %>
+
          <main class="main">
+
             <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
                 <div class="container">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <!-- <li class="breadcrumb-item"><a href="#">sign up</a></li> -->
-                        <li class="breadcrumb-item active" aria-current="page">Otp</li>
+                        <li class="breadcrumb-item"><a href="#">SignUp</a></li>
+                        <li class="breadcrumb-item active" aria-current="#">Otp</li>
                     </ol>
                 </div><!-- End .container -->
             </nav><!-- End .breadcrumb-nav -->
@@ -21,7 +23,7 @@
             			<div class="form-tab">
 	            			<ul class="nav nav-pills nav-fill" role="tablist">
 							    <li class="nav-item">
-							        <a class="nav-link active " id="signin-tab-2" data-toggle="tab" href="#signin-2" role="tab" aria-controls="signin-2" aria-selected="false">OTP</a>
+							        <a class="nav-link active " id="signin-tab-2" data-toggle="tab" href="#" role="tab" aria-controls="signin-2" aria-selected="false">OTP</a>
 							    </li>
 							</ul>
 
@@ -30,33 +32,54 @@
 
 							    	<form id="otpForm" action="/resOtp" method="post">
 
-							    		<div class="form-group text-center ">
+										<span class="message" id="msg" hidden ><%= msg %></span>
+
+							    		<div class="form-group text-center mt-1">
+
+											<label for="otp1"><h4>Enter OTP :</h4></label><br>
+
 											<!-- <label for="otp1"><h4>Enter Otp</h4></label> -->
 
-											<div class="success-box" id="successBox">
+											<!-- <div class="success-box" id="successBox">
 												Verification failed
+											</div><br> -->
 
-											</div><br>
-                                            <input type="" required id="otp1" class="otp-input" pattern="[0-9]" maxlength="1" onkeyup="moveToNext(this, 'otp2')"> - 
-        									<input type="" required id="otp2" class="otp-input" pattern="[0-9]" maxlength="1" onkeyup="moveToNext(this, 'otp3')"> - 
-       										<input type="" required id="otp3" class="otp-input" pattern="[0-9]" maxlength="1" onkeyup="moveToNext(this, 'otp4')"> - 
-        									<input type="text" required id="otp4" pattern="[0-9]" class="otp-input" maxlength="1">
+                                            <input type="text" name="inp1" id="otp1" class="otp-input" pattern="[0-9]" maxlength="1" onkeyup="moveToNext(this, 'otp2')" required> - 
+        									<input type="text" name="inp2" id="otp2" class="otp-input" pattern="[0-9]" maxlength="1" onkeyup="moveToNext(this, 'otp3')" required> - 
+       										<input type="text" name="inp3" id="otp3" class="otp-input" pattern="[0-9]" maxlength="1" onkeyup="moveToNext(this, 'otp4')" required> - 
+        									<input type="text" name="inp4" id="otp4" pattern="[0-9]" class="otp-input" maxlength="1">
+
+											<input type="email" hidden value="<%= emailQuery %>" name="email">
+
 											<br><br>
+
+											<div>
+												<p id="timer">
+
+												</p>
+											</div>
+
+											<% if (locals.tokkken != null) { %>
+
+												<input type="text" hidden value="<%= tokkken %>" id="y" name="token">
+
+											<%	} %>
         									
 							    		</div><!-- End .form-group -->
 
 							    		<div class="form-footer justify-content-center ">
-							    			<a  class="btn btn-outline-primary-2 text-warning  ">
-			                					
+											
+							    			<button class="btn btn-outline-primary-2" style="margin-left: 20px;" type="submit">
 													<span id="verifyBtn">verify</span>
 			            						<i class="icon-long-arrow-right"></i>
-												
-											</a>
-											<div class="justify-content-center text-warning ">
-												
-												<a href="#" id="resendLink">Resend OTP</a>
+											</button>
 
-											</div>
+											<div class="justify-content-center" id="button-container" style="display: none;">
+                                                <button class="btn btn-outline-primary-2" id="resend-btn" type="submit">
+                                                    <a href="/resendOtp?email=<%=emailQuery%>">Resend OTP</a>
+                                                </button>
+                                            </div>
+											
 			                				<!-- <div class="custom-control custom-checkbox">
 												<input type="checkbox" class="custom-control-input" id="signin-remember-2">
 												<label class="custom-control-label" for="signin-remember-2">Remember Me</label> -->
@@ -65,6 +88,7 @@
 											<!-- <a href="#" class="forgot-link">Forgot Your Password?</a> -->
 											
 							    		</div><!-- End .form-footer -->
+
 							    	</form>
 							    	
 							    </div><!-- .End .tab-pane -->
@@ -74,15 +98,13 @@
             	</div><!-- End .container -->
             </div><!-- End .login-page section-bg -->
             
-              
-
-
-
-
-         </main>
+        </main>
 
 
  <%- include('../layouts/footbar-2') %>
+
+
+ 
  <!-- Connect Footer -->
 
 </div><!-- End .page-wrapper -->
@@ -114,8 +136,6 @@
     }
 </style>
 
-
-
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/jquery.hoverIntent.min.js"></script>
@@ -128,19 +148,105 @@
 <!--column changing-->
 
 <script>
-
+	
 	function moveToNext(current, nextFieldID) {
+
 		if (current.value.length >= current.maxLength) {
+
 			document.getElementById(nextFieldID).focus();
+
 		}
 	}
+
 	document.getElementById("verifyBtn").addEventListener("click", function() {
-            var successBox = document.getElementById("successBox");
-            successBox.style.display = "block";
-        });
+
+        var successBox = document.getElementById("successBox");
+        successBox.style.display = "block";
+		
+    });
+	
+	
+	// Resend-OTP Script :-
+	
+	 const timerDuration = 60;
+
+    function startTimer() {
+
+        let timeLeft = timerDuration;
+        const timerElement = document.getElementById("timer");
+
+        const countdown = setInterval(() => {
+
+            timerElement.textContent = `Resend OTP in ${timeLeft} seconds`;
+
+            timeLeft--;
+
+            if (timeLeft < 0) {
+
+                    clearInterval(countdown);
+                    document.getElementById("resend-btn").disabled = false;
+                    timerElement.textContent = "Resend OTP";
+
+            }
+
+        }, 1000);
+
+    }
+
+    window.onload = startTimer;
+
+	//	Timer For Visible Re-Send Button :-
+		
+	setTimeout(function() {
+		
+		document.getElementById('button-container').style.display = 'block';
+		
+	}, 60000); 
+	
+
+	//	Sweet Alert :-
+		
+	const msg = document.getElementById('msg');
+		
+	if(msg.textContent.trim() == "Invalid OTP...!"){
+		
+		Swal.fire({
+		
+			title:'Error',
+			text:'Invalid OTP...!',
+			icon:'error',
+			confirmButtonText: 'OK',
+		
+		});
+				
+	} else if (msg.textContent.trim() == 'Verified Successfully') {  
+		
+		Swal.fire({
+		
+			title:'Success',
+			text:'Verified Successfully',
+			icon:'success',
+			confirmButtonText: 'OK'
+		
+		}).then(() => {
+		
+			window.location.href = '/'
+		
+		});
+				
+	} else if(msg.textContent.trim() == 'Invalid OTP!!!'){
+		
+		Swal.fire({
+		
+			title:'Error',
+			text:'Invalid OTP...!',
+			icon:'error',
+			confirmButtonText: 'OK',
+		
+		});
+		
+	}
 
 </script>
-
-
 
 <%- include('../layouts/footer.ejs') %>

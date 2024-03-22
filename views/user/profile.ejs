@@ -1,0 +1,526 @@
+<%- include('../layouts/header') %>
+
+<div class="page-wrapper">
+
+  <%- include('../layouts/navbar-2.ejs') %>
+
+  <main class="main">
+
+        <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+            <div class="container">
+                <h1 class="page-title text-black-50 ">My Profile</h1>
+            </div><!-- End .container -->
+        </div><!-- End .page-header -->
+
+        <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">My Profile</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+
+              <div class="dashboard">
+          
+                  <div class="container">
+
+                      <div class="row">
+
+                          <aside class="col-md-4 col-lg-3">
+
+                              <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+
+                                  <li class="nav-item">
+                                      <a class="nav-link active" id="tab-dashboard-link" href="/profile"> My Profile</a>
+                                  </li>
+
+                                  <li class="nav-item">
+                                      <a class="nav-link" id="tab-orders-link" href="/orders" role="tab">Orders</a>
+                                  </li>
+
+                                  <li class="nav-item">
+                                      <a class="nav-link" id="tab-downloads-link" data-toggle="tab" href="#" role="tab">Wishlist</a>
+                                  </li>
+
+                                  <li class="nav-item">
+                                      <a class="nav-link" id="tab-address-link"  href="/address">Address</a>
+                                  </li>
+
+                                  <li class="nav-item">
+                                      <a class="nav-link" id="tab-wallet-link" data-toggle="tab" href="#" role="tab">Wallet</a>
+                                  </li>
+
+                                  <li class="nav-item">
+                                      <a class="nav-link" id="tab-coupons-link" data-toggle="tab" href="#" role="tab">Coupons</a>
+                                  </li>
+                                  
+                                  <li class="nav-item">
+                                    
+                                    <a class="nav-link " href="">Sigout</a>
+
+                                  </li>
+                                  
+                                </ul>
+
+                            </aside>
+
+                              <div class="col-md-8 col-lg-9">
+
+                              <div class="tab-content">
+
+                                  <!--my profile-->
+
+                                  <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link" >
+
+                                      <div class="col col-lg-11 mb-4 mb-lg-0">
+
+                                          <div class="card mb-3" style="border-radius: 0.5rem">
+
+                                            <div class="row g-0">
+
+                                              <div class="container-fluid d-flex  justify-content-end mt-2 me-5 ">
+
+                                                <p id="msg" hidden ><%= msgg %></p>
+                      
+                                              </div>
+
+                                              <div class="col-md-4 d-flex flex-column align-items-center justify-content-center gap-2 gradient-custom text-center text-white" style="border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;padding-top: 2rem;">
+
+                                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp" alt="Avatar" class="img-fluid" style="width: 80px"/>
+
+                                                <h4><%= userData.fullName %></h4>
+
+                                              </div>
+
+                                              <div class="col-md-8">
+
+                                                <div class="card-body p-4">
+
+                                                  <div class="head h-100 d-flex align-items-center justify-content-between">
+
+                                                    <h6></h6>
+
+                                                    <form action="/logout" method="post">
+
+                                                      <button class="bg-transparent border-0 d-flex align-items-center justify-content-center">
+
+                                                        <h6 type="submit">
+
+                                                          <i class="ri-logout-circle-line" style="cursor: pointer"></i>
+
+                                                        </h6>
+
+                                                      </button>
+
+                                                    </form>
+
+                                                  </div>
+                      
+                                                  <hr class="mt-0 mb-4"/>
+
+                                                  <div class="row">
+
+                                                    <div class="col-6 mb-3">
+                                                      <h6>Name</h6>
+                                                      <p><%= userData.fullName %></p>
+                                                    </div>
+
+                                                    <div class="col-6 mb-3">
+                                                      <h6>Contact</h6>
+                                                      <p><%= userData.phone %></p>
+                                                    </div>
+
+                                                  </div>
+
+                                                <div class="row">
+                                                    <div class="col-6 mb-2">
+                                                      <h6>Email</h6>
+                                                      <p><%= userData.email %></p>
+                                                    </div>
+                                                  </div>
+                      
+                                                  <div class="row pt-1">
+                                                    <div class="col-8 mb-3 d-flex">
+
+                                                      <!-- Change Password Section -->
+
+                                                        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                          <div class="modal-dialog">
+
+                                                              <div class="modal-content">
+
+                                                                  <div class="modal-header">
+                                                                      <h6 class="modal-title" id="exampleModalLabel">Change Password</h6>
+                                                                      <button type="button" class="btn-close btn-outline-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                  </div>
+
+                                                                  <div class="modal-body">
+
+                                                                      <form action="/changePassword?userId=<%= userData._id %>" method="post" id="editProfileForm" class="px-5" enctype="application/x-www-form-urlencoded">
+
+                                                                          <span class="message" id="msg" hidden ><%= msgg %></span>
+
+                                                                          <div class="mb-2">
+                                                                              <label for="userName" class="col-form-label">Old Password</label>
+                                                                              <input type="password" class="form-control" name="oldPass" id="userOldPassword" placeholder="Enter Old Password">
+                                                                          </div>
+
+                                                                          <div class="mb-2">
+                                                                              <label for="userPhone" class="col-form-label">New Password</label>
+                                                                              <input type="password" class="form-control" name="newPass" id="userNewPass" placeholder="Enter New Password">
+                                                                          </div>
+
+                                                                          <div class="mb-2">
+                                                                              <label for="userPhone" class="col-form-label">Confirm Password</label>
+                                                                              <input type="password" class="form-control" name="confirmPass" id="userConfirmPass" placeholder="Enter Confirm Password">
+                                                                              <div class=" error text-danger text-center " id="passwordError"></div>
+                                                                          </div>
+
+                                                                          <div class="modal-footer">
+                                                                              <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
+                                                                              <button type="submit" class="btn btn-outline-success" data-bs-dismiss="modal" id="savePasswordButton">Save</button>
+                                                                          </div>
+
+                                                                      </form>
+
+                                                                  </div>
+
+                                                              </div>
+
+                                                          </div>
+                                                        </div>
+
+                                                        <button class="btn btn-primary p-2" style="font-size: 12px;" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change&nbsp;Password</button>
+                                        
+                                                      <!-- Change Password End -->
+                                                        
+                                                      <!-- Edit Profile Section -->
+
+                                                      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                          <div class="modal-dialog">
+
+                                                              <div class="modal-content">
+
+                                                                  <div class="modal-header">
+                                                                      <h6 class="modal-title" id="exampleModalLabel">Edit profile</h6>
+                                                                      <button type="button" class="btn-close btn-outline-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                  </div>
+
+                                                                  <div class="modal-body">
+
+                                                                      <form action="/editProfile?userId=<%= userData._id %>" method="post" id="editProfileForm" class="px-5" enctype="application/x-www-form-urlencoded">
+
+                                                                          <span class="message" id="msg" hidden ><%= msgg %></span>
+
+                                                                          <div class="mb-3">
+                                                                              <label for="userName" class="col-form-label">Name</label>
+                                                                              <input type="text" class="form-control" name="name" id="userName" value="<%= userData.fullName %>">
+                                                                              <div class="error text-danger " id="nameError"></div>
+
+                                                                          </div>
+
+                                                                          <div class="mb-3">
+                                                                              <label for="userPhone" class="col-form-label">Contact</label>
+                                                                              <input type="text" class="form-control" name="phone" id="userPhone" value="<%= userData.phone %>">
+                                                                              <div class="error text-danger" id="phoneError"></div>
+                                                                          </div>
+
+                                                                          <div class="modal-footer">
+                                                                              <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
+                                                                              <button type="submit" class="btn btn-outline-success" id="saveButton">Save</button>
+                                                                          </div>
+
+                                                                      </form>
+
+                                                                  </div>
+
+                                                              </div>
+
+                                                          </div>
+                                                        </div>
+
+                                                      <button type="button" class="btn btn-primary ms-5  btn-icon-text" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                        <i class="mdi mdi-upload btn-icon-prepend"></i>Edit&nbsp;Profile<i class="far fa-edit"></i>
+                                                      </button>
+
+                                                      <!-- Edit Profile End -->
+
+                                                    </div>
+
+                                                  </div>
+                      
+                                                  <div class="d-flex justify-content-start">
+                                                    <a href="#!"><i class="fab fa-facebook-f fa-lg me-3"></i></a>
+                                                    <a href="#!"><i class="fab fa-twitter fa-lg me-3"></i></a>
+                                                    <a href="#!"><i class="fab fa-instagram fa-lg"></i></a>
+                                                  </div>
+                      
+                                                </div>
+                                              </div>
+
+                                            </div>
+                                          </div>
+                                      </div>                   
+                                  </div><!-- .End .tab-pane -->
+
+                                      <!--my profile End-->
+
+                                  <!-- Orders -->
+
+                                  <!-- <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link"> -->
+
+                                      <!-- <p>No order has been made yet.</p>
+                                      
+                                      <a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a> -->
+
+                                  <!-- </div>.End .tab-pane -->
+
+                                  <!-- Orders End -->
+
+                                  <!--whishlist-->
+
+                                  <!-- <div class="tab-pane fade" id="tab-downloads" role="tabpanel" aria-labelledby="tab-downloads-link"> -->
+
+                                      <!-- <p>No downloads available yet.</p>
+
+                                      <a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a> -->
+
+                                  <!-- </div>.End .tab-pane -->
+
+                                  <!--whishlist End -->
+
+                                  <!--address-->
+                                  
+                                  
+
+                                  <!--address End-->
+
+                                  <!--Wallet-->
+
+                                  <!-- <div class="tab-pane fade" id="tab-wallet" role="tabpanel" aria-labelledby="tab-wallet-link"> -->
+
+                                    <!-- <p>Wallet</p>  -->
+
+                                  <!-- </div>.End .tab-pane -->
+
+                                  <!--wallet End-->
+
+                                  <!--coupons-->
+                                  <!-- <div class="tab-pane fade" id="tab-coupons" role="tabpanel" aria-labelledby="tab-coupons-link"> -->
+
+                                      <!-- <p>coupons</p>     -->
+
+                                  <!-- </div>.End .tab-pane -->
+
+                                  <!--coupons End-->
+
+                              </div>
+
+                          </div><!-- End .col-lg-9 -->
+                      </div><!-- End .row -->
+                  </div><!-- End .container -->
+              </div><!-- End .dashboard -->
+        </div><!-- End .page-content -->
+    </main><!-- End .main -->
+
+  <!-- End .main -->
+
+  <!-- Connect Footer -->
+  <%- include('../layouts/footbar-2') %>
+  <!-- Connect Footer -->
+
+</div>
+
+
+<!--Connect Mobaile View-->
+<%- include('../layouts/mobileView.ejs') %>
+<!--Connect Mobaile View-->
+
+<button id="scroll-top" title="Back to Top">
+
+  <i class="icon-arrow-up"></i>
+
+</button>
+
+<!-- Plugins JS File -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/jquery.hoverIntent.min.js"></script>
+<script src="assets/js/jquery.waypoints.min.js"></script>
+<script src="assets/js/superfish.min.js"></script>
+<script src="assets/js/owl.carousel.min.js"></script>
+<!-- Main JS File -->
+<script src="assets/js/main.js"></script>
+
+<script>
+
+  //  Sweet Alert :-
+
+  const msg = document.getElementById('msg');
+
+  if(msg.textContent == 'Profile Editted Successfully'){
+
+    Swal.fire({
+		
+			title:'Profile Edited',
+			text:'Profile Edited Successfully',
+			icon:'success',
+			confirmButtonText: 'OK'
+		
+		})
+
+  } else if(msg.textContent == 'Password Changed Successfully'){
+
+     Swal.fire({
+		
+			title:'Password Changed',
+			text:'Password Changed Successfully',
+			icon:'success',
+			confirmButtonText: 'OK'
+		
+		})
+
+  } else if(msg.textContent == 'Password Not Match!!!'){
+
+    Swal.fire({
+		
+			title:'Error',
+			text:'Password Not Match...!',
+			icon:'error',
+			confirmButtonText: 'OK',
+		
+		});
+
+  } else if(msg.textContent == 'Please Check Your Password Corroct Or Not'){
+
+
+    Swal.fire({
+		
+			title:'Error',
+			text:'Somthing Went Wrong...!',
+			icon:'error',
+			confirmButtonText: 'OK',
+		
+		});
+
+  } else if(msg.textContent == 'Addedd Address'){
+
+     Swal.fire({
+		
+			title:'Address Added',
+			text:'Address Added Successfully',
+			icon:'success',
+			confirmButtonText: 'OK'
+		
+		})
+
+  }
+  
+  //  Edit Profile Validation :-
+
+  document.addEventListener('DOMContentLoaded', function () {
+
+      const nameInput = document.getElementById('userName');
+      const phoneInput = document.getElementById('userPhone');
+      const nameError = document.getElementById('nameError');
+      const phoneError = document.getElementById('phoneError');
+      const saveButton = document.getElementById('saveButton');
+
+      function validateInputs() {
+
+          const nameValue = nameInput.value.trim();
+          const phoneValue = phoneInput.value.trim();
+
+          let nameValid = true;
+          let phoneValid = true;
+
+          if (nameValue === '') {
+
+                nameValid = false;
+                nameError.textContent = 'Name cannot be empty';
+
+            } else if (/[^a-zA-Z\s]/.test(nameValue)) {
+
+                nameValid = false;
+                nameError.textContent = 'This is can not be validate , eg : joseph ';
+
+            } else {
+
+              nameError.textContent = '';
+
+            }
+
+          if (!/^\d{10}$/.test(phoneValue)) {
+
+              phoneValid = false;
+              phoneError.textContent = 'Phone number must be 10 digits';
+              
+          } else {
+
+              phoneError.textContent = '';
+
+          }
+
+          saveButton.disabled = !(nameValid && phoneValid);
+      }
+
+      nameInput.addEventListener('input', validateInputs);
+      phoneInput.addEventListener('input', validateInputs);
+
+  });
+
+
+  //  Change Password :-
+
+  document.addEventListener('DOMContentLoaded', function () {
+
+      const oldPasswordInput = document.querySelector('input[name="oldPass"]');
+      const newPasswordInput = document.querySelector('input[name="newPass"]');
+      const confirmPasswordInput = document.querySelector('input[name="confirmPass"]');
+      const passwordError = document.getElementById('passwordError');
+      const savePasswordButton = document.getElementById('savePasswordButton');
+
+      function validatePassword() {
+
+          const oldPassword = oldPasswordInput.value.trim();
+          const newPassword = newPasswordInput.value.trim();
+          const confirmPassword = confirmPasswordInput.value.trim();
+
+          const isEmpty = oldPassword === '' || newPassword === '' || confirmPassword === '';
+
+          if (isEmpty) {
+
+              passwordError.textContent = 'All fields are required';
+              savePasswordButton.disabled = true;
+              return;
+          }
+
+          const passwordMatch = newPassword === confirmPassword;
+          const passwordLength = newPassword.length >= 6;
+
+          if (!passwordMatch || !passwordLength) {
+
+              passwordError.textContent = !passwordMatch ? 'Passwords do not match' : 'Password must be at least 6 characters';
+              savePasswordButton.disabled = true;
+
+          } else {
+
+              passwordError.textContent = '';
+              savePasswordButton.disabled = false;
+
+          }
+
+      }
+
+      oldPasswordInput.addEventListener('input', validatePassword);
+      newPasswordInput.addEventListener('input', validatePassword);
+      confirmPasswordInput.addEventListener('input', validatePassword);
+
+  });
+
+</script>
+
+<%- include('../layouts/footer') %>

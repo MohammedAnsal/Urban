@@ -27,11 +27,16 @@
 
                                 <li>
 
-                                    <a href="category.html" class="sf-with-ul">Category</a>
+                                    <a href="#" class="sf-with-ul" style="padding-right: 11px;">Category</a>
 
-                                     <ul class="p-2">
-                                        <li><a href="/category">Men's</a></li>
-                                        <li><a href="/category">Women's</a></li>
+                                     <ul class="p-2" style="border-radius: 10px;">                       
+
+                                        <% categoryData.forEach(val => { %>
+
+                                            <li><a href="/category/<%= val.name %>"><%= val.name %></a></li>
+                                                
+                                        <%  }); %>
+
                                     </ul>
 
                                 </li>
@@ -60,13 +65,48 @@
                     </div><!-- End .header-left -->
 
                     <div class="header-right">
+                                
+                        <div class="dropdown cart-dropdown">
 
-                                <ul class="menu sf-arrows">
-                                    <li>
-                                        <a class="text-white" href="/login" style="padding-top: 3rem; padding-right: 20px;">LOGIN</a>
+                            <a href="<%= locals.login ? '/profile' : '/login' %>" class="dropdown-toggle text-white" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
 
-                                    </li>
-                                </ul>
+                                <% if (locals.login) { %>
+
+                                    <div class="hello" style="padding-top: 20px; margin-right: 13px;">
+                                    <a href="/profile">
+                                    <i class="fa-solid fa-circle-user text-white" style="font-size: 28px; padding-right: 10px;"></i>
+                                    </a>
+                                    </div>
+
+                                <% } else { %>
+
+                                    <div class="hai" style="padding-top: 9px; margin-right: 17px;">
+                                    <a href="/login" class="text-white" style="margin-top: 7px; font-size: 16px;">LOGIN</a>
+                                    </div>
+
+                                <% } %>
+
+                            </a>
+
+                        <% if (locals.login) { %>
+
+                            <!-- <div class="dropdown-menu dropdown-menu-right text-center rounded-2" style="display: flex; flex-direction: column; width: fit-content;">
+
+                                <span class="text-dark "></span>
+
+                             <a href="/profile" style="font-size: 15px; padding-top: 5px;">Profile</a>
+                            
+                                <form action="/logout" method="post">
+
+                                    <button class="logout-button rounded-pill m-2 text-white " style="background-color: gray; width: fit-content" type="submit">logout</button>
+                                    
+                                </form>
+
+                            </div>End .dropdown-menu -->
+
+                        <% } %>
+
+                        </div><!-- End .cart-dropdown -->
 
                         <div class="header-search header-search-extended header-search-visible">
                             <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
@@ -79,73 +119,41 @@
                             </form>
                         </div><!-- End .header-search -->
                         
-                        <a href="wishlist.html" class="wishlist-link">
+                        <a href="/wishlist" class="wishlist-link">
                             <i class="icon-heart-o pt-1"></i>
                         </a>
 
                         <div class="dropdown cart-dropdown">
-                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+
+                            <a href="/cart" class="dropdown-toggle" >
                                 <i class="icon-shopping-cart pt-1 "></i>
-                                <span class="cart-count">2</span>
+                                <span id="cart" class="cart-count"></span>
                             </a>
 
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <div class="dropdown-cart-products">
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="product.html">Beige knitted elastic runner shoes</a>
-                                            </h4>
+                       
 
-                                            <span class="cart-product-info">
-                                                <span class="cart-product-qty">1</span>
-                                                x $84.00
-                                            </span>
-                                        </div><!-- End .product-cart-details -->
-
-                                        <figure class="product-image-container">
-                                            <a href="product.html" class="product-image">
-                                                <img src="assets/images/urban/newBalanceDemo-1.png" alt="product">
-                                            </a>
-                                        </figure>
-                                        <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                    </div><!-- End .product -->
-
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="product.html">Blue utility pinafore denim dress</a>
-                                            </h4>
-
-                                            <span class="cart-product-info">
-                                                <span class="cart-product-qty">1</span>
-                                                x $76.00
-                                            </span>
-                                        </div><!-- End .product-cart-details -->
-
-                                        <figure class="product-image-container">
-                                            <a href="product.html" class="product-image">
-                                                <img src="assets/images/urban/nikeScaiDemo-1.jpg" alt="product">
-                                            </a>
-                                        </figure>
-                                        <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                    </div><!-- End .product -->
-                                </div><!-- End .cart-product -->
-
-                                <div class="dropdown-cart-total">
-                                    <span>Total</span>
-
-                                    <span class="cart-total-price">$160.00</span>
-                                </div><!-- End .dropdown-cart-total -->
-
-                                <div class="dropdown-cart-action">
-                                    <a href="cart.html" class="btn btn-primary">View Cart</a>
-                                    <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
-                                </div><!-- End .dropdown-cart-total -->
-                            </div><!-- End .dropdown-menu -->
                         </div><!-- End .cart-dropdown -->
+                    
                     </div><!-- End .header-right -->
                 </div><!-- End .container-fluid -->
             </div><!-- End .header-middle -->
             
         </header><!-- End .header -->
+
+        <script>
+
+            cartAction();
+
+            function cartAction(){
+
+                const cartt = document.getElementById('cart');
+
+                fetch('/cartAction' ,{method : 'post'}).then(res=>res.json()).then((data)=>{
+
+                    cartt.textContent = data.success || 0
+
+                });
+
+            }
+
+        </script>

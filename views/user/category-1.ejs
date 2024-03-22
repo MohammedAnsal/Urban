@@ -6,9 +6,9 @@
 
     <main class="main">
 
-        	<div class="page-header text-center" style="background-image: url('assets/images/urban/nicePic.jpg')">
+        	<div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')">
         		<div class="container">
-        			<h1 class="page-title text-white">Category<span>Shop</span></h1>
+        			<h1 class="page-title text-black-50 ">Category<span>Shop</span></h1>
         		</div><!-- End .container -->
         	</div><!-- End .page-header -->
             <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
@@ -93,39 +93,51 @@
                             <div class="products mb-3">
                                 <div class="row justify-content-center">
 
-                                    <div class="col-6 col-md-4 col-lg-4 pt-2">
-                                        <div class="product product-7 text-center">
-                                            <figure class="product-media">
-                                                <span class="product-label label-new">New</span>
-                                                <a href="product.html">
-                                                    <img src="assets/images/urban/addidasDemo-1.png" alt="Product image" class="product-image">
-                                                </a>
+									
+									<% productData.forEach(val => { %>
 
-                                                <div class="product-action-vertical">
-                                                    <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
-                                                    <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a> -->
-                                                    <!-- <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a> -->
-                                                </div><!-- End .product-action-vertical -->
+                                    	<div class="col-6 col-md-4 col-lg-4">
+                                        	<div class="product product-7 text-center">
+                                            	<figure class="product-media">
 
-                                                <div class="product-action">
-                                                    <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
-                                                </div><!-- End .product-action -->
-                                            </figure><!-- End .product-media -->
+                                                	<!-- <span class="product-label label-new">New</span> -->
 
-                                            <div class="product-body">
-                                                <div class="product-cat">
-                                                    <a href="#">Puma</a>
-                                                </div><!-- End .product-cat -->
-                                                <h3 class="product-title"><a href="product.html">Brown paperbag waist pencil skirt</a></h3><!-- End .product-title -->
-                                                <div class="product-price">
-                                                    $60.00
-                                                </div><!-- End .product-price -->
-                                                <div class="ratings-container">
-                                                    <div class="ratings">
-                                                        <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
-                                                    </div><!-- End .ratings -->
-                                                    <span class="ratings-text">( 2 Reviews )</span>
-                                                </div><!-- End .rating-container -->
+                                                	<a href="/productDetails?id=<%= val._id %>">
+
+                                                    	<img src="/productImage/<%= val.images[0] %>" alt="Product image" class="product-image">
+
+                                                	</a>
+
+                                                	<div class="product-action-vertical">
+                                                    	<a href="/wishlist" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                                                    	<!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a> -->
+                                                    	<!-- <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a> -->
+                                                	</div><!-- End .product-action-vertical -->
+
+                                                	<div class="product-action">
+                                                    	<a href="/cart" class="btn-product btn-cart"><span>add to cart</span></a>
+                                                	</div><!-- End .product-action -->
+
+                                            	</figure><!-- End .product-media -->
+
+                                            	<div class="product-body">
+
+                                                	<div class="product-cat">
+                                                    	<a href="#"><%= val.name %></a>
+                                               		</div><!-- End .product-cat -->
+
+                                                	<h3 class="product-title"><a href="/category"><%= val.category.name %></a></h3><!-- End .product-title -->
+
+                                                	<div class="product-price">
+                                                    	$<%= val.price %>
+                                                	</div><!-- End .product-price -->
+
+                                                	<!-- <div class="ratings-container">
+                                                    	<div class="ratings">
+                                                        	<div class="ratings-val" style="width: 20%;"></div>
+                                                    	</div>End .ratings
+                                                    	<span class="ratings-text">( 2 Reviews )</span>
+                                                	</div>End .rating-container -->
 
                                                 <!-- <div class="product-nav product-nav-thumbs">
                                                     <a href="#" class="active">
@@ -143,6 +155,9 @@
                                             </div><!-- End .product-body -->
                                         </div><!-- End .product -->
                                     </div><!-- End .col-sm-6 col-lg-4 -->
+
+									<%	}); %>
+
 
                                     <div class="col-6 col-md-4 col-lg-4">
                                      
@@ -245,14 +260,14 @@
 											<div class="filter-items">
 												<div class="filter-item">
 													<div class="custom-control custom-checkbox">
-														<input type="checkbox" class="custom-control-input" checked id="size-3">
+														<input type="checkbox" class="custom-control-input"  id="size-3">
 														<label class="custom-control-label" for="size-3">6</label>
 													</div><!-- End .custom-checkbox -->
 												</div><!-- End .filter-item -->
 
 												<div class="filter-item">
 													<div class="custom-control custom-checkbox">
-														<input type="checkbox" class="custom-control-input" checked id="size-4">
+														<input type="checkbox" class="custom-control-input"  id="size-4">
 														<label class="custom-control-label" for="size-4">7</label>
 													</div><!-- End .custom-checkbox -->
 												</div><!-- End .filter-item -->
@@ -380,25 +395,23 @@
         <!-- Connect Footer -->
 		<%- include('../layouts/footbar-2') %>
 		<!-- Connect Footer -->
-		
-        </div>
+     
+	</div><!-- End .page-wrapper -->
 
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 
-
-        <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
-
-        <!--Connect Mobaile View-->
+		<!--Connect Mobaile View-->
         <%- include('../layouts/mobileView.ejs') %>
 		<!--Connect Mobaile View-->
 
     <!-- Plugins JS File -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/jquery.hoverIntent.min.js"></script>
-    <script src="assets/js/jquery.waypoints.min.js"></script>
-    <script src="assets/js/superfish.min.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/assets/js/jquery.waypoints.min.js"></script>
+    <script src="/assets/js/superfish.min.js"></script>
+    <script src="/assets/js/owl.carousel.min.js"></script>
     <!-- Main JS File -->
-    <script src="assets/js/main.js"></script>
+    <script src="/assets/js/main.js"></script>
 
 <%- include('../layouts/footer') %>

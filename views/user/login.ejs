@@ -8,9 +8,9 @@
 			 <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <!-- <li class="breadcrumb-item"><a href="#">Pages</a></li> -->
-                        <li class="breadcrumb-item active" aria-current="page">Login</li>
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/login">Login</a></li>
+                        <!-- <li class="breadcrumb-item active" aria-current="#">SignUp</li> -->
                     </ol>
                 </div><!-- End .container -->
             </nav><!-- End .breadcrumb-nav -->
@@ -28,22 +28,47 @@
 							<div class="tab-content">
 							    <div class="tab-pane show active" id="signin-2" role="tabpanel" aria-labelledby="signin-tab-2">
 									
-							    	<form action="/login" method="post">
+							    	<form action="/login" method="post" onsubmit="return validateForm()">
+
+										<div class="text-center ">
+											<p class="text-danger ">
+												<% if(locals.passWrong) {%>
+
+													<%= passWrong %>
+
+													<% } %>
+											</p>
+										</div>
+
+										<div class="text-center ">
+											<p class="text-danger ">
+												<% if(locals.emailMsg) {%>
+
+													<%= emailMsg %>
+
+													<% } %>
+											</p>
+										</div>
 										
 							    		<div class="form-group">
 							    			<label for="singin-email-2">Username or email address *</label>
-							    			<input type="text" class="form-control" id="singin-email-2" name="singin-email" required>
+							    			<input type="text" class="form-control" id="singin-email-2" name="email">
+											<p class="error-message text-danger" id="email-error"></p>
 							    		</div><!-- End .form-group -->
 
 							    		<div class="form-group">
 							    			<label for="singin-password-2">Password *</label>
-							    			<input type="password" class="form-control" id="singin-password-2" name="singin-password" required>
+							    			<input type="password" class="form-control" id="singin-password-2" name="password">
+											<p class="error-message text-danger " id="password-error"></p>
 							    		</div><!-- End .form-group -->
 
 							    		<div class="form-footer">
-							    			<button type="submit" class="btn btn-outline-primary-2">
+
+							    			<button type="submit" class="btn btn-outline-primary-2" id="login-btn">
+
 			                					<span>LOGIN</span>
 			            						<i class="icon-long-arrow-right"></i>
+												
 			                				</button>
 
 			                				<!-- <div class="custom-control custom-checkbox">
@@ -51,7 +76,7 @@
 												<label class="custom-control-label" for="signin-remember-2">Remember Me</label>
 											</div>End .custom-checkbox -->
 
-											<a href="#" class="forgot-link">Forgot Your Password?</a>
+											<a href="/forgotPass" class="forgot-link">Forgot Your Password?</a>
 
 							    		</div><!-- End .form-footer -->
 
@@ -100,6 +125,55 @@
 		<!--Connect Mobaile View-->
         <%- include('../layouts/mobileView.ejs') %>
 		<!--Connect Mobaile View-->
+
+		<!-- Validation Sectio -->
+
+<script>
+
+    function validateForm() {
+
+        var email = document.getElementById("singin-email-2").value;
+        var password = document.getElementById("singin-password-2").value;
+        var valid = true;
+
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (email.trim() === "") {
+
+            document.getElementById("email-error").innerText = "Email field is empty";
+            valid = false;
+
+        } else if (!emailRegex.test(email)) {
+
+            document.getElementById("email-error").innerText = "Invalid email format";
+            valid = false;
+
+        } else {
+
+            document.getElementById("email-error").innerText = "";
+            // document.getElementById("password-group").style.display = "block";
+            // document.getElementById("login-btn").innerText = "CONTINUE";
+        }
+
+        if (password.trim() === "") {
+
+            document.getElementById("password-error").innerText = "Password field is empty";
+            valid = false;
+
+        } else if (password.length < 5) {
+
+            document.getElementById("password-error").innerText = "Password must be at least 5 characters";
+            valid = false;
+
+        } else {
+
+            document.getElementById("password-error").innerText = "";
+        }
+
+        return valid;
+    }
+	
+</script>
 
     <!-- Plugins JS File -->
     <script src="assets/js/jquery.min.js"></script>

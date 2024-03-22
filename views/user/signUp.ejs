@@ -4,19 +4,19 @@
 	
 	<%- include('../layouts/navbar-2.ejs') %>
 	
-        <main class="main">
+    	<main class="main">
 
 			 <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Sign Up</li>
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+					    <li class="breadcrumb-item"><a href="/login">Login</a></li>
+                        <li class="breadcrumb-item active" aria-current="#">Sign Up</li>
                     </ol>
                 </div><!-- End .container -->
             </nav><!-- End .breadcrumb-nav -->
 
             <div class="login-page bg-image p-3" style="background-image: url('assets/images/urban/show.jpg')">
-
             	<div class="container">
             		<div class="form-box">
             			<div class="form-tab">
@@ -27,75 +27,101 @@
 							    </li>
 							</ul>
 
-                            <div class="tab-pane fade show active" id="register-2" role="tabpanel" aria-labelledby="register-tab-2">
+                        <div class="tab-pane fade show active" id="register-2" role="tabpanel" aria-labelledby="register-tab-2">
 
-								<form action="/signup" method="post">
+							<form action="/signup" method="post" id="signupForm">
 
-									<div class="form-group">
-										<label for="register-fullname">Full Name *</label>
-										<input type="text" class="form-control" id="register-fullname" name="fullname" required>
-									</div><!-- End .form-group -->
+								<div class="justify-content-center">
 
-									<div class="form-group">
-										<label for="register-email-2">Email Address *</label>
-										<input type="email" class="form-control" id="register-email-2" name="email" required>
-									</div><!-- End .form-group -->
+									<% if(locals.emailAlredyExits) { %>
 
-									<div class="form-group">
-										<label for="register-phone">Phone Number *</label>
-										<input type="text" class="form-control" id="register-phone" name="phone" required>
-									</div><!-- End .form-group -->
+										<p class="text-center text-danger "><%= emailAlredyExits %></p> 
 
-									<div class="form-group">
-										<label for="register-password-2">Password *</label>
-										<input type="password" class="form-control" id="register-password-2" name="password" required>
-									</div><!-- End .form-group -->
-
-									<div class="form-group">
-										<label for="register-confirm-password">Confirm Password *</label>
-										<input type="password" class="form-control" id="register-confirm-password" name="confirmPassword" required>
-									</div><!-- End .form-group -->
-
-									<div class="form-footer">
-										<button type="submit" class="btn btn-outline-primary-2">
-											<span>SIGN UP</span>
-											<i class="icon-long-arrow-right"></i>
-										</button>
-
-										<div class="custom-control custom-checkbox">
-											<input type="checkbox" class="custom-control-input" id="register-policy-2" required>
-											<label class="custom-control-label" for="register-policy-2">I agree to the <a href="#">privacy policy</a> *</label>
-										</div><!-- End .custom-checkbox -->
-									</div><!-- End .form-footer -->
-								</form>
+									<% } %>
 									
+								</div>
 
-							    	<div class="form-choice">
-								    	<p class="text-center">or sign in with</p>
-								    	<div class="row">
-								    		<div class="col-sm-6">
-								    			<a href="#" class="btn btn-login btn-g">
-								    				<i class="icon-google"></i>
-								    				Login With Google
-								    			</a>
-								    		</div><!-- End .col-6 -->
-								    		<div class="col-sm-6">
-								    			<a href="#" class="btn btn-login  btn-f">
-								    				<i class="icon-facebook-f"></i>
-								    				Login With Facebook
-								    			</a>
-								    		</div><!-- End .col-6 -->
-								    	</div><!-- End .row -->
-							    	</div><!-- End .form-choice -->
-							    </div><!-- .End .tab-pane -->
-                            </div><!-- End .tab-content -->
-						</div><!-- End .form-tab -->
+								<div class="form-group">
+									<label for="register-fullname">Full Name *</label>
+									<input type="text" class="form-control" id="register-name-2" name="fullName" oninput=" validateInput(this)">
+									<div class="error-message" id="name-error"></div>
+								</div>
+								<!-- End .form-group -->
 
-            		</div><!-- End .form-box -->
+								<div class="form-group">
+									<label for="register-email-2">Email Address *</label>
+									<input type="email" class="form-control" id="register-email-2" name="email">
+									<div class="error-message" id="email-error"></div>
+								</div>
+								<!-- End .form-group -->
 
+								<div class="form-group">
+									<label for="register-phone">Phone Number *</label>
+									<input type="text" class="form-control" id="register-mobile" name="phone" oninput="isValidPhoneNumber(this);" onkeypress="return Numbers(event)">
+									<div class="error-message" id="mobile-error"></div>
+								</div>
+								<!-- End .form-group -->
+
+								<div class="form-group">
+									<label for="register-password-2">Password *</label>
+									<input type="password" class="form-control" id="register-password-2" name="password">
+									<div class="error-message" id="password-error"></div>
+								</div>
+								<!-- End .form-group -->
+
+								<div class="form-group">
+									<label for="register-confirm-password">Confirm Password *</label>
+									<input type="password" class="form-control" id="register-confirm-password" name="confirmPassword">
+									<div class="error-message" id="confirm-password-error"></div>
+								</div>
+								<!-- End .form-group -->
+
+								<div class="form-footer">
+
+									<button type="button" class="btn btn-outline-primary-2 submit submits" onclick="validateForm()">
+										<span >SIGN UP</span>
+										<i class="icon-long-arrow-right"></i>
+									</button>
+
+									 <!-- <div class="custom-control custom-checkbox">
+										<input type="checkbox" class="custom-control-input" id="register-policy-2">
+										<label class="custom-control-label" for="register-policy-2">I agree to the <a href="#">privacy policy</a> *</label>
+									</div>  -->
+									<!-- End .custom-checkbox -->
+
+								</div>
+								
+								<!-- End .form-footer -->
+							</form>
+
+							<div class="form-choice ">
+								<p class="text-center">or sign in with</p>
+								<div class="row">
+
+									<div class="col-sm-6">
+										<a href="#" class="btn btn-login btn-g">
+											<i class="icon-google"></i>
+											Login With Google
+										</a>
+									</div><!-- End .col-6 -->
+
+									<div class="col-sm-6">
+										<a href="#" class="btn btn-login  btn-f">
+											<i class="icon-facebook-f"></i>
+											Login With Facebook
+										</a>
+									</div><!-- End .col-6 -->
+
+								</div><!-- End .row -->
+							</div><!-- End .form-choice -->
+							
+						</div><!-- .End .tab-pane -->
+
+					</div><!-- End .form-tab -->
+            	  </div><!-- End .form-box -->
             	</div><!-- End .container -->
-
             </div><!-- End .login-page section-bg -->
+
         </main><!-- End .main -->
 
 		<!-- Connect Footer -->
@@ -104,23 +130,138 @@
      
 	</div><!-- End .page-wrapper -->
 
-
     <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 
 		<!--Connect Mobaile View-->
         <%- include('../layouts/mobileView.ejs') %>
 		<!--Connect Mobaile View-->
 
-   
+	<!-- Validation Section -->
 
-    <!-- Plugins JS File -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/jquery.hoverIntent.min.js"></script>
-    <script src="assets/js/jquery.waypoints.min.js"></script>
-    <script src="assets/js/superfish.min.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <!-- Main JS File -->
-    <script src="assets/js/main.js"></script>
+	<script>
 
+		//	FullName Validate Only Alphabet :-
+		function validateInput(input) {
+				
+			var inputValue = input.value;
+			var sanitizedInput = inputValue.replace(/[^a-zA-Z]/g, '');
+			input.value = sanitizedInput;
+		}
+
+		function validateForm() {
+
+			var fullName = document.getElementById('register-name-2').value;
+			var email = document.getElementById('register-email-2').value;
+			var phone = document.getElementById('register-mobile').value;
+			var password = document.getElementById('register-password-2').value;
+			var confirmPassword = document.getElementById('register-confirm-password').value;
+
+			// Validate fullName :-
+			if (fullName.trim() === '' || fullName.trim().length < 4) {
+
+				showError('Please enter a valid name (minimum 4 characters)', 'name-error');
+				return false;
+
+			} else {
+
+				clearError('name-error');
+			}
+
+			// Validate email :-
+			var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			if (!emailRegex.test(email) || !email.endsWith("@gmail.com")) {
+
+				showError('Please enter a valid Gmail address.', 'email-error');
+				return false;
+
+			} else {
+
+				clearError('email-error');
+			}
+
+			// Validate phone number :-
+			var phonePattern = /^\d{10}$/;
+			if (phone.trim() === '' || !phonePattern.test(phone) || !isValidPhoneNumber(phone)) {
+
+				showError('Please enter a valid 10-digit phone number', 'mobile-error');
+				return false;
+
+			} else {
+
+				clearError('mobile-error');
+
+			}
+
+			// Validate password :-
+			if (password.trim() === '' || password.trim().length < 5) {
+
+				showError('Please enter a valid password (minimum 5 characters)', 'password-error');
+				return false;
+
+			} else {
+
+				clearError('password-error');
+			}
+
+			// Validate confirm password :-
+			if (confirmPassword.trim() === '' || confirmPassword !== password) {
+
+				showError('Passwords do not match', 'confirm-password-error');
+				return false;
+
+			} else {
+
+				clearError('confirm-password-error');
+			}
+
+			// If all validations pass, submit the form
+			document.getElementById('signupForm').submit();
+
+		}
+
+		function showError(message, errorId) {
+
+				var errorElement = document.getElementById(errorId);
+				errorElement.textContent = message;
+				errorElement.style.color = 'red'; // Set color to red
+		}
+
+		function clearError(errorId) {
+				var errorElement = document.getElementById(errorId);
+				errorElement.textContent = ''; // Clear error message
+		}
+
+
+		function isValidPhoneNumber(phone) {
+
+			// Check if all digits are the same :-
+			if (/^(\d)\1+$/.test(phone)) {
+
+				return false;
+
+			}
+			return true;
+		}
+
+		//	Phone Number Only 10 gigits :-
+		function Numbers(event) {
+
+			const key = event.key;
+			return (key >= '0' && key <= '9');
+
+		}
+
+	</script>
+	<!---->
+
+	<!-- Plugins JS File -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/bootstrap.bundle.min.js"></script>
+	<script src="assets/js/jquery.hoverIntent.min.js"></script>
+	<script src="assets/js/jquery.waypoints.min.js"></script>
+	<script src="assets/js/superfish.min.js"></script>
+	<script src="assets/js/owl.carousel.min.js"></script>
+	<!-- Main JS File -->
+	<script src="assets/js/main.js"></script>
+	
 <%- include('../layouts/footer') %>

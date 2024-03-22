@@ -1,0 +1,203 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+  <div class="container-scroller">
+
+    <%- include('../layouts/adminSidebar.ejs') %>
+
+    <div class="container-fluid page-body-wrapper">
+
+        <%- include('../layouts/adminNavbar.ejs') %>
+
+      <!-- partial -->
+      
+    <div class="main-panel">
+          <div class="content-wrapper">
+         
+                <div class="w-100 container-fluid mb-5">
+                    <table class="table table-dark" style="border-radius: 10px;">
+                        <thead class="text-center ">
+
+                            <tr>
+                                <th class="text-white">No</th>
+                                <th class="text-white">Profile</th>
+                                <th class="text-white">FullName</th>
+                                 <th class="text-white">Email</th>
+                                <th class="text-white">Mobile</th>
+                                <th class="text-white">Status</th>
+                                <th class="text-white">Action</th>
+                            </tr>
+
+                        </thead>
+
+                        <!-- Fetch data in dbs and show -->
+
+                        <tbody class="text-center ">
+
+                            <% if (users.length > 0) { %>
+                                
+                                <% for (let i = 0 ; i < users.length; i++) { %>
+                                    
+                                    <tr>
+                                        <td><%= i + 1 %></td>
+                                         <th>
+                                            <img width="29" height="29" src="https://img.icons8.com/office/40/person-male-skin-type-4.png" alt="person-male-skin-type-4"/>
+                                        </th>
+                                        <td><%= users[i].fullName %></td>
+                                        <td><%= users[i].email %></td>
+                                        <td><%= users[i].phone %></td>
+
+                                        <!-- This One Checking User Active or Not -->
+                                        
+                                        <td>
+                                                <% if (users[i].is_blocked == false) { %>
+                                                
+                                                <span class="text-success" id="status <%= users[i]._id %>" >Active</span>
+                                                
+                                                <% } else { %>
+
+                                                    <span class="text-danger" id="status <%= users[i]._id %>" >Blocked</span>
+
+                                                <% } %>
+                                        </td>
+                                    
+                                        <!-- User Block and Unblock Action -->
+
+                                        <td>
+
+                                    <% if(users[i].is_blocked == false) { %>
+
+                                        <!-- Block Button with Modal -->
+
+                                        <button type="button" id="buttonn <%= users[i]._id %>" class="btn btn-outline-danger btn-fw" data-bs-toggle="modal" data-bs-target="#blockModal<%= i %>">Block</button>
+                                    
+                                        <!-- Block Modal -->
+                                        <div class="modal fade" id="blockModal<%= i %>" tabindex="-1" aria-labelledby="blockModalLabel<%= i %>" aria-hidden="true">
+
+                                          <div class="modal-dialog">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <h5 class="modal-title" id="blockModalLabel<%= i %>">Block User</h5>
+                                                <button type="button" class="btn-close btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">x</button>
+                                              </div>
+
+                                              <div class="modal-body bg-dark p-5">
+                                                Are you sure you want to block : <span class="text-primary "><%=users[i].fullName%></span> ?
+                                              </div>
+
+                                              <div class="modal-footer">
+                                                <button type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">No</button>
+                                                <button type="submit" class="btn btn-outline-danger" data-bs-dismiss="modal" onclick="userAction('<%= users[i]._id %>')">Yes</button>
+                                              </div>
+                                              
+                                            </div>
+                                          </div>
+
+                                        </div>
+
+                                    <% } else { %>
+
+                                        <!-- Unblock Button with Modal -->
+                                        <button type="submit" id="buttonn <%= users[i]._id %>" class="btn btn-outline-success btn-fw" data-bs-toggle="modal" data-bs-target="#unblockModal<%= i %>">Unblock</button>
+                                    
+                                        <!-- Unblock Modal -->
+                                        <div class="modal fade" id="unblockModal<%= i %>" tabindex="-1" aria-labelledby="unblockModalLabel<%= i %>" aria-hidden="true">
+                                          <div class="modal-dialog">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <h5 class="modal-title" id="unblockModalLabel<%= i %>">Unblock User</h5>
+                                                <button type="button" class="btn-close btn-outline-danger " data-bs-dismiss="modal" aria-label="Close">x</button>
+                                              </div>
+
+                                              <div class="modal-body bg-dark p-5 ">
+                                                Are you sure you want to unblock : <span class="text-primary "><%=users[i].fullName%></span> ?
+                                              </div>
+
+                                              <div class="modal-footer">
+                                                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">No</button>
+                                                <button type="submit" class="btn btn-outline-success" data-bs-dismiss="modal" onclick="userAction('<%= users[i]._id %>')">Yes</button>
+                                              </div>
+
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                    <% } %>
+
+                                        </td>
+
+                                    </tr>
+                                    
+                                <% } %>
+                                    
+                                
+                            <% } else { %>
+
+                                <tr>
+                                    <td colspan="5" class="text-danger">User Not Found</td>
+                                </tr>
+
+                            <% } %>
+
+                        </tbody>
+                    </table>
+                    <!-- End table -->
+                </div>
+
+                  <%- include('../layouts/pageNavigation') %>
+
+            </div>
+
+          <!-- <footer class="footer">
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
+            </div>
+          </footer> -->
+          <!-- partial -->
+        </div>
+
+    </div>
+
+</div>
+
+<!--- User List Script Fetch  -->
+
+<script>
+
+  function userAction(user){
+
+    const btn = document.getElementById(`buttonn ${user}`);
+
+    const status = document.getElementById(`status ${user}`);
+
+    if(btn.textContent == 'Block'){
+
+      btn.textContent = 'Unblock'
+      btn.classList.add('btn-outline-success');
+      btn.classList.remove('btn-outline-danger');
+      
+      status.textContent = 'Blocked'
+      status.classList.add('text-danger');
+      status.classList.remove('text-success');
+
+
+    } else {
+
+      btn.textContent = 'Block'
+      btn.classList.add('btn-outline-danger');
+      btn.classList.remove('btn-outline-success');
+
+      status.textContent = 'Active'
+      status.classList.add('text-success');
+      status.classList.remove('text-danger');
+
+    }
+
+    fetch(`/admin/users/${user}`);
+
+  };
+
+</script>
+  
+
+<%- include('../layouts/adminFooter.ejs') %>

@@ -1,0 +1,225 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+<div class="container-scroller">
+
+    <%- include('../layouts/adminSidebar.ejs') %>
+
+    <div class="container-fluid page-body-wrapper">
+
+        <%- include('../layouts/adminNavbar.ejs') %>
+
+            <!-- partial -->
+
+          <div class="main-panel">
+
+            <div class="content-wrapper">
+
+            <div class="d-flex justify-content-end">
+                
+                <form action="/admin/addProduct" method="get">
+
+                   <p class="" id="msg"><%= msgg %></p>
+
+                    <button type="submit" class="btn btn-outline-success btn-icon-text"><i class="mdi mdi-upload btn-icon-prepend"></i>Add Product</button>
+
+                </form>
+              </div>
+
+           <div class="w-100 container-fluid mt-3 mb-4">
+
+            <table class="table table-dark rounded-2 w-100 " style="border-radius: 10px;">
+
+              <thead class="text-center">
+
+                  <tr class="text-center ">
+                      <th class="text-white">No</th>
+                      <th class="text-white">Name</th>
+                      <th class="text-white">Image</th>
+                      <th class="text-white">Stock</th>
+                      <th class="text-white">Price</th>
+                      <th class="text-white">Discount Price</th>
+                      <th class="text-white">Category</th>
+                      <th class="text-white">Brand</th>
+                      <th class="text-white">Status</th>
+                      <th class="text-white">Action</th>             
+                    </tr>
+                    
+                </thead>
+                
+                <tbody>
+
+        <% if (product.length > 0) { %>
+                                                            
+            <% for (let i = 0 ; i < product.length; i++) { %>
+                    
+                <tr class="text-center">
+                    
+                    <td><%= i + 1 %></td>
+
+                    <td><%= product[i].name %></td>
+                    
+                    <td>
+
+                    <div class="progress d-flex align-items-center  h-100 w-100" style=" background-color: transparent; justify-content: center;">
+
+                    <% product[i].images.forEach(img => { %>
+
+                        <div class="cir" style="display: inline-block; width: 30px; height: 30px;  border-radius: 50%; overflow: hidden;">
+                            <img style="width: 100%; height: 100%; object-fit: cover; " src='/productImage/<%= img %>' alt="">
+                        </div>
+                            
+                    <% }); %>
+
+                    </div>
+
+                    </td>
+                          
+                        <td><%= product[i].stock %></td>
+                        <td><%= product[i].price %></td>
+                        <td><%= product[i].discount %>%</td>
+                        <td><%= product[i].category.name %></td>
+                        <td><%= product[i].brand %></td>
+
+                        <td>
+                            
+                        <% if (product[i].status == true) { %>
+
+                            <span class="text-success" id="s<%= product[i]._id %>">Listed</span>
+                            
+                            <%  } else { %>
+                                
+                            <span class="text-danger" id="s<%= product[i]._id %>">Unlisted</span>
+
+                        <% } %>
+                        
+                        </td> 
+
+                    <td>
+
+                        <div class="dropdown">
+
+                        <button class="btn btn-outline-info  dropdown-toggle" type="submit" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                             Action
+                        </button>
+
+                        <div class="dropdown-menu text-center" aria-labelledby="dropdownMenuButton">
+
+                           <a class="dropdown-item text-primary" href="/admin/editProduct?id=<%= product[i]._id %>">Edit</a>
+                            <!-- <a class="dropdown-item text-danger" href="#">Delete</a> -->
+                            
+                            <button type="button" id="s<%=product[i]._id %>" class="btn px-5 mt-1 <%= product[i].status == false ? 'btn-outline-success' : 'btn-outline-danger' %>" onclick="productAction('<%= product[i]._id %>' , this)" style="margin-right: 5px;"><%= product[i].status ? 'Unlist' :'List'%></button>
+
+                        </div>
+
+                        </div>
+
+
+                    </td>
+
+                </tr>
+
+            <% } %>
+
+               
+        <% } else { %>
+
+            <tr>
+                <td colspan="5" class="text-danger">Product Not Found</td>
+           </tr>
+
+        <% } %>
+     
+           </tbody>
+
+        </table>
+        
+        <!-- End table -->
+        
+    </div>
+    
+        <%- include('../layouts/pageNavigation') %>
+
+        </div>
+
+
+    </div>
+        
+    </div>
+    
+</div>
+
+
+<script>
+
+    //  Product Action :-
+
+    function productAction(id , value){
+
+        const status = document.getElementById(`s${id}`);
+
+        fetch(`/admin/productAction?id=${id}` , {
+            
+            method : 'put' , 
+            headers :{
+
+                'Content-Type' : 'application/json'
+
+            }   
+        })
+
+        .then(response =>{
+
+            if(!response.ok){
+
+                throw error
+
+            }
+
+        })
+
+        .then(data =>{
+
+            if (value.textContent == 'List') {
+
+                value.textContent = 'Unlist'
+                value.classList.remove('btn-outline-success');
+                value.classList.add('btn-outline-danger');
+
+                status.textContent = 'Listed'
+                status.classList.add('text-success')
+                status.classList.remove('text-danger')
+                
+            } else {
+
+                value.textContent = 'List'
+                value.classList.remove('btn-outline-danger')
+                value.classList.add('btn-outline-success')
+
+                status.textContent = "Unlisted"
+                status.classList.add('text-danger')
+                status.classList.remove('text-success')
+
+            }
+
+        })
+
+    };
+
+    // const msg = document.getElementById('msg')
+
+    // if(msg.textContent == 'Product Edited'){
+
+    //      Swal.fire({
+
+    //       icon: 'success',
+    //       title: 'Product Edited',
+    //       text: 'Product Edited successfully',
+    //       confirmButtonText: 'Okay'
+
+    //     })
+
+    // };
+
+</script>
+
+<%- include('../layouts/adminFooter.ejs') %>

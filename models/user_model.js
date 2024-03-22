@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
 
     phone: {
         
-        type: String,
+        type: Number,
         required:true
 
     },
@@ -39,6 +39,13 @@ const userSchema = new mongoose.Schema({
         
         type: Boolean,
         default:false
+    },
+
+    is_blocked: {
+        
+        type: Boolean,
+        required:false
+
     },
 
     datejoined: {

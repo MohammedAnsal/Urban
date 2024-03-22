@@ -1,0 +1,231 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+<div class="container-scroller">
+
+    <%- include('../layouts/adminSidebar.ejs') %>
+
+    <div class="container-fluid page-body-wrapper">
+
+        <%- include('../layouts/adminNavbar.ejs') %>
+              
+    <div class="main-panel ">
+
+        <div class="row">
+
+                    <div class="col-lg-12 ">
+
+                        <div id="addproduct-accordion" class="custom-accordion">
+
+                            <div class="card" style="background-color: rgb(40, 41, 41); margin-top: 20px;">
+
+                                <a href="#addproduct-billinginfo-collapse" class="text-white text-decoration-none " data-bs-toggle="collapse" aria-expanded="true" aria-controls="addproduct-billinginfo-collapse">
+                                    
+                                    <div class="p-4">
+
+                                        <div class="d-flex align-items-center">
+                                         
+                                            <div class="flex-grow-1 overflow-hidden">
+                                                <h4 class="font-size-14 mb-1 text-white ">Date: <%= ordDettails.orderDate.toString().split(' ').slice(0,4).join('  ') %></h4>
+                                                <p class="text-white  text-truncate mb-0">Order Id: #<%= ordDettails._id %> %></p>
+                                            </div>
+
+                                            <div class="flex-shrink-0">
+                                                <i class="mdi mdi-chevron-up accor-down-icon font-size-24"></i>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </a>
+
+                                <div id="addproduct-billinginfo-collapse" class="collapse show"
+                                    data-bs-parent="#addproduct-accordion">
+                                    <div class="p-4 border-top w-100 ">
+
+                                            <div class="row">
+
+                                                <div class=" col-md-4 d-flex">
+
+                                                    <div class=" text-center " style="width: 3rem;">
+                                                            <i class="ri-user-fill" style="font-size: 25px;"></i>
+                                                    </div>
+
+                                                    <div class=" w-75">
+
+                                                        <h5 class="mt-1 ">Customer</h5>
+                                                        <span><%= ordDettails.userId.fullName %></span><br>
+                                                        <span><%= ordDettails.userId.email %></span><br>
+                                                        <span><%= ordDettails.userId.phone %></span>
+
+
+                                                    </div>
+
+                                                </div>
+
+                                                <br>
+
+                                                <div class=" col-md-4 d-flex ">
+                                                    <div  style="width: 3rem;">
+                                                        <i class="ri-truck-fill"style="font-size: 30px;" ></i>
+                                                </div>
+
+                                                <div class="w-75">
+
+                                                    <h5 class="mt-1 ">Order info</h5>
+
+                                                    <span>Pay Method: <%= ordDettails.payment %></span><br>
+                                                    <span>Payment Status: <%= ordDettails.products[0].orderProStatus %></span>
+
+                                                </div>
+
+                                                </div>
+
+                                                <br>
+
+                                                <div class=" col-md-4 d-flex">
+
+                                                    <div style="width: 3rem;">
+                                                        <i class="ri-map-pin-line" style="font-size: 30px;"></i>
+                                                    </div>
+
+                                                <div class=" w-75">
+
+                                                    <h5 class="mt-1 ">Deliver to</h5>
+
+                                                    <span><%= ordDettails.deliveryAddress.name %></span><br>
+                                                    <span><%= ordDettails.deliveryAddress.phone %></span><br>
+                                                    <span><%= ordDettails.deliveryAddress.locality %></span>,
+                                                    <span><%= ordDettails.deliveryAddress.city %></span><br>
+                                                    <span><%= ordDettails.deliveryAddress.state %></span>,
+                                                    <span><%= ordDettails.deliveryAddress.pincode %></span><br>
+
+                                                </div>
+
+                                                </div>
+
+                                                <br>
+
+                                            </div>
+
+                                            <br>
+
+                                            <div class="row">
+
+                                                <div class="col-md-12">
+
+                                                    <table class="table align-middle table-nowrap table-check text-white text-center ">
+
+                                                        <thead>
+
+                                                            <tr class="bg-transparent">
+
+                                                                <td style="font-size: 16px;">Product</td>
+                                                                <td style="font-size: 16px;">Price</td>
+                                                                <td style="font-size: 16px;">Quantity</td>
+                                                                <td style="font-size: 16px;">Total</td>
+                                                                <td style="font-size: 16px;">Order Status</td>
+
+                                                            </tr>
+
+                                                        </thead>
+
+                                                        <thead>
+
+                                                            <% ordDettails.products.forEach((product)=>{ %>
+
+                                                                <tr>
+
+                                                                    <td><img src="/productImage/<%= product.productId.images[0] %>" height="100" alt=""><br><br><span><%= product.productId.name%></span></td>
+
+                                                                    <td>$<%= product.productId.price %>.00</td>
+                                                                    <td><%= product.quantity %></td>
+                                                                    <td>$<%= product.price %>.00</td>
+
+                                                                    <td> 
+                                                                       
+                                                                        <select id="s<%= product.productId._id %>" value="pending" class="badge bg-transparent <%= product.orderProStatus !='canceled' ? 'badge-outline-success' : 'badge-outline-danger' %>" onchange="orderProstatus(this,'<%= ordDettails._id  %>','<%= product.productId._id %>')">
+
+                                                                            <option><%= product.orderProStatus %></option>
+
+                                                                            <option <%= product.orderProStatus == 'shipped' ? 'hidden':'' %>>shipped</option>
+
+                                                                            <option <%= product.orderProStatus == 'delivered' ? 'hidden':'' %>>delivered</option>
+
+                                                                            <option class="text-danger" <%= product.orderProStatus == 'canceled' ? 'hidden' :'' %>>canceled</option>
+
+                                                                        </select>
+                                                                            
+                                                                    </td>
+                                                                                
+                                                                </tr>
+
+                                                            <% }) %>
+
+                                                            <tr>
+
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td>Total</td>
+                                                                <td>$<%= ordDettails.orderAmount %>.00</td>
+
+                                                            </tr>
+
+                                                        </thead>
+
+                                                    </table>
+
+                                                </div>
+
+                                            </div>
+                                    </div>
+                                </div>
+
+                            </div> <!-- container-fluid -->
+                        </div>
+
+                    </div>
+                    <!-- end main content-->
+
+                </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+//  Order Handling :-
+
+function orderProstatus(e,ordId,proId){
+
+    const select = document.getElementById(`s${proId}`)
+
+    if(e.value == 'canceled'){
+
+     select.classList.remove('badge-outline-success');
+     select.classList.add('badge-outline-danger');
+     
+    }else{
+      
+      select.classList.remove('badge-outline-danger');
+      select.classList.add('badge-outline-success');
+    }
+
+    fetch('/admin/orderStatusHandling', {
+
+        method: 'PUT',
+
+        headers: { "Content-Type": "application/json" },
+
+        body: JSON.stringify({ val: e.value, ordId, proId})
+
+    }).then(res => res.json())
+
+}
+
+</script>
+
+
+<%- include('../layouts/adminFooter.ejs') %>

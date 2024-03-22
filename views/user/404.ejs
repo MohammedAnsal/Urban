@@ -1,0 +1,76 @@
+<%- include('../layouts/header.ejs') %>
+
+  <!-- <link rel="stylesheet" href="css/mycss/profile.css">
+  </head> -->
+
+  <body>
+
+    <%- include('../layouts/navbar-2.ejs') -%>
+
+      <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+
+        <div class="container">
+
+          <ol class="breadcrumb">
+
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+
+            <li class="breadcrumb-item active" aria-current="page">404</li>
+
+          </ol>
+
+        </div><!-- End .container -->
+
+      </nav>
+
+      <br>
+
+      <!-- shhshs -->
+
+      <div class="error-content text-center" style="background-image: url()">
+
+        <div class="container">
+
+            <h1 class="error-title">Error 404</h1><!-- End .error-title -->
+
+            <p>We are sorry, the page you've requested is not available.</p>
+
+            <a href="/" class="btn btn-outline-primary-2 btn-minwidth-lg">
+
+                <span>BACK TO HOMEPAGE</span>
+
+                <i class="icon-long-arrow-right"></i>
+
+            </a>
+
+        </div><!-- End .container -->
+
+    </div>
+
+    <%- include('../layouts/mobileView.ejs') -%>
+
+    <%- include('../layouts/footbar-2') -%>
+     
+<style>
+
+    *::-webkit-scrollbar {
+
+      width: 0;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+
+      -webkit-appearance: none !important;
+
+    }
+
+</style>
+
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
+  <script src="js/demos/demo-6.js"></script>
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+
+    <%- include('../layouts/footer.ejs') -%>
+
+<script src="js/base.js"></script>

@@ -1,0 +1,461 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+<link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+    rel="stylesheet"/>
+
+  <div class="container-scroller">
+
+    <%- include('../layouts/adminSidebar.ejs') %>
+
+    <div class="container-fluid page-body-wrapper">
+
+        <%- include('../layouts/adminNavbar.ejs') %>
+
+      <!-- partial -->
+
+        <div class="main-panel">
+          <div class="content-wrapper">
+
+          <!-- back button-->
+
+            <div class="container-fluid ">
+              <div class="d-flex justify-content-start">
+                
+                  <button class="btn btn-outline-danger"><a href="/admin/product" class=" text-white text-decoration-none ">Back</a></button>
+
+              </div>
+            </div>
+            
+            <!-- back button end-->
+            
+            <div class="col-12 grid-margin stretch-card mt-3">
+              <div class="card text-white ">
+                <div class="card-body ">
+
+                  <div class="d-block  text-center ">
+                    <h4 class="card-title text-info ">Edit Your Products</h4>
+                    <p class="card-description"> Edit your products by adding following requirements</p>
+                  </div>
+
+                  <form action="/admin/editProduct/<%= productData._id %>" method="post" id="myForm" class="forms-sample" enctype="multipart/form-data">
+
+                    <div class="form-group">
+                      <label for="exampleInputName1">Product Name :</label>
+                      <input type="text" class="form-control text-white" name="name" id="name" placeholder="Name" value="<%= productData.name %>">
+                       <p id="name-error" class="text-danger "></p>
+                    </div>
+
+                    <div class="d-flex ">
+
+                    <div class="form-group">
+                      <label for="exampleInputEmail3">Product Price ($) :</label>
+                      <input type="number" class="form-control text-white w-50 " name="price" id="price" placeholder="Price" value="<%= productData.price %>">
+                         <p id="price-error"class="text-danger "></p>
+                    </div>
+
+                     <div class="form-group">
+                        <label for="exampleInputEmail3">Discount Price ($) :</label>
+                        <input type="number" class="form-control text-white w-50" id="price" name="Discountprice" placeholder="0" value="<%= productData.discount_price %>">
+                        <p id="price-error"class="text-danger "></p>
+                      </div>
+
+                      </div>
+
+                    <!-- <div class="form-group">
+
+                      <label for="" >Category :</label><br>
+
+                      <select name="category">
+
+
+                          <option class="form-control">
+
+
+                          </option>
+
+
+                      </select>
+
+                    </div>
+
+                     <div class="form-group">
+
+                      <label for="">Brand :</label><br>
+
+                      <select name="brand" id="">
+
+
+                          <option class="form-control">
+
+
+                          </option>
+
+
+                      </select>
+
+                    </div> -->
+
+                    <!-- <div class="form-group">
+
+                      <label for="exampleSelectGender" >Gender</label>
+                      <select class="form-control text-white " id="exampleSelectGender">
+                        <option>Male</option>
+                        <option>Female</option>
+                      </select>
+
+                    </div> -->
+
+                    <div class="form-group">
+
+                      <label>Photo upload</label>
+
+                      <!-- <input type="file" name="img[]" class="file-upload-default" required>  -->
+
+                      <div class="input-group col-xs-12">
+
+                        <div class="input-group">
+
+                          <div for="images" class="image card d-flex align-items-center flex-column  justify-content-center " style="width: 100%; height: 9rem; border: 0px;">
+                            
+                            <div class=" border-0   aa d-flex align-items-center justify-content-center gap-3  h-100  position-relative " style="  gap:1rem">
+
+                              <% for(let i=0; i<3; i++) { %>
+                                
+                                <label for="images<%=i  %>" class="img-co l position-relative d-flex align-items-center justify-content-center" style="width: 6rem; height: 6.2rem; max-height: 90%;  cursor:pointer;  border: 2px dashed #ffffff40; border-radius: 15px;">
+
+                                  <input type="file"  class="inp" accept="image/*"  onchange='hello(this,"<%= i %>")' name='image<%=i  %>' id="images<%=i  %>" hidden>
+
+                                    <input hidden type="text" id="next<%= i %>" name="k<%=i  %>" value="<%= i  %>">
+
+                                    <p class="opacity-50 d-none  text-center text-capitalize w-100  " id="p<%= i %>" style="opacity: .7;"><i class="ri-upload-cloud-2-line text-center "></i><br>uplaod images</p>
+
+                                  <img src="/productImage/<%= productData.images[i]%>" alt="" id="i<%= i %>" style="display: flex;     border-radius: 15px;  width: 100% ; height: 100%; object-fit: cover; ">
+
+                                  <i class="ri-close-circle-line position-absolute fs-3 mt-1 " id="icon<%= i %>" onclick="clear(this,'<%=i%>')" style="opacity: 0;  top: -3px; right:0; z-index: 9999999999; scale: 1.5;"></i>
+
+                                  <div for="images<%= i %>" id="imageL<%= i %>" class=" d-flex position-absolute fs-3 mt-1  align-items-center justify-content-center pointer-event"
+
+                                    style="
+
+                                    width: 5.5rem;
+                                    background-color: rgba(24, 23, 23, 0.11);
+                                    backdrop-filter: blur(1px);
+                                    height: 6.2rem;
+                                    border-radius: 10px;
+                                    transition: all 0.3s ease 0s;
+                                    cursor: pointer;
+                                    letter-spacing: 0.1rem;
+                                    object-fit: cover;
+
+                                ">Replace</div>
+
+                                </label>
+
+                            <% } %>
+
+                            </div>
+
+                            <div class="msg w-100 p-2 d-flex align-items-center justify-content-center ">
+                              <p id="msgP" class="text-danger "></p>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="exampleInputCity1">Stock:</label>
+                      <input type="number" class="form-control text-white" name="stock" id="stock" value="<%= productData.stock %>">
+                      <p id="stock-error"class="text-danger "></p>
+                    </div>
+
+                    
+                    <!-- <label for="">Status:</label>
+                    <div class="form-group d-flex ">
+
+                      <div class="form-check ">
+                        <input class="form-check-input" value="true" type="radio" name="radio" id="flexRadioDefault1">
+                        <label class="form-check-label" for="flexRadioDefault1">Listed</label>
+                      </div>
+
+                      <div class="form-check px-5 ">
+                         <input  class="form-check-input" value="false" type="radio" name="radio" id="flexRadioDefault2" checked>
+                         <label class="form-check-label" for="flexRadioDefault2">Unlisted</label>
+                      </div>
+                    </div> -->
+
+                    <div class="form-group">
+                      <label for="exampleTextarea1">Discription:</label>
+                      <textarea class="form-control text-white" name="discription" id="desc" rows="4"><%= productData.description %></textarea>
+                         <p id="msg-desc"class="text-danger"></p>  
+                    </div>
+
+                    <button type="submit" class="btn btn-outline-primary mr-2" id="btn" >Submit</button>
+                    <button class="btn btn-outline-danger"><a class="text-white text-decoration-none" href="/admin/product">Cancel</a></button>
+
+                  </form>
+
+                </div>
+              </div>
+
+            </div>
+           
+
+          </div>
+
+        </div>
+
+    </div>
+
+</div> <!--End container scroller-->
+
+<script>
+
+   for (let i = 0; i < 3; i++) {
+
+    const icon = document.getElementById(`icon${i}`);
+
+    icon.addEventListener('click', (event) => {
+
+      event.stopPropagation();
+      event.preventDefault();
+      const text = document.getElementById(`p${i}`);
+      const im = document.getElementById(`i${i}`);
+      const imL = document.getElementById(`imageL${i}`);
+      const inp = document.getElementById(`images${i}`);
+
+
+      inp.value = '';
+      im.src = '';
+      im.style.display = 'none';
+      text.style.display = 'block';
+      imL.style.display = 'none';
+      icon.style.opacity = 0;
+
+    });
+
+  }
+
+  const textInput = document.querySelectorAll('.text');
+  const err1 = document.getElementById('err1');
+  const submit11 = document.querySelector('.submit');
+
+  document.getElementById('myForm').addEventListener('keydown', function (e) {
+
+    if (e.key === 'Enter') {
+
+      e.preventDefault();
+
+    }
+    
+  });
+
+  const msgP = document.getElementById(msgP);
+  const form = document.getElementById('myForm')
+  const imgco = document.querySelector('.image')
+
+  console.log(form);
+
+  function hello(e, i) {
+
+    const text = document.getElementById(`p${i}`);
+    const im = document.getElementById(`i${i}`);
+    const imL = document.getElementById(`imageL${i}`);
+    const next=document.getElementById(`next${i}`);
+
+    next.remove()
+
+    im.src = URL.createObjectURL(e.files[0]);
+
+    const icon = document.getElementById(`icon${i}`)
+
+    icon.style.opacity = 1;
+    im.style.display = 'block';
+    text.style.display = 'none';
+    imL.style.display = 'flex';
+    
+  }
+
+</script>
+
+<script>
+
+  function validateForm(){
+
+    let isValid = true;
+
+    document.querySelectorAll('.error').forEach(error => error.textContent = '');
+
+    const productName = document.getElementById('name').value.trim();
+
+  if (productName === '') {
+
+    document.getElementById('name-error').textContent = 'Product name is required';
+    isValid = false;
+
+  }
+
+  // Product price validation
+
+  const productPrice = document.getElementById('price').value.trim();
+
+  if (productPrice === '' || isNaN(productPrice) || parseInt(productPrice) < 1) {
+
+    document.getElementById('price-error').textContent = 'Please enter a valid price';
+    isValid = false;
+
+  }
+
+  // Stock validation
+
+  const stock = document.getElementById('stock').value.trim();
+
+  if (stock === '' || isNaN(stock) || parseInt(stock) < 1) {
+
+    document.getElementById('stock-error').textContent = 'Please enter a valid stock';
+    isValid = false;
+
+  }
+  // description 
+
+  const desc = document.getElementById('desc').value.trim()
+
+  if(desc ===''){
+
+    document.getElementById('msg-desc').textContent = 'plese fill this field'
+    isValid = false;
+
+  }
+
+  const submitButton = document.getElementById('btn');
+
+  if (isValid) {
+
+    submitButton.removeAttribute('disabled');
+
+  } else {
+
+    submitButton.setAttribute('disabled', 'disabled');
+
+  }
+
+    return isValid;
+
+}
+
+  document.querySelectorAll('.form-control').forEach(input => {
+
+  input.addEventListener('input', validateForm);
+
+});
+
+document.getElementById('myForm').addEventListener('submit', function (event) {
+
+  if (!validateForm()) {
+
+    event.preventDefault();
+
+  } else {
+
+     const initialName = "<%= productData.name %>";
+      const initialPrice = "<%= productData.price %>";
+      const initialStock = "<%= productData.stock %>";
+      const initialDesc = "<%= productData.description %>";
+
+      const newName = document.getElementById('name').value.trim();
+      const newPrice = document.getElementById('price').value.trim();
+      const newStock = document.getElementById('stock').value.trim();
+      const newDesc = document.getElementById('desc').value.trim();
+
+    if (initialName === newName && initialPrice === newPrice && initialStock === newStock && initialDesc === newDesc) {
+
+      // No changes made, redirect to another page
+
+      window.location.href = '/admin/products';
+      event.preventDefault(); // Prevent default form submission
+
+    }
+
+  }
+
+});
+
+</script>
+ 
+<style>
+
+  @media (max-width:900px) {
+
+    .aa {
+
+      width: 100% !important;
+
+    }
+
+  }
+
+
+  .aa {
+
+    width: 50%;
+
+  }
+
+  body::-webkit-scrollbar {
+
+    width: 0;
+
+  }
+
+  body {
+
+    overflow: hidden !important;
+
+  }
+
+  .container-scroller {
+
+    overflow: hidden;
+
+  }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+
+    -webkit-appearance: none !important;
+
+  }
+
+  #imageL3,
+  #imageL1,
+  #imageL2,
+  #imageL0 {
+
+    display: none;
+    opacity: 0;
+    font-family: req;
+
+  }
+
+  #msgP{
+
+    letter-spacing: .1rem;
+    text-transform: uppercase;
+  
+  }
+  
+  .l:hover #imageL3,
+  .l:hover #imageL1,
+  .l:hover #imageL2,
+  .l:hover #imageL0 {
+
+    opacity: 1;
+
+  }
+
+</style> 
+
+
+<%- include('../layouts/adminFooter.ejs') %>

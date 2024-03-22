@@ -1,0 +1,86 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+<div class="container-scroller">
+
+    <%- include('../layouts/adminSidebar.ejs') %>
+
+    <div class="container-fluid page-body-wrapper">
+
+        <%- include('../layouts/adminNavbar.ejs') %>
+              
+    <div class="main-panel">
+
+          <div class="content-wrapper">
+         
+                <div class="w-100 container-fluid mb-5">
+                    <table class="table table-dark" style="border-radius: 10px;">
+                        <thead class="text-center ">
+
+                            <tr>
+                                <th class="text-white">No</th>
+                                <th class="text-white">Billing Name</th>
+                                <th class="text-white">Date</th>
+                                <th class="text-white">Order Amount</th>
+                                 <th class="text-white">Payment Method</th>
+                                <th class="text-white">View Details</th>
+                            </tr>
+
+                        </thead>
+
+                        <!-- Fetch data in dbs and show -->
+
+                        <tbody class="text-center ">
+
+                          <% if (orderData.length > 0) { %>
+
+                            <% orderData.forEach((order , ind)=>{ %>
+
+                                    <tr>
+
+                                        <td><%= ind + 1 %></td>
+                                        <td><%= order.deliveryAddress.name %></td>
+                                        <td><%= order.orderDate.toString().split(' ').slice(0,4).join('  ') %></td>
+                                        <td>$<%= order.orderAmount %></td>
+                                        <td><%= order.payment %></td>
+
+                                        <td>
+
+                                            <a href="/admin/ordDetails?id=<%= order._id %>">
+
+                                            <button type="button" class="btn btn-outline-primary btn-icon-text">
+                                            <i class="mdi mdi-file-check btn-icon-prepend"></i> View Details </button>
+
+                                            </a>
+
+                                        </td>
+                                        
+                                    </tr>
+
+
+                                <% }) %>
+
+                            <% } else { %>
+
+                                <tr>
+                                    <td colspan="" class="text-danger ">Orders Not Found</td>
+                                </tr>
+
+                            <% } %>
+
+                        </tbody>
+                    </table>
+                    <!-- End table -->
+                </div>
+
+                  <%- include('../layouts/pageNavigation') %>
+
+            </div>
+        </div>
+
+
+            </div>
+
+        </div>
+
+
+<%- include('../layouts/adminFooter.ejs') %>

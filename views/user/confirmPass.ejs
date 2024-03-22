@@ -1,0 +1,153 @@
+<%- include('../layouts/header.ejs') %>
+
+    <div class="page-wrapper">
+
+        <%- include('../layouts/navbar-2.ejs') %>
+
+        <main class="main">
+
+			 <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/login">Login</a></li>
+                        <li class="breadcrumb-item active" aria-current="#">ForgotPassword</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            
+        <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17" style="background-image: url('assets/images/urban/show.jpg')">
+            <div class="container">
+            	<div class="form-box">
+            		<div class="form-tab">
+
+                <ul class="nav nav-pills nav-fill" role="tablist">
+					<li class="nav-item">
+					    <a class="nav-link active " id="signin-tab-2" data-toggle="tab" href="#signin-2" role="tab" aria-controls="signin-2" aria-selected="false">Forgot Password</a>
+					</li>
+				</ul>
+
+            <form action="/confirmPass" method="post" id="passwordForm">
+
+        	<span class="message" id="msg" hidden ><%= msg %></span>
+
+
+				<div class="form-group mt-5">
+
+					<label for="singin-email-2">Password *</label>
+					<input type="text" class="form-control" id="pass" name="password">
+					<p class="error-message text-danger" id="pass-error"></p>
+
+				</div><!-- End .form-group -->
+
+               <div class="form-group">
+
+				    <label for="register-confirm-password">Confirm Password *</label>
+					<input type="password" class="form-control" id="confirmPass" name="confirmPassword">
+					<div class="error-message text-danger " id="confirm-password-error"></div>
+
+				</div>
+
+            	<input type="email" hidden value="<%= forgotEmail %>" name="email">
+
+                <div class="form-footer justify-content-center ">
+
+                    <button type="submit" class="btn btn-outline-primary-2" id="">
+            
+                        <span>SUBMIT</span>
+                        <i class="icon-long-arrow-right"></i>
+                                                            
+                    </button>
+
+                </div>
+
+            </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+                    
+        </main>
+
+        <!-- Connect Footer -->
+		<%- include('../layouts/footbar-2') %>
+		<!-- Connect Footer -->
+        	
+        </div>
+
+        <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+        <!--Connect Mobaile View-->
+        <%- include('../layouts/mobileView.ejs') %>
+		<!--Connect Mobaile View-->
+
+    <!-- Plugins JS File -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="assets/js/jquery.waypoints.min.js"></script>
+    <script src="assets/js/superfish.min.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <!-- Main JS File -->
+    <script src="assets/js/main.js"></script>
+
+    <script>
+
+        document.getElementById("passwordForm").addEventListener("submit", function(event) {
+
+            var password = document.getElementById("pass").value;
+            var confirmPassword = document.getElementById("confirmPass").value;
+            var passwordError = document.getElementById("pass-error");
+            var rePasswordError = document.getElementById("confirm-password-error");
+            var valid = true;
+
+            
+            passwordError.textContent = "";
+            rePasswordError.textContent = "";
+
+            if (password !== confirmPassword) {
+
+                rePasswordError.textContent = "Passwords do not match";
+                valid = false;
+            }
+
+            //  password length
+            if (password.length < 5) {
+
+                passwordError.textContent = "Password must be at least 5 characters long";
+                valid = false;
+            }
+
+            
+            if (!valid) {
+
+                event.preventDefault();
+            }
+
+        });
+
+
+        const msg = document.getElementById('msg');
+
+        if(msg.textContent == 'Password Changed Successfully'){
+
+            Swal.fire({
+		
+			    title:'Password Change',
+			    text:'Changed Successfully',
+			    icon:'success',
+			    confirmButtonText: 'OK'
+		
+		    }).then(() => {
+		
+			    window.location.href = '/login'
+		
+		    });
+			
+        } 
+
+    </script>
+
+<%- include('../layouts/footer') %>

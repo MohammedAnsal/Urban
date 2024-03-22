@@ -1,0 +1,121 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+<div class="container-scroller">
+
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="row w-100 m-0">
+            <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
+                <div class="card col-lg-4 mx-auto">
+                    <div class="card-body px-5 py-5">
+
+                        <h3 class="card-title text-center ">Login</h3>
+
+                        <form action="/admin" method="post" onsubmit="return validateLoginForm()">
+
+                            <div class="text-center ">
+                                <p class="text-danger ">
+
+                                    <% if(locals.invalidUser) {%>
+                                        <%= invalidUser %>
+                                    <% } %>
+
+                                </p>
+                            </div>
+
+                            <div class="text-center ">
+                                <p class="text-danger ">
+
+                                    <% if(locals.passwrong) {%>
+                                        <%= passwrong %>
+                                    <% } %>
+
+                                </p>
+                            </div>
+
+                            <div class="text-center ">
+                                <p class="text-danger ">
+
+                                    <% if(locals.logoutAdmin) {%>
+                                        <%= logoutAdmin %>
+                                    <% } %>
+
+                                </p>
+                            </div>
+
+                            <div class="form-group pt-3 ">
+                                <label for="login-email">Username or email *</label>
+                                <input type="text" class="form-control p_input text-white " id="login-email" name="email">
+                                <p id="email-error" class="text-danger"></p> <!-- Error message placeholder -->
+                            </div>
+
+                            <div class="form-group">
+                                <label for="login-password">Password *</label>
+                                <input type="password" class="form-control p_input text-white " id="login-password" name="password">
+                                <p id="password-error" class="text-danger"></p> <!-- Error message placeholder -->
+                            </div>
+
+                            <div class="text-center pt-4 ">
+                                <button type="submit" class="btn btn-primary btn-block enter-btn">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- content-wrapper ends -->
+        </div>
+        <!-- row ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+
+<script>
+
+    function validateLoginForm() {
+
+        var email = document.getElementById('login-email').value;
+        var password = document.getElementById('login-password').value;
+        var valid = true;
+
+        // Clear previous error messages :-
+        clearError('email-error');
+        clearError('password-error');
+
+        // Validate email :-
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email.trim() === '') {
+            showError('Email field is empty', 'email-error');
+            valid = false;
+        } else if (!emailRegex.test(email)) {
+            showError('Please enter a valid email address', 'email-error');
+            valid = false;
+        }
+
+        // Validate password :-
+        if (password.trim() === '') {
+            showError('Password field is empty', 'password-error');
+            valid = false;
+        } else if (password.trim().length < 6) {
+            showError('Password must be at least 6 characters', 'password-error');
+            valid = false;
+        }
+
+        // If all validations pass, submit the form
+        return valid;
+    }
+
+    function showError(message, errorId) {
+
+        var errorElement = document.getElementById(errorId);
+        errorElement.textContent = message;
+        errorElement.style.color = 'red'; // Set color to red
+    }
+
+    function clearError(errorId) {
+
+        var errorElement = document.getElementById(errorId);
+        errorElement.textContent = ''; // Clear error message
+    }
+    
+</script>
+
+<%- include('../layouts/adminFooter.ejs') %>

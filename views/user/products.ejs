@@ -6,16 +6,18 @@
 
 
          <main class="main">
-        	<div class="page-header text-center" style="background-image: url('assets/images/urban/allProducts.jpeg')">
+
+        	<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+				
         		<div class="container">
-        			<h1 class="page-title text-white ">All Products<span>Shop</span></h1>
+        			<h1 class="page-title text-black-50">Products<span>Shop</span></h1>
         		</div><!-- End .container -->
         	</div><!-- End .page-header -->
 
             <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
                         <!-- <li class="breadcrumb-item"><a href="#">Shop</a></li> -->
                         <li class="breadcrumb-item active" aria-current="page">All Products</li>
                     </ol>
@@ -92,41 +94,61 @@
                 			</div>End .toolbox -->
 
                             <div class="products mb-3">
-                                <div class="row justify-content-center">
 
-                                    <div class="col-6 col-md-4 col-lg-4">
-                                        <div class="product product-7 text-center">
-                                            <figure class="product-media">
-                                                <span class="product-label label-new">New</span>
-                                                <a href="product.html">
-                                                    <img src="assets/images/urban/addidasDemo-1.png" alt="Product image" class="product-image">
-                                                </a>
+                                <div class="row" id="result">
+									
+									<% productData.forEach(val => { %>
+										
+                                    	<div class="col-6 col-md-4 col-lg-4" id="cards">
 
-                                                <div class="product-action-vertical">
-                                                    <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
-                                                    <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a> -->
-                                                    <!-- <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a> -->
-                                                </div><!-- End .product-action-vertical -->
+											<div class="product product-7 text-center">
 
-                                                <div class="product-action">
-                                                    <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
-                                                </div><!-- End .product-action -->
-                                            </figure><!-- End .product-media -->
+												<figure class="product-media">
+													
+													<!-- <span class="product-label label-new">New</span> -->
+													<input hidden value="<%= val.stock %>" id="stock">
 
-                                            <div class="product-body">
-                                                <div class="product-cat">
-                                                    <a href="#">Addidas</a>
-                                                </div><!-- End .product-cat -->
-                                                <h3 class="product-title"><a href="product.html">Brown paperbag waist pencil skirt</a></h3><!-- End .product-title -->
-                                                <div class="product-price">
-                                                    $60.00
-                                                </div><!-- End .product-price -->
-                                                <div class="ratings-container">
-                                                    <div class="ratings">
-                                                        <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
-                                                    </div><!-- End .ratings -->
-                                                    <span class="ratings-text">( 2 Reviews )</span>
-                                                </div><!-- End .rating-container -->
+                                                	<a href="/productDetails?id=<%= val._id %>">
+
+                                                    	<img src="/productImage/<%= val.images[0] %>" alt="Product image" class="product-image">
+
+                                                	</a>
+
+                                                	<div class="product-action-vertical">
+                                                    	<a href="/wishlist" class="btn-product-icon btn-wishlist btn-expandable"><span id="">add to wishlist</span></a>
+                                                    	<!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a> -->
+                                                    	<!-- <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a> -->
+                                                	</div><!-- End .product-action-vertical -->
+
+                                                	<div class="product-action">
+                                                    	<button class="btn-product btn-cartv border-0" id="btns" onclick="addCart('<%= val._id %>')" style="cursor: pointer;"><span id="crt">add to cart</span></button>
+                                                	</div><!-- End .product-action -->
+
+                                            	</figure><!-- End .product-media -->
+
+                                            	<div class="product-body">
+
+                                                	<div class="product-cat">
+                                                    	<a href="#"><%= val.name %></a>
+                                               		</div><!-- End .product-cat -->
+
+                                                	<h3 class="product-title"><a href="/category"><%= val.category.name %></a></h3><!-- End .product-title -->
+
+													<div class="d-flex justify-content-center gap-2  "> 
+
+													<div class="product-price">
+                                                    	$<%= val.price %>
+                                                	</div><!-- End .product-price -->
+
+
+													</div>
+
+                                                	<!-- <div class="ratings-container">
+                                                    	<div class="ratings">
+                                                        	<div class="ratings-val" style="width: 20%;"></div>
+                                                    	</div>End .ratings
+                                                    	<span class="ratings-text">( 2 Reviews )</span>
+                                                	</div>End .rating-container -->
 
                                                 <!-- <div class="product-nav product-nav-thumbs">
                                                     <a href="#" class="active">
@@ -144,6 +166,8 @@
                                             </div><!-- End .product-body -->
                                         </div><!-- End .product -->
                                     </div><!-- End .col-sm-6 col-lg-4 -->
+
+									<%	}); %>
 
                                     <div class="col-6 col-md-4 col-lg-4">
                                      
@@ -181,8 +205,10 @@
                             </div><!-- End .products -->
 
                 			<nav aria-label="Page navigation">
+
 							    <ul class="pagination justify-content-center">
-							        <li class="page-item disabled">
+									
+							        <!-- <li class="page-item disabled">
 							            <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
 							                <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
 							            </a>
@@ -195,7 +221,11 @@
 							            <a class="page-link page-link-next" href="#" aria-label="Next">
 							                Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
 							            </a>
-							        </li>
+							        </li> -->
+
+								  <%- include('../layouts/pageNavigation') %>
+
+									
 							    </ul>
 							</nav>
                 		</div><!-- End .col-lg-9 -->
@@ -220,7 +250,7 @@
 														<input type="checkbox" class="custom-control-input" id="cat-1">
 														<label class="custom-control-label" for="cat-1">Men's</label>
 													</div><!-- End .custom-checkbox -->
-													<span class="item-count">3</span>
+													<span class="item-count">0</span>
 												</div><!-- End .filter-item -->
 												<div class="filter-item">
 													<div class="custom-control custom-checkbox">
@@ -246,14 +276,14 @@
 											<div class="filter-items">
 												<div class="filter-item">
 													<div class="custom-control custom-checkbox">
-														<input type="checkbox" class="custom-control-input" checked id="size-3">
+														<input type="checkbox" class="custom-control-input" id="size-3">
 														<label class="custom-control-label" for="size-3">6</label>
 													</div><!-- End .custom-checkbox -->
 												</div><!-- End .filter-item -->
 
 												<div class="filter-item">
 													<div class="custom-control custom-checkbox">
-														<input type="checkbox" class="custom-control-input" checked id="size-4">
+														<input type="checkbox" class="custom-control-input" id="size-4">
 														<label class="custom-control-label" for="size-4">7</label>
 													</div><!-- End .custom-checkbox -->
 												</div><!-- End .filter-item -->
@@ -357,15 +387,18 @@
                                             </div><!-- End .filter-price-text -->
                             
                                             <div class="price-inputs">
-                                                <input type="number" id="min-price" name="min-price" placeholder="Min Price" style="border-radius: 5px;" class="my-1 ">
-                                                <input type="number" id="max-price" name="max-price" placeholder="Max Price" style="border-radius: 5px;" class="my-1 ">
+                                                <input type="number" min="0" id="min-price" name="min-price" placeholder="Min Price" style="border-radius: 5px;" class="my-1 ">
+                                                <input type="number" min="0" id="max-price" name="max-price" placeholder="Max Price" style="border-radius: 5px;" class="my-1 ">
+
+												<p id="disErr" class="text-danger"></p>
+
                                             </div><!-- End .price-inputs -->
                                             
                                             <div id="price-slider"></div><!-- End #price-slider -->
                                         </div><!-- End .filter-price -->
                             
                                         <div class="submit-button">
-                                            <button type="submit" class="rounded-pill bg-dark  border-0 px-4 text-white">Apply</button>
+                                            <button type="submit" class="rounded-pill bg-dark  border-0 px-4 text-white" onclick="priceFilter()">Apply</button>
                                         </div><!-- End .submit-button -->
 
                                     </div><!-- End .widget-body -->
@@ -377,8 +410,6 @@
                 </div><!-- End .container -->
             </div><!-- End .page-content -->
         </main><!-- End .main -->
-
-
 
         <!-- Connect Footer -->
 		<%- include('../layouts/footbar-2') %>
@@ -401,5 +432,279 @@
     <script src="assets/js/owl.carousel.min.js"></script>
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
+
+<script>
+
+
+function addCart(id){
+
+    fetch(`/addCart?id=${id}` , {method : 'post'})
+
+    .then(res => res.json())
+
+        .then(data =>{
+
+			cartAction();	//	Cart Count
+			
+            if(data.exist){
+                
+              const Toast = Swal.mixin({
+
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+
+                didOpen: (toast) => {
+
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+
+              });
+              
+                Toast.fire({
+
+                    icon: "warning",
+                    title: "Already Added"
+
+                });
+
+            }else if(data.success){
+                            
+                const Toast = Swal.mixin({
+
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+
+                    icon: "success",
+                    title: "Added TO Cart"
+                    
+                });
+            }
+
+
+        })
+
+};
+
+//	Out Of Stock :-
+
+const cart = document.getElementById('crt');
+const button = document.getElementById('btns')
+const stock = document.getElementById('stock');
+
+
+if (stock.value == 0) {
+    cart.textContent = 'Out of stock';
+    cart.classList.add('text-danger'); 
+    button.disabled = true;
+} else {
+    cart.textContent = 'Add To Cart';
+    cart.classList.remove('text-danger');
+    cart.classList.add('text-dark'); 
+    button.disabled = false; 
+}
+
+    //  Search :-
+
+    function search(val){
+
+        const cards = document.getElementById('cards')
+        const result = document.getElementById('result')
+
+        //sending the value to back
+
+        fetch('/searchProduct',{
+
+            method:'put',
+
+            headers:{'Content-Type':'application/json'},
+
+        body:JSON.stringify({items:val.value})})
+        
+        //after the result
+
+        .then(res => res.json())
+
+        .then(data =>{
+
+            if(data.length==0){
+
+                result.innerHTML='Could not find that product'
+                result.classList.add('text-danger')
+                result.classList.add('justify-content-center')
+
+            }else{
+
+			    result.classList.remove('justify-content-center')
+
+                result.innerHTML= `${data.map((product,i) => (`
+                    
+                <div id="cards"class="col-6 col-md-4 col-lg-4">
+                    
+                <div class="product product-7 text-center">
+                    
+                <figure class="product-media">
+
+                    <a href='/productDetails?id=${product._id}'>
+                        <img src="/productImage/${product.images[0]}" alt="Product image" class="product-image">
+                    </a>
+
+                    <div class="product-action-vertical">
+                        <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                    </div><!-- End .product-action-vertical -->
+
+                    <input hidden value="${product.stock}" id="stock">
+
+                    <div class="product-action">
+                        <button onclick="addCart('${product._id}')" id="btns" class="btn-product btn-cart border-0 " style="cursor: pointer;"><span id="crt">add to cart</span></button>
+                    </div><!-- End .product-action -->
+
+                </figure><!-- End .product-media -->
+
+                <div class="product-body">
+
+                    <div class="product-cat">
+                        <a href="#">${product.name}</a>
+                    </div><!-- End .product-cat -->
+
+                    <h3 class="product-title"><a href="/products">${product.category.name}</a></h3><!-- End .product-title -->
+
+                    <div class="product-price">
+                        $${product.price}.00
+                    </div><!-- End .product-price -->
+
+                    <div class="ratings-container">
+
+                        <div class="ratings">
+                            <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
+                        </div><!-- End .ratings -->
+
+                    </div><!-- End .rating-container -->
+
+                </div><!-- End .product-body -->
+
+            </div><!-- End .product -->
+
+        </div>
+
+            `)).join('')}`
+
+        }
+
+    });
+
+};
+
+
+//	Price Filter :-
+
+function priceFilter(){
+
+	const min = document.getElementById('min-price').value
+	const max = document.getElementById('max-price').value
+
+	const result = document.getElementById('result')
+	const disErr = document.getElementById('disErr')
+	
+	fetch(`/priceFilter` , {method : 'put' , headers : {'Content-Type':'application/json'} , body : JSON.stringify({min , max})})
+	
+	.then(res => (res.json()))
+
+	.then(data => {
+
+		if(data.fail == 'failed'){
+			
+			disErr.textContent = 'Price Required!!!'
+
+		} else if(data.success.length == 0) {
+			
+            result.innerHTML='Could not find that product'
+            result.classList.add('text-danger')
+            result.classList.add('justify-content-center')
+
+		} else {
+
+			disErr.innerHTML = ''
+
+			result.classList.remove('justify-content-center')
+
+            result.innerHTML= `${data.success.map((product,i) => (`
+                    
+                <div id="cards"class="col-6 col-md-4 col-lg-4">
+                    
+                <div class="product product-7 text-center">
+                    
+                <figure class="product-media">
+
+                    <a href='/productDetails?id=${product._id}'>
+                        <img src="/productImage/${product.images[0]}" alt="Product image" class="product-image">
+                    </a>
+
+                    <div class="product-action-vertical">
+                        <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                    </div><!-- End .product-action-vertical -->
+
+                    <input hidden value="${product.stock}" id="stock">
+
+                    <div class="product-action">
+                        <button onclick="addCart('${product._id}')" id="btns" class="btn-product btn-cart border-0 " style="cursor: pointer;"><span id="crt">add to cart</span></button>
+                    </div><!-- End .product-action -->
+
+                </figure><!-- End .product-media -->
+
+                <div class="product-body">
+
+                    <div class="product-cat">
+                        <a href="#">${product.name}</a>
+                    </div><!-- End .product-cat -->
+
+                    <h3 class="product-title"><a href="/products">${product.category.name}</a></h3><!-- End .product-title -->
+
+                    <div class="product-price">
+                        $${product.price}.00
+                    </div><!-- End .product-price -->
+
+                    <div class="ratings-container">
+
+                        <div class="ratings">
+                            <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
+                        </div><!-- End .ratings -->
+
+                    </div><!-- End .rating-container -->
+
+                </div><!-- End .product-body -->
+
+            </div><!-- End .product -->
+
+        </div>
+
+            `)).join('')}`
+
+
+		}
+
+
+	})
+
+
+}
+
+
+</script>
+
 
 <%- include('../layouts/footer') %>
