@@ -1,0 +1,252 @@
+<%- include('../layouts/header') %>
+
+<div class="page-wrapper" id="reloadDiv">
+
+  <%- include('../layouts/navbar-2.ejs') %>
+
+  <main class="main">
+
+        <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+            <div class="container">
+                <h1 class="page-title">My Profile</h1>
+            </div><!-- End .container -->
+        </div><!-- End .page-header -->
+
+        <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Wallet</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+         <div class="page-content">
+
+            <div class="dashboard">
+        
+                <div class="container">
+
+                    <div class="row">
+
+                        <aside class="col-md-4 col-lg-3">
+
+                            <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-dashboard-link" href="/profile">My Profile</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-orders-link" href="/orders" role="tab">Orders</a>
+                                </li>
+
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link" id="tab-downloads-link"  href="#" role="tab" >Wishlist</a>
+                                </li> -->
+
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-address-link" href="/address">Adresses</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-wallet-link" href="/wallet" role="tab">Wallet</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="tab-coupons-link" href="/coupen" role="tab" >Coupons</a>
+                                </li>
+                                
+                                <li class="nav-item">
+                                  
+                                  <a class="nav-link " href="">Sigout</a>
+
+                                </li>
+
+                              </ul>
+
+                            </aside>
+
+                                   <div class="col-md-8 col-lg-9">
+
+                                        <div class="tab-content">
+
+                                            <aside class="col col-xl-9 col-lg-8 col-md-6 col-sm-6 mb-4 mb-lg-0">
+
+                                                <div class="row w-100" style="gap: 2rem">
+
+                                                     <div class="container">
+
+                                                            <div class="row">
+
+                                                                <% coupenData.forEach(val => { %>
+
+                                                                    
+                                                                    <div class="flip-card col-lg-3" >
+                                                                    
+                                                                    <div class="flip-card-inner">
+                                                                        
+                                                                        <div class="flip-card-front" style="background: url('/productImage/<%= val.image %>'); background-size: cover;">
+
+                                                                            <p class="title text-white" style="padding-bottom: 13rem;"><%= val.name %></p>
+                                                                            
+                                                                        </div>
+                                                                        
+                                                                        <div class="flip-card-back">
+
+                                                                            <p class="title text-white pb-1"><%= val.name %></p>
+                                                                            <h6 class="text-dark" style="font-weight: bold;"><%= val.discount %>% OFF</h6>
+
+                                                                              <di class="coupon-row pt-1">
+                                                                                <span id="cpnCode"><%= val.coupenId %></span>
+                                                                                <span id="cpnBtn">Copy Code</span>
+                                                                               </di>
+
+                                                                        </div>
+
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                    
+                                                                <%  }); %>
+
+                                                            </div>
+
+                                                         </div>
+
+                                                        </div>
+
+                                                    </aside>
+
+                                                </div>
+
+                                            </div>
+                                            
+</main><!-- End .main -->
+
+  <!-- End .main -->
+
+  <!-- Connect Footer -->
+  <%- include('../layouts/footbar-2') %>
+  <!-- Connect Footer -->
+
+</div>
+
+<button id="scroll-top" title="Back to Top">
+
+  <i class="icon-arrow-up"></i>
+
+</button>
+
+<!--Connect Mobaile View-->
+<%- include('../layouts/mobileView.ejs') %>
+<!--Connect Mobaile View-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Plugins JS File -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/jquery.hoverIntent.min.js"></script>
+<script src="assets/js/jquery.waypoints.min.js"></script>
+<script src="assets/js/superfish.min.js"></script>
+<script src="assets/js/owl.carousel.min.js"></script>
+<!-- Main JS File -->
+<script src="assets/js/main.js"></script>
+
+<script>
+
+  //  Copy Coupen Code :-
+
+   var btn = document.getElementById("cpnBtn");
+   var cpnCode = document.getElementById("cpnCode");
+
+    btn.onclick = function(){
+
+      navigator.clipboard.writeText(cpnCode.innerHTML);
+      btn.innerHTML ="COPIED";
+      
+      setTimeout(function(){
+
+        btn.innerHTML="COPY CODE";
+
+      }, 3000);
+
+    }
+
+</script>
+
+<style>
+
+  #cpnCode{
+    border: 1px dashed #fff;
+    padding: 10px 20px;
+    border-right: 0;
+
+}
+#cpnBtn{
+    border: 1px solid #fff;
+    background: #fff;
+    padding: 10px 20px;
+    color: #000000;
+    cursor: pointer;
+}
+
+    
+.flip-card {
+
+  background-color: transparent;
+  width: 150px;
+  height: 200px;
+  perspective: 1000px;
+  font-family: sans-serif;
+}
+
+.title {
+  font-size: 1.5em;
+  font-weight: 900;
+  text-align: center;
+  margin: 0;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  box-shadow: 0 8px 14px 0 rgba(0,0,0,0.2);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border: 1px solid coral;
+  border-radius: 1rem;
+}
+
+.flip-card-front {
+  background: linear-gradient(120deg, bisque 60%, rgb(255, 231, 222) 88%,
+     rgb(255, 211, 195) 40%, rgba(255, 127, 80, 0.603) 48%);
+  color: coral;
+}
+
+.flip-card-back {
+  background: linear-gradient(120deg, rgb(255, 174, 145) 30%, coral 88%,
+     bisque 40%, rgb(255, 185, 160) 78%);
+  color: white;
+  transform: rotateY(180deg);
+}
+
+</style>
+
+<%- include('../layouts/footer') %> 

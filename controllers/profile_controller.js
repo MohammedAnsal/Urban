@@ -13,6 +13,9 @@ const Category = require('../models/category_model');
 //  Import Address Modal :-
 const Address = require('../models/address_model');
 
+//  Import Wallet Modal :-
+const Wallet = require('../models/wallet_model');
+
 //  securely hash passwords :-
 const bcrypt = require('bcrypt');
 
@@ -43,8 +46,10 @@ const loadProfile = async (req, res) => {
 
             const msg = req.flash('flash')
 
+            const walletData = await Wallet.findOne({ userId: req.session.user._id });
+
             const userData = await User.findById({ _id: req.session.user._id });
-            res.render("profile", { login: req.session.user, categoryData, userData, msgg: msg });
+            res.render("profile", { login: req.session.user, categoryData, userData, msgg: msg , walletData});
             
         } else {
 

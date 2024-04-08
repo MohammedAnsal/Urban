@@ -41,7 +41,7 @@
                                         <td><%= order.deliveryAddress.name %></td>
                                         <td><%= order.orderDate.toString().split(' ').slice(0,4).join('  ') %></td>
                                         <td>$<%= order.orderAmount %></td>
-                                        <td><%= order.payment %></td>
+                                        <td><%= order.peyment %></td>
 
                                         <td>
 
@@ -61,8 +61,12 @@
 
                             <% } else { %>
 
-                                <tr>
-                                    <td colspan="" class="text-danger ">Orders Not Found</td>
+                                <tr >
+                                    <td colspan="8">
+
+                                        <p class="text-danger">Orders Not Found</p>
+
+                                    </td>
                                 </tr>
 
                             <% } %>

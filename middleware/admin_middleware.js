@@ -26,7 +26,7 @@ const isLogout = async (req, res, next) => {
 
         if (req.session.admin_id) {
             
-            res.redirect("/admin/dashbord");
+            res.redirect("/admin/loadDashboard");
 
         } else {
 

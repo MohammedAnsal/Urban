@@ -29,8 +29,17 @@ const checkout_controller = require('../controllers/checkout_controller');
 //  User Orders :-
 const orders_controller = require('../controllers/orders_controller');
 
+//  User Wishlist :-
+const user_wishlist = require('../controllers/wishlist_controller');
+
+//  User Coupen :-
+const user_coupen = require('../controllers/coupen_controller');
+
 //  404 Page :-
-user_route.get('/404', user_controller.catchAll);
+// user_route.get('/404', user_controller.catchAll);
+
+//  500 Page :-
+// user_route.get('/500', user_controller.catch500);
 
 //  home (get)
 user_route.get('/', user_middilware.isBlocked , user_controller.loadhome);
@@ -53,6 +62,9 @@ user_route.get('/otpVerification', user_middilware.loginTrue , user_controller.l
 //  otp (post)
 user_route.post('/resOtp', user_middilware.loginTrue ,  user_controller.verifyOtpp);
 
+//  re-send otp (get)
+user_route.get('/resendOtp', user_controller.loadResendOtp);
+
 //  about (get)
 user_route.get("/about", user_middilware.isBlocked, user_controller.loadAbout);
 
@@ -62,9 +74,6 @@ user_route.get('/contact', user_middilware.isBlocked, user_controller.loadContac
 //  logout (post) 
 user_route.post('/logout', user_controller.loadlogout);
 
-//  re-send otp (get)
-user_route.get('/resendOtp', user_controller.loadResendOtp);
-
 //  category (get)
 user_route.get('/category/:id', user_middilware.isBlocked, user_controller.loadCategory);
 
@@ -72,18 +81,19 @@ user_route.get('/category/:id', user_middilware.isBlocked, user_controller.loadC
 user_route.get('/product', user_middilware.isBlocked, user_controller.loadAllproduct);
 
 //  product-details (get)
-user_route.get('/productDetails', user_middilware.isBlocked, user_controller.loadPrdctDetails);                                                                                                                           
+user_route.get('/productDetails', user_middilware.isBlocked, user_controller.loadPrdctDetails);   
+
 //  Search Producct (put)
 user_route.put("/searchProduct", user_controller.searchProduct);
 
 //  Price Filter (put)
 user_route.put('/priceFilter', user_controller.priceFilter);
 
-//  cart (get)
-// user_route.get('/cart', user_middilware.user, user_middilware.isBlocked, user_controller.loadCart);
+//  SortProName (put)
+user_route.put("/sortProduct", user_controller.proNameSort);
 
-//  wishList (get)
-user_route.get('/wishlist', user_middilware.user, user_middilware.isBlocked, user_controller.loadWishlist);
+//  SortPrice (put)
+user_route.put("/sortPrice", user_controller.priceLowtoHigh);
 
 //  forgotPassword (get)
 user_route.get('/forgotPass', user_controller.loadForgotPassword);
@@ -96,6 +106,9 @@ user_route.get('/confirmPass', forgotPass_middilware.forgotPass , user_controlle
 
 //  confirmPassword (post)
 user_route.post('/confirmPass', user_controller.verifyConfirmPassword);
+
+//  wallet (get)
+user_route.get('/wallet', user_controller.loadWallet);
 
 //  Profile Section :-
 
@@ -142,6 +155,12 @@ user_route.post('/getOrder', orders_controller.orderKitty);
 //  thanksPage (get)
 user_route.get('/thanks', orders_controller.loadThanks);
 
+//  cancelOrder (post)
+user_route.post('/cancelOrd', orders_controller.orderCancel);
+
+//  returnOrder (post)
+user_route.put('/returnOrd', orders_controller.returnOrd);
+
 //  Cart Section :-
 
 //  cart (get)
@@ -176,5 +195,29 @@ user_route.post('/verifyEditAddCheckout', checkout_controller.verifyEditAddress)
 //  deleteAddress (post)
 user_route.post('/deleteCheckAdd', checkout_controller.deleteAdd);
 
+//  razorPay (post)
+user_route.post("/razorPay", checkout_controller.RazorPay);
+
+//  Wishlist Section :-
+
+//  wishList (get)
+user_route.get('/wishlist', user_middilware.user, user_middilware.isBlocked, user_wishlist.loadWishlist);
+
+//  addWishlist (post)
+user_route.post('/addWishlist', user_wishlist.addWishlist);
+
+//  removeWishlist (put)
+user_route.put('/removeWishlist', user_wishlist.removeWishlist);
+
+//  addCart (post)
+user_route.post("/addCartt", user_wishlist.addCart);
+
+//  Coupen Section :-
+
+//  Coupen (get)
+user_route.get('/coupen', user_coupen.loadCoupen);
+
+//  useCoupen (post)
+user_route.post("/coupenCehck", user_coupen.coupenCheck);
 
 module.exports = user_route;

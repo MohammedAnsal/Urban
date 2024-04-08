@@ -54,8 +54,22 @@ const admin_product = require('../controllers/product_controller');
 //  Orders Controller :-
 const admin_orders = require('../controllers/admin_orders');
 
-//  dashbord (get)
-admin_route.get('/dashbord', admin_middilware.isLogin ,  admin_controller.loadDashbord);
+//  Coupen Controller :-
+const coupen_controller = require('../controllers/coupen_controller');
+
+//  Sales Report :-
+const admin_salesReport = require('../controllers/adminReport');
+
+//  Admin Dahboard :-
+const admin_dashboard = require('../controllers/admin_dashboard');
+
+//  Admin Offer :-
+const admin_offer = require('../controllers/admin_offer');
+
+//  Admin Dashboard Section :-
+
+//  loadDashboard (get)
+admin_route.get('/loadDashboard', admin_middilware.isLogin, admin_dashboard.loadDahboard);
 
 //  login (get)
 admin_route.get('/', admin_middilware.isLogout ,  admin_controller.loadLogin);
@@ -123,5 +137,30 @@ admin_route.get('/ordDetails', admin_orders.ordersDetails);
 
 //  Admin OrderStatus Handling (put)
 admin_route.put("/orderStatusHandling", admin_orders.orderProstatus);
+
+//  Return Managing (put)
+admin_route.post("/returnManage", admin_orders.returnManaging);
+
+//  Admin Coupen (get)
+admin_route.get('/adminCoupen', coupen_controller.loadAdminCoupen);
+
+//  AddCoupen (post)
+admin_route.post('/addCoupen', upload.array('image', 1), coupen_controller.addCoupen);
+
+//  CoupenAction (put)
+admin_route.put("/copenAction", coupen_controller.coupenAction);
+
+//  DeleteCoupen (put)
+admin_route.put("/deletCoupen", coupen_controller.deleteCoupen);
+
+//  Sales Report Section :-
+
+//  loadReport (get)
+admin_route.get('/salesReport/:id', admin_middilware.isLogin, admin_salesReport.loadReport);
+
+//  Admin Offer Section :-
+
+//  loadIffer (get)
+admin_route.get('/adminOffer', admin_offer.loadOffer);
 
 module.exports = admin_route;

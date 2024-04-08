@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="shortcut icon" href="/assets/images/urban/mainIconShoes.png"/>
+
+</head>
+
+<body style="background-color: #18191f; ">
+
+    <section class="content-main ">
+
+        <div class="content-header">
+
+            <div>
+                <h2 class="content-title card-title"></h2>
+            </div>
+
+        </div>
+
+        <div class="card mb-4 border-0 " style="background-color: #18191f; ">
+
+            <header class="card-header">
+
+                <div class="row align-items-center">
+
+                    <div class="col col-check flex-grow-0">
+                    </div>
+
+                    <div class="col-md-4 col-12 me-auto mb-md-0 mb-3">
+
+                        <h2 style='color: #fff;' class="content-title card-title text-white">
+
+                            <%=locals.reportVal %> Report
+
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+            <!-- card-header end// -->
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <div id="reloadDiv" class="w-100 container-fluid">
+
+                        <table class="table table-dark">
+
+                            <thead class="text-center">
+                                <tr>
+                                    <th scope="col">NO</th>
+                                    <th scope="col">Order Id</th>
+                                    <th scope="col">Billing Name</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Payment</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="table" class="text-center">
+
+                                    <% if(locals.report){ %>
+
+                                    <% locals.report.forEach(( val , indx)=>{ %>
+
+                                        <tr>
+
+                                            <td scope="col">
+                                                <%= indx + 1 %>
+                                            </td>
+                                            
+                                            <td scope="col">
+                                                <%= val._id %>
+                                            </td>
+
+                                            <td scope="col">
+                                                <%= val.deliveryAddress.name %>
+                                            </td>
+
+                                            <td scope="col">
+                                                <%= val.orderDate.toString().split(' ').slice(0,4).join(' ') %>
+                                            </td>
+
+                                            <td scope="col">
+                                                <%= val.orderAmount %>
+                                            </td>
+
+                                            <td scope="col">
+                                                <%= val.peyment %>
+                                            </td>
+                                            
+                                        </tr>
+
+                                    <% })} else { %>
+
+                                        <p class="text-center text-danger">There is No Orders</p>
+
+                                    <% } %>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- card-body -->
+
+        </div>
+
+        <!-- card end  -->
+
+    </section>
+
+    <% if(locals.data){ %>
+
+    <style>
+
+        table{
+
+            border-radius: 70px !important
+
+        }
+
+    body {
+
+        padding: 2rem;
+        background-color: #212529;
+    }
+
+    select {
+
+        -webkit-appearance:none;
+        -moz-appearance:none;
+        -ms-appearance:none;
+        appearance:none;
+        outline:0;
+        box-shadow:none;
+        border:0!important;
+        background: #5c6664;
+        background-image: none;
+        /* flex: 1; */
+        padding: 0 .5em;
+        color:#fff;
+        cursor:pointer;
+        font-size: 1em;
+        font-family: ' Open Sans', sans-serif; 
+
+    }
+
+    select::-ms-expand { display: none; } 
+    
+    </style>
+   
+<% } %>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"crossorigin="anonymous"></script>
+
+</html>

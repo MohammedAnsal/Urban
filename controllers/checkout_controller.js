@@ -13,6 +13,12 @@ const Category = require("../models/category_model");
 //  Cart
 const Cart = require('../models/cart_model');
 
+//  Razorpay :-
+const instance = require('../config/razorpay');
+
+//  Import Wallet Modal :-
+const Wallet = require('../models/wallet_model');
+
 //    Load Checkout (Get Method) :-
 
 const loadCheckout = async (req, res) => {
@@ -24,16 +30,33 @@ const loadCheckout = async (req, res) => {
         if (req.session.user) {
 
             const msg = req.flash('flash');
+
             const userData = await User.findById({ _id: req.session.user._id });
+
             const addresData = await Address.findOne({ userId: req.session.user._id });
 
-            const cartData = await Cart.findOne({ userId: req.session.user._id }).populate('products.productId');
-            
-            res.render("checkout", { login: req.session.user, categoryData, addres: addresData, userData, msgg: msg , cartData});
+            const cartDataa = await Cart.findOne({ userId: req.session.user._id }).populate('products.productId');
+
+            const walletData = await Wallet.findOne({ userId: req.session.user._id });
+
+            if (cartDataa) {
+                
+                const newTprice = cartDataa.products.reduce((acc, val) => acc + val.price, 0);
+                
+                const cartData = await Cart.findOneAndUpdate({ userId: req.session.user._id }, { $set: { totalCartPrice: newTprice } }, { upsert: true, new: true });
+                            
+                res.render("checkout", { login: req.session.user, categoryData, addres: addresData, userData, msgg: msg, cartData, walletData });
+                
+            } else {
+
+                res.redirect('/login')
+
+            }
 
         } else {
 
-            res.render('checkout', { categoryData });
+            res.redirect('/login')
+
 
         }
 
@@ -49,9 +72,9 @@ const loadCheckout = async (req, res) => {
 
 const verifyCheckOutAddress = async (req, res) => {
 
-      try {
-        
-          const userId = req.query.id
+    try {
+          
+        const userId = req.query.id
                   
         const exist = await Address.findOne({ userId: userId, addresss: { $elemMatch: { address: req.body.addressData.address } } });
 
@@ -223,6 +246,82 @@ const chooseAddress = async (req, res) => {
 
 };
 
+//  Paymen Method (RazorPay Post Method) :-
+
+const RazorPay = async (req, res) => {
+    
+    try {
+
+        const userIdd = req.session.user._id;
+
+        if (userIdd) {
+
+            const cartData = await Cart.findOne({ userId: userIdd });
+
+            const addressData = await Address.findOne({ userId: userIdd });
+
+            if (!cartData || cartData.products.length == 0) {
+                
+                res.send({ emptyCart: true });
+
+            } else if (addressData.addresss.length == 0) {
+                
+                res.send({ noAddress: true });
+
+            } else {
+
+                const user = await User.findOne({ _id: req.body.userId });
+                const amount = req.body.amount * 100;
+        
+                const options = {
+        
+                    amount: amount,
+                    currency: "INR",
+                    receipt: "absharameen625@gmail.com",
+                    
+                };
+        
+                instance.orders.create(options, (err, order) => {
+        
+                    if (!err) {
+        
+                        res.send({
+        
+                            succes: true,
+                            msg: "ORDER created",
+                            order_id: order.id,
+                            amount: amount,
+                            key_id: process.env.RAZORPAY_IDKEY,
+                            name: user.fullName,
+                            email: user.email,
+        
+                        });
+        
+                    } else {
+        
+                        console.error("Error creating order:", err);
+        
+                        res.status(500).send({ success: false, msg: "Failed to create order" });
+                    }
+        
+                });
+
+            }
+
+        } else {
+
+            res.redirect('/login');
+
+        }
+    
+    } catch (error) {
+
+        console.log(error.message);
+        
+    }
+
+};
+
 module.exports = {
 
     loadCheckout,
@@ -231,5 +330,6 @@ module.exports = {
     editAddress,
     verifyEditAddress,
     chooseAddress,
+    RazorPay,
 
-}
+}; 

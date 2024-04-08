@@ -1,3 +1,5 @@
+<% let count = 0 %>
+
 <%- include('../layouts/header.ejs') %>
 
 <div class="page-wrapper">
@@ -5,9 +7,9 @@
 	<%- include('../layouts/navbar-2.ejs') %>
 
      <main class="main">
-        	<div class="page-header text-center" style="background-image: url('assets/images/urban/allProducts.jpeg')">
+        	<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
         		<div class="container">
-        			<h1 class="page-title text-white ">Checkout<span>Shop</span></h1>
+        			<h1 class="page-title text-black-50  ">Checkout<span>Shop</span></h1>
         		</div><!-- End .container -->
         	</div><!-- End .page-header -->
             <nav aria-label="breadcrumb" class="breadcrumb-nav">
@@ -19,6 +21,87 @@
                     </ol>
                 </div><!-- End .container -->
             </nav><!-- End .breadcrumb-nav -->
+
+				<!-- Modal For Address Add-->
+
+                                        <div class="modal fade" id="address" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">   <!-- Add Addres Modal -->
+
+                                          <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                              <div class="modal-header">
+                                                <h6 class="modal-title " id="exampleModalLabel">Add Address</h6>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                              </div>
+
+                                              <div class="modal-body">
+
+                                                <form method="post" style="padding-left: 15px;padding-right: 15px;" id="addform">
+
+											      <p id="msg" hidden ><%= msgg %></p>
+                                                  
+                                                  <div class="row">
+
+                                                  <div class="col-lg-6">
+                                                      <label for="name" class="col-form-label text-black">Name *</label>
+                                                      <input type="text" class="form-control" name="name" id="name" placeholder="Enter your Name" required>
+                                                  </div>
+
+                                                  <div class="col-lg-6">
+                                                      <label for="phone" class="col-form-label text-black">Mobile Number *</label>
+                                                      <input type="text" class="form-control" name="phone" id="phone" placeholder="Enter your Mobile" required>
+                                                  </div>
+
+                                                  <div class="col-lg-6">
+                                                      <label for="locality" class="col-form-label text-black">Loacality *</label>
+                                                      <input type="text" class="form-control" name="locality" id="locality" placeholder="Enter your Locality" required>
+                                                  </div>
+
+                                                  <div class="col-lg-6">
+                                                      <label for="pincode" class="col-form-label text-black">Pincode *</label>
+                                                      <input type="text" class="form-control" name="pincode" id="pincode" placeholder="Enter your pincode" required>
+                                                  </div>
+
+                                                  </div>
+
+                                                  <div class="col-lg-12">
+
+                                                    <label for="display-name" class="requird text-dark"  >Address *</label>
+                                                    <textarea type="text"  id="" class="form-control " rows="3" placeholder="Enter your Address" name="address" required></textarea>
+
+                                                  </div>
+
+                                                  <div class="row mb-1">
+
+                                                     <div class="col-lg-6">
+                                                      <label for="city" class="col-form-label text-black">City *</label>
+                                                      <input type="text" class="form-control" name="city" id="city" placeholder="Enter your City" required>
+                                                  </div>
+
+                                                  <div class="col-lg-6">
+                                                      <label for="state" class="col-form-label text-black">State *</label>
+                                                      <input type="text" class="form-control" name="state" id="state" placeholder="Enter your State" required>
+                                                  </div>
+
+                                                  </div>
+                                                  
+                                              </form>
+                                              
+                                              </div>
+
+                                              <div class="modal-footer">
+												<input type="hidden" value="<%= userData._id %>" id="validUserId">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" onclick="validateForm()" >Add</button>
+                                              </div>
+
+                                            </div>
+                                          </div>
+
+                                	</div>
+
+						<!--- End Add Address -->
+
 			
 			<!-- Button trigger modal -->
 			
@@ -109,98 +192,55 @@
 		</div>
 		
             <div class="page-content">
+				
             	<div class="checkout">
+
 	                <div class="container">
-            			<div class="checkout-discount">
-            				<form action="#">
+
+            			<!-- <div class="checkout-discount">
+
+            				<form action="useCoupen" method="post">
+
         						<input type="text" class="form-control" required id="checkout-discount-input">
+
             					<label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label>
+
             				</form>
-            			</div><!-- End .checkout-discount -->
+
+            			</div>End .checkout-discount -->
+
+					<!-- Coupen Area -->
+
+					<p id="msgg"></p>
+
+						<div class="cart-discount">
+
+							<form>
+
+								<div class="input-group">
+
+								<input type="text" class="form-control" oninput="coupenCheck(this)" placeholder="coupon code">
+
+									<div class="input-group-append">
+
+										<button class="btn btn-outline-primary-2 mb-2 " id="btn" type="submit"><i class="icon-long-arrow-right"></i></button>
+
+									</div><!-- .End .input-group-append -->
+
+								</div><!-- End .input-group -->
+
+							</form>
+
+						</div><!-- End .cart-discount -->
+					
+					<!--Coupen End-->
 
 						<% if (!locals.addres || locals.addres.addresss.length == 0) { %>
 
-						  			<!-- Modal For Address Add-->
-
-                                        <div class="modal fade" id="address" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">   <!-- Add Addres Modal -->
-
-                                          <div class="modal-dialog">
-                                            <div class="modal-content">
-
-                                              <div class="modal-header">
-                                                <h6 class="modal-title " id="exampleModalLabel">Add Address</h6>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                              </div>
-
-                                              <div class="modal-body">
-
-                                                <form method="post" style="padding-left: 15px;padding-right: 15px;" id="addform">
-
-											      <p id="msg" hidden ><%= msgg %></p>
-                                                  
-                                                  <div class="row">
-
-                                                  <div class="col-lg-6">
-                                                      <label for="name" class="col-form-label text-black">Name *</label>
-                                                      <input type="text" class="form-control" name="name" id="name" placeholder="Enter your Name" required>
-                                                  </div>
-
-                                                  <div class="col-lg-6">
-                                                      <label for="phone" class="col-form-label text-black">Mobile Number *</label>
-                                                      <input type="text" class="form-control" name="phone" id="phone" placeholder="Enter your Mobile" required>
-                                                  </div>
-
-                                                  <div class="col-lg-6">
-                                                      <label for="locality" class="col-form-label text-black">Loacality *</label>
-                                                      <input type="text" class="form-control" name="locality" id="locality" placeholder="Enter your Locality" required>
-                                                  </div>
-
-                                                  <div class="col-lg-6">
-                                                      <label for="pincode" class="col-form-label text-black">Pincode *</label>
-                                                      <input type="text" class="form-control" name="pincode" id="pincode" placeholder="Enter your pincode" required>
-                                                  </div>
-
-                                                  </div>
-
-                                                  <div class="col-lg-11">
-
-                                                    <label for="display-name" class="requird text-dark"  >Address *</label>
-                                                    <textarea type="text"  id="" cols="76" rows="3" placeholder="Enter your Address" name="address" required></textarea>
-
-                                                  </div>
-
-                                                  <div class="row mb-1">
-
-                                                     <div class="col-lg-6">
-                                                      <label for="city" class="col-form-label text-black">City *</label>
-                                                      <input type="text" class="form-control" name="city" id="city" placeholder="Enter your City" required>
-                                                  </div>
-
-                                                  <div class="col-lg-6">
-                                                      <label for="state" class="col-form-label text-black">State *</label>
-                                                      <input type="text" class="form-control" name="state" id="state" placeholder="Enter your State" required>
-                                                  </div>
-
-                                                  </div>
-                                                  
-                                              </form>
-                                              
-                                              </div>
-
-                                              <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" onclick="addAddress('<%= userData._id %>')" >Add</button>
-                                              </div>
-
-                                            </div>
-                                          </div>
-
-                                	</div>
+						  		<!-- Modal For Address Add-->
 
 								<!--- End Add Address -->
 							
-            			<form action="" id="addform">
-
 		                	<div class="row"> 
 
 		                		<div class="col-lg-9">
@@ -288,9 +328,9 @@
 
 					<% } else { %>
 		
-            			<!-- <form action="#"> -->
+						<div class="row"> 
 
-		                	<div class="row"> 
+            			<!-- <form action="#"> -->
 
 		                		<div class="col-lg-9">
 
@@ -298,8 +338,7 @@
 										
 								     <% for (let i = 0; i < addres.addresss.length; i++) { %>
 
-										<% if (addres.addresss[i].status == true) { %>
-
+										<% if (addres.addresss[i].status == true ) { %>
                                                                                                                                                                                                                                                                                
                                          <div class="col-lg-5">
 
@@ -317,7 +356,7 @@
 
                                                     <h3 class="card-title">Address</h3><!-- End .card-title -->
 
-                                                   <p><span style="font-size: 1vw;"><%= addres.addresss[i].name %></span></p>
+                                                   <span s><%= addres.addresss[i].name %></span>
 													<p><span><%= addres.addresss[i].address %></span>,
 														<br><span><%= addres.addresss[i].locality %>,</span>
 														<span><%= addres.addresss[i].city %>,</span>
@@ -335,7 +374,30 @@
 
                                         	</div><!-- End .col-lg-6 -->
 
-									    <% } %>
+									    <% } else if (locals.addres.addresss.length == 1 || locals.addres.addresss[0].status == false) { %>
+
+											<% count++ %>
+
+												<% if (count == addres.addresss.length) { %>
+
+														<div class="row"> 
+
+															<div class="col-lg-9">
+
+														<!-- <h2 class="checkout-title">Billing Details</h2>End .checkout-title -->
+
+															<button type="button" class="btn btn-primary mt-3 justify-content-center " data-bs-toggle="modal" data-bs-target="#address" data-bs-whatever="@mdo">Add Address</button>
+
+																<div class="text-center text-info" style="margin-top: 20rem;"><p>Click The Add Address Button to Add Address</p></div><!--Message-->
+
+
+															</div>
+
+														</div>
+													
+											    <%	} %>
+												
+										<% } %>
 
 											<!--Edit Address Modal-->
 
@@ -382,8 +444,8 @@
 
                                                         <div class="col-lg-12">
 
-                                                          <label for="display-name" class=" requird text-dark"  >Address *</label>
-                                                          <textarea type="text" style="color: gray;"  id="addresssss" class="form-control " rows="3" placeholder="Enter your Address" name="address" required></textarea>
+                                                          <label for="display-name" class=" requird text-dark">Address *</label>
+                                                          <textarea type="text" style="color: gray;"  id="addresssss" class="form-control" rows="3" placeholder="Enter your Address" name="address" required></textarea>
 
                                                         </div>
 
@@ -501,7 +563,11 @@
 
 					<% } %>
 
-		                		<aside class="col-lg-3">
+					<!-- <form > -->
+
+						<aside class="col-lg-3">
+							
+						<form action="/getOrder" method="post" id="myForm">
 
 		                			<div class="summary">
 		                				<h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
@@ -515,12 +581,12 @@
 		                					</thead>
 
 											<tbody>
-                                                    <% cartData.products.forEach((product, index)=> { %>
+                                                    <% cartData?.products?.forEach((product, index)=> { %>
 
                                                         <tr>
 
                                                             <td><a href="#">
-                                                                <%=product.productId.name %>
+                                                                <%=product?.productId.name %>
                                                                 </a></td>
                                                             <td>$<%=product.price%>.00</td>
                                                         </tr>
@@ -529,7 +595,7 @@
 
                                                             <tr class="summary-subtotal">
                                                                 <td>Subtotal:</td>
-                                                                <td>$<%= cartData.totalCartPrice %>.00</td>
+                                                                <td>$<%= cartData?.totalCartPrice %>.00</td>
                                                             </tr><!-- End .summary-subtotal -->
 
                                                             <tr>
@@ -539,118 +605,104 @@
 
                                                             <tr class="summary-total">
                                                                 <td>Total:</td>
-                                                                <td>$<%= cartData.totalCartPrice %>.00</td>
+                                                                <td>$<%= cartData?.totalCartPrice %>.00</td>
                                                             </tr><!-- End .summary-total -->
 															
                                                 </tbody>
-
 		                				
 		                				</table><!-- End .table table-summary -->
 
-		                				<div class="accordion-summary" id="accordion-payment">
-										    <!-- <div class="card">
-										        <div class="card-header" id="heading-1">
-										            <h2 class="card-title">
-										                <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
-										                    Direct bank transfer
-										                </a>
-										            </h2>
-										        </div>End .card-header
-										        <div id="collapse-1" class="collapse show" aria-labelledby="heading-1" data-parent="#accordion-payment">
-										            <div class="card-body">
-										                Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account. -->
-										            <!-- </div>End .card-body -->
-										        <!-- </div>End .collapse -->
-										    <!-- </div>End .card -->
-<!-- 
-										    <div class="card">
-										        <div class="card-header" id="heading-2">
-										            <h2 class="card-title">
-										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
-										                    Check payments
-										                </a>
-										            </h2>
-										        </div>End .card-header
-										        <div id="collapse-2" class="collapse" aria-labelledby="heading-2" data-parent="#accordion-payment">
-										            <div class="card-body">
-										                Ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. 
-										            </div>End .card-body
-										        </div>End .collapse
-										    </div>End .card -->
+											<div class="accordion-summary" id="accordion-payment">
 
-										    <div class="card">
-										        <div class="card-header" id="heading-3">
-										            <h2 class="card-title">
-										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
-										                    Cash on delivery
-										                </a>
-										            </h2>
-										        </div><!-- End .card-header -->
-										        <div id="collapse-3" class="collapse" aria-labelledby="heading-3" data-parent="#accordion-payment">
-										            <div class="card-body">Quisque volutpat mattis eros. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. 
-										            </div><!-- End .card-body -->
-										        </div><!-- End .collapse -->
-										    </div><!-- End .card -->
+												<div class="card">
 
-										    <!-- <div class="card">
-										        <div class="card-header" id="heading-4">
-										            <h2 class="card-title">
-										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
-										                    PayPal <small class="float-right paypal-link">What is PayPal?</small>
-										                </a>
-										            </h2>
-										        </div>End .card-header
-										        <div id="collapse-4" class="collapse" aria-labelledby="heading-4" data-parent="#accordion-payment">
-										            <div class="card-body">
-										                Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum.
-										            </div>End .card-body
-										        </div>End .collapse
-										    </div>End .card -->
+													<div class="card-header" id="heading-1">
 
-										    <!-- <div class="card">
-										        <div class="card-header" id="heading-5">
-										            <h2 class="card-title">
-										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
-										                    Credit Card (Stripe)
-										                    <img src="assets/images/payments-summary.png" alt="payments cards">
-										                </a>
-										            </h2>
-										        </div>End .card-header
-										        <div id="collapse-5" class="collapse" aria-labelledby="heading-5" data-parent="#accordion-payment">
-										            <div class="card-body"> Donec nec justo eget felis facilisis fermentum.Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Lorem ipsum dolor sit ame.
-										            </div>End .card-body
-										        </div>End .collapse
-										    </div>End .card -->
+														<h2 class="card-title">
 
-										</div><!-- End .accordion -->
+															<input type="radio" name="peyment" value="Cash on Delivery" checked class="bg-primary">
 
-										<form action="/getOrder" method="post">
+															<label for="">Cash on Delivery</label>
+
+														</h2>
+
+													</div>
+													
+													<br>
+
+													<% if (!locals.walletData || cartData.totalCartPrice >= locals.walletData?.balance || locals.walletData?.balance == 0 ) { %>
+														
+													<div class="card-header" id="heading-1">
+
+                                                        <h2 class="card-title">
+
+                                                            <input type="radio" name="peyment" id="wallet"
+
+                                                                value="wallet" disabled class="bg-primary opacity-50 " >
+
+                                                            <label for="wallet" class="" style="text-decoration:line-through;">wallet</label>
+
+                                                        </h2>
+
+                                                    </div>
+
+												<%	} else { %>
+
+													 <div class="card-header" id="heading-1">
+
+                                                        <h2 class="card-title">
+
+                                                            <input type="radio" name="peyment" id="wallet" value="wallet" class="bg-primary">
+
+                                                            <label for="wallet">wallet</label>
+
+                                                        </h2>
+
+                                                    </div>
+														
+												<% } %>
+													
+													<!-- <input type="text" name="" id="" onclick="submit()" hidden > -->
+													<!-- End .card-header -->
+												
+													<br>
+
+													<div class="card-header" id="heading-1">
+
+														<h2 class="card-title">
+
+															<input type="radio" value="Online Peyment" name="peyment" 
+
+															class="bg-primary">
+
+															<label for="online">Online Payment</label>
+
+														</h2>
+
+													</div><!-- End .card-header -->
+
+												</div><!-- End .card -->
+													
+												</div><!-- End .accordion -->
 
 											<div>
 
-											<% if (cartData.products.length == 0) {  %>
+												<button onclick="sumbitPayment('<%= userData?._id %>',' <%= cartData?.totalCartPrice %>')" type="button" class="btn btn-outline-primary-2 btn-order btn-block">
 
-												<a href="/product" class="btn btn-outline-primary-2 btn-order btn-block">ADD PRODUCT TO CART</a>
-
-											<%	} else { %>
-
-												<button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
 													<span class="btn-text">Place Order</span>
 													<span class="btn-hover-text">Proceed to Checkout</span>
+
 												</button>
 
-											<% } %>
-
 											</div>
-
-										</form>
 										
 		                			</div><!-- End .summary -->
-		                		</aside><!-- End .col-lg-3 -->
-								
-		                	</div><!-- End .row -->
 
-            			<!-- </form> -->
+								</form>
+
+		                	</aside><!-- End .col-lg-3 -->
+
+						<!-- </form> -->
 
 	                </div><!-- End .container -->
                 </div><!-- End .checkout -->
@@ -679,6 +731,7 @@
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
 
+	<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
   
@@ -842,8 +895,214 @@ if(msg.textContent == 'Address Edited'){
      
     })
 
-};
+} else if(msg.textContent == 'Cart Empty'){
 
+
+	Swal.fire({
+
+		icon: "error",
+		title: "Oops...",
+		text: "Your Cart Is Empty!",
+		footer: '<a href="/product">Why do I have this issue?</a>'
+
+	});
+
+
+} else if(msg.textContent == 'No Address'){
+
+
+	Swal.fire({
+
+		icon: "error",
+		title: "Oops...",
+		text: "Please Add Address!",
+		footer: '<a href="/checkout">Why do I have this issue?</a>'
+
+	});
+
+} 
+
+//	Payment Sumbit :-
+
+function sumbitPayment(amount, userId){
+	
+	const form = document.getElementById('myForm'); 
+    const Radio = document.querySelector('input[name="peyment"]:checked');
+    
+    if(Radio.value == 'Online Peyment'){
+
+        razorPay(amount, userId)
+		
+    }else{
+		
+        form.submit()
+
+    }
+
+}
+
+//	RazorPay :-
+
+function razorPay(userId, amount) {
+
+    const form = document.getElementById('myForm'); 
+
+        fetch('/razorPay', {
+
+            method: 'POST',
+            headers: { 'Content-type': 'application/json' },
+
+            body: JSON.stringify({ amount, userId })
+
+        }).then(res => res.json()).then(data => {
+
+            if (data.succes) {
+
+                let options = {
+
+                    "key": `${data.key_id}`,
+                    "amount": `${data.amount}`,
+                    "currency": "INR",
+                    "name": "URBAN",
+                    "order_id": `${data.order_id}`,
+
+                    "handler": function (response) {
+
+                        form.submit();
+                                        
+                    },
+
+                        "profile": {
+
+                        "name": `${data.name}`,
+                        "email": `${data.email}`
+                    }
+                }
+
+                let razorpayObject = new Razorpay(options);
+
+                razorpayObject.on('payment.failed', (response) => {
+
+                    // Swal.fire({
+
+					// 	icon: "error",
+					// 	title: "Oops...",
+					// 	text: "Your Payment Failed!",
+
+					// });
+
+                });
+
+                razorpayObject.open();
+
+            } else if(data.emptyCart){
+
+				Swal.fire({
+
+					icon: "error",
+					title: "Oops...",
+					text: "Your Cart Is Empty!",
+					footer: '<a href="/product">Why do I have this issue?</a>'
+
+				});
+
+
+			} else if(data.noAddress){
+
+				Swal.fire({
+
+					icon: "error",
+					title: "Oops...",
+					text: "Please Add Address!",
+					footer: '<a href="/checkout">Why do I have this issue?</a>'
+
+				});
+
+			}
+        })
+
+}
+
+//	Use Coupen :-
+
+function coupenCheck(val){
+
+	const msg = document.getElementById('msgg')
+	const btn = document.getElementById('btn')
+
+	fetch(`/coupenCehck` , {method : 'post' , headers : {'Content-Type' : 'application/json'} , body : JSON.stringify({inpVal : val.value})})
+
+	.then(res => res.json())
+
+	.then(data => {
+
+		console.log(data);
+
+		if(data.succ){
+
+			msg.textContent = 'Valid Coupen'
+			msg.classList.remove('text-danger')
+			msg.classList.add('text-success')
+			btn.disabled = false
+
+		} else if(data.fail) {
+
+			msg.textContent = 'Invalid Coupen'
+			msg.classList.remove('text-success')
+			msg.classList.add('text-danger')
+			btn.disabled = true
+
+		}
+
+	})
+
+}
+
+//  Validation For Add Address :-
+
+function validateForm() {
+  
+  const validId = document.getElementById('validUserId').value
+
+  console.log(validId);
+
+  var inputs = document.getElementById("address").querySelectorAll("input, textarea")
+
+  var isValid = true
+
+    inputs.forEach(function(input) {
+
+      if (input.value.trim() === "") {
+
+        isValid = false;
+        return;
+      }
+
+    });
+
+    if (!isValid) {
+
+      event.preventDefault(); 
+            
+      Swal.fire({
+
+        title: "Oops!!!",
+        text: "Please Fill All Input Fields",
+        icon: "error"
+
+      })
+
+    } else {
+
+      var addressInput = document.getElementById("addresssss")
+
+       event.preventDefault();
+
+      addAddress(validId);
+
+    }
+
+}
 
 </script>
 

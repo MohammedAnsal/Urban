@@ -41,25 +41,33 @@
                                       <a class="nav-link" id="tab-orders-link" href="/orders" role="tab">Orders</a>
                                   </li>
 
-                                  <li class="nav-item">
-                                      <a class="nav-link" id="tab-downloads-link" data-toggle="tab" href="#" role="tab">Wishlist</a>
-                                  </li>
+                                  <!-- <li class="nav-item">
+                                      <a class="nav-link" id="tab-downloads-link" href="#" role="tab">Wishlist</a>
+                                  </li> -->
 
                                   <li class="nav-item">
                                       <a class="nav-link" id="tab-address-link"  href="/address">Address</a>
                                   </li>
 
                                   <li class="nav-item">
-                                      <a class="nav-link" id="tab-wallet-link" data-toggle="tab" href="#" role="tab">Wallet</a>
+                                      <a class="nav-link" id="tab-wallet-link" href="/wallet" role="tab">Wallet</a>
                                   </li>
 
                                   <li class="nav-item">
-                                      <a class="nav-link" id="tab-coupons-link" data-toggle="tab" href="#" role="tab">Coupons</a>
+                                      <a class="nav-link" id="tab-coupons-link" href="/coupen" role="tab">Coupons</a>
                                   </li>
                                   
                                   <li class="nav-item">
                                     
-                                    <a class="nav-link " href="">Sigout</a>
+                                    <form action="/logout" method="post">
+
+                                      <button class="bg-transparent pt-1 border-0 d-flex  text-dark">
+
+                                      <p class="text-dark">SignOut</p>
+
+                                      </button>
+
+                                    </form>
 
                                   </li>
                                   
@@ -89,9 +97,9 @@
 
                                               <div class="col-md-4 d-flex flex-column align-items-center justify-content-center gap-2 gradient-custom text-center text-white" style="border-top-left-radius: 0.5rem; border-bottom-left-radius: 0.5rem;padding-top: 2rem;">
 
-                                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp" alt="Avatar" class="img-fluid" style="width: 80px"/>
+                                                <img width="70" height="70" src="https://img.icons8.com/officel/80/person-male.png" alt="person-male"/>
 
-                                                <h4><%= userData.fullName %></h4>
+                                                <h5 class="text-white"><%= userData.fullName %></h5>
 
                                               </div>
 
@@ -140,6 +148,29 @@
                                                       <h6>Email</h6>
                                                       <p><%= userData.email %></p>
                                                     </div>
+
+                                                <% if (!walletData?.balance) { %>
+
+                                                     <div class="col-6 mb-2">
+    
+                                                      <h6>Wallet</h6>
+    
+                                                        <p class="text-primary">No Balance</p>
+    
+                                                    </div>
+
+                                                  <%  } else { %>
+                                                        
+                                                    <div class="col-6 mb-2">
+    
+                                                      <h6>Wallet</h6>
+    
+                                                        <p class="text-primary ">$<%= walletData?.balance %></p>
+    
+                                                    </div>
+
+                                                  <% } %>
+
                                                   </div>
                       
                                                   <div class="row pt-1">

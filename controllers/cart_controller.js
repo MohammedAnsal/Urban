@@ -18,8 +18,8 @@ const Cart = require('../models/cart_model');
 const loadCart = async (req, res) => {
     
     try {
-
-        const userIdd = req.session.user._id
+        
+        const userIdd = req.session.user._id;
 
         const categoryData = await Category.find({ is_Listed: true });
 
@@ -27,30 +27,46 @@ const loadCart = async (req, res) => {
 
             const cartData = await Cart.findOne({ userId: userIdd }).populate('products.productId');
 
-            if (cartData) { 
-                
-                const totall = cartData.products.reduce((acc, product) => acc + product.price, 0);  //  Calculating Cart Total Pricee
+            if (cartData) {
 
-                const totalPriceAdding = await Cart.findOneAndUpdate({ userId: userIdd }, { $set: { totalCartPrice: totall } } , {new : true , upsert : true}).exec()
-
-                res.render("cart", { login: req.session.user, categoryData, cartData, totalPrice: totalPriceAdding.totalCartPrice });
+                const proStatus = cartData.products.filter(val => val.productId.status === false);     //  Product Status
                 
+                if (proStatus) {
+                    
+                    for (const product of proStatus) {
+    
+                        var newData = await Cart.findOneAndUpdate({ userId: userIdd }, { $pull: { products: { productId: product.productId._id } } }, { new: true });
+        
+                    }
+
+                }
+
+                const overAll = newData ? newData : cartData;   // TotalPrice Managing
+
+                const totall = overAll.products.reduce((acc, product) => acc + product.price, 0);  //  Calculating Cart Total Pricee
+
+                await Cart.findOneAndUpdate({ userId: userIdd }, { $set: { totalCartPrice: totall } }, { new: true, upsert: true }).exec();
+
+                const updatedCartData = await Cart.findOne({ userId: userIdd }).populate('products.productId');
+                
+                res.render("cart", { login: req.session.user, categoryData, cartData: updatedCartData, totalPrice: totall });
+
             } else {
-                
+
                 res.render("cart", { login: req.session.user, categoryData, totalPrice: 0 });
 
             }
 
         } else {
 
-            res.render("cart" , {categoryData});
+            res.redirect('/login')
 
         }
         
     } catch (error) {
 
         console.log(error.message);
-        
+
     }
 
 };
@@ -62,44 +78,54 @@ const addCart = async (req, res) => {
     try {
 
         const productIdd = req.query.id;
-        const userIdd = req.session.user._id
         const qty = req.body.quantity || 1;
+        
+        if (req.session.user) {
 
-        const cartProduct = await Product.findOne({ _id: productIdd });
-
-        const exist = await Cart.findOne({ userId: userIdd, products: { $elemMatch: { productId: productIdd } } });
-
-        if (!exist) {
-
-            const total = cartProduct.price * qty;
+            const userIdd = req.session.user._id
             
-            await Cart.findOneAndUpdate(
-            
-                { userId: userIdd },
-              
-                {
-                  
-                    $addToSet: {
-                    
-                        products: {
-                            
-                            productId: productIdd,
-                            price: total,
-                            quantity: qty,
-                        },
-                    },
+            const cartProduct = await Product.findOne({ _id: productIdd });
+    
+            const exist = await Cart.findOne({ userId: userIdd, products: { $elemMatch: { productId: productIdd } } });
+    
+            if (!exist) {
+    
+                const total = cartProduct.discount > 0 ? cartProduct.discount_price * qty : cartProduct.price * qty
                 
-                },
-              
-                { new: true, upsert: true }
-              
-            );
+                await Cart.findOneAndUpdate(
+                
+                    { userId: userIdd },
+                  
+                    {
+                      
+                        $addToSet: {
+                        
+                            products: {
+                                
+                                productId: productIdd,
+                                price: total,
+                                quantity: qty,
+                            },
+                        },
+                    
+                    },
+                  
+                    { new: true, upsert: true }
+                  
+                );
+    
+                res.send({ success: true });
+    
+            } else {
+    
+                res.send({ exist: true });
+    
+            }
 
-            res.send({ success: true });
 
         } else {
 
-            res.send({ exist: true });
+            res.redirect("/login");
 
         }
 
@@ -144,24 +170,58 @@ const deleteCart = async (req, res) => {
 //  Update Cart (Put Method) : -
 
 const updateCart = async (req, res) => {
-      
-    try {
 
-        const productIdd = req.body.proId
-        const cartIdd = req.body.cartId
-        const quantityy = req.body.quantity
+    try {
+      
+        const productIdd = req.body.proId;
+        const cartIdd = req.body.cartId;
+        const quantityy = req.body.quantity;
 
         const product = await Product.findOne({ _id: productIdd });
         
-        const newValue = product.price * quantityy;
-  
-        const updatedCart = await Cart.findOneAndUpdate({ _id: cartIdd, "products.productId": productIdd }, { $set: { "products.$.price": newValue, "products.$.quantity": quantityy, }, }, { new: true });
+        const newValue = product.discount > 0 ? product.discount_price * quantityy : product.price * quantityy;
 
-        const totalCartPricee = updatedCart.products.reduce((acc, product) => acc + product.price, 0);
-  
-        await Cart.findOneAndUpdate({ _id: cartIdd }, { $set: { totalCartPrice: totalCartPricee } });
+        // Update the product price and quantity in the cart
 
-        res.send({ success: totalCartPricee });
+        const updatedCart = await Cart.findOneAndUpdate(
+        
+            { _id: cartIdd, "products.productId": productIdd },
+
+            {
+                $set: {
+
+                    "products.$.price": newValue,
+                    "products.$.quantity": quantityy,
+
+                },
+
+            },
+
+            { new: true }
+
+        );
+
+        // Calculate the updated total cart price
+
+        const totalCartPrice = updatedCart.products.reduce(
+        
+            (acc, product) => acc + product.price, 0
+
+        );
+
+        // Update the totalCartPrice in the cart document
+
+        await Cart.findOneAndUpdate(
+        
+            { _id: cartIdd },
+
+            { $set: { totalCartPrice: totalCartPrice } }
+
+        );
+
+        // Send the updated total cart price along with the individual product price
+
+        res.send({ success: totalCartPrice, productPrice: newValue });
         
     } catch (err) {
 
@@ -178,4 +238,4 @@ module.exports = {
     deleteCart,
     updateCart,
 
-}
+};

@@ -19,22 +19,6 @@ const sceurePassword = async (password) => {
 
 };
 
-//  Load Dashbord (Get Method) :-
-
-const loadDashbord = async (req, res) => {
-    
-    try {
-
-        res.render('dashbord');
-        
-    } catch (error) {
-
-        console.log(error.message);
-        
-    }
-
-};
-
 //  Load Login (Get Method) :-
 
 const loadLogin = async (req, res) => {
@@ -75,7 +59,7 @@ const verifyLogin = async (req, res) => {
             if (comparePassword) {
                 
                 req.session.admin_id = adminData._id;
-                res.redirect("/admin/dashbord");
+                res.redirect("/admin/loadDashboard");
             
             } else {
 
@@ -172,7 +156,6 @@ const loadLogout = async (req, res) => {
 
 module.exports = {
     
-  loadDashbord,
   loadLogin,
   verifyLogin,
   loadListUser,

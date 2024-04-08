@@ -1,18 +1,25 @@
 <%- include('../layouts/header.ejs') %>
 
-<div class="page-wrapper">
+<div class="page-wrapper" id="reloadDiv">
 	
 	<%- include('../layouts/navbar-2.ejs') %>
 
-
     <main class="main">
+
         	<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+				
         		<div class="container">
+
         			<h1 class="page-title text-black-50  ">Wishlist<span>Shop</span></h1>
+
         		</div><!-- End .container -->
+
         	</div><!-- End .page-header -->
+
             <nav aria-label="breadcrumb" class="breadcrumb-nav">
+
                 <div class="container">
+
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                         <!-- <li class="breadcrumb-item"><a href="#">Shop</a></li> -->
@@ -22,37 +29,61 @@
             </nav><!-- End .breadcrumb-nav -->
 
             <div class="page-content">
+
             	<div class="container">
-					<table class="table table-wishlist table-mobile">
-						<thead>
+
+					<% if (wishlistData?.products?.length >= 1) { %>
+						
+					<table class="table table-wishlist table-mobile ">
+
+						<thead class="">
+
 							<tr>
 								<th>Product</th>
+								<th>Name</th>
 								<th>Price</th>
 								<th>Stock Status</th>
 								<th></th>
 								<th></th>
+
 							</tr>
+
 						</thead>
 
-						<tbody>
-							<tr>
+						<% wishlistData?.products?.forEach(val => { %>
+							
+						<tbody class="">
+
+							<!-- <tr>
+
 								<td class="product-col">
+
 									<div class="product">
+
 										<figure class="product-media">
+
 											<a href="#">
+
 												<img src="assets/images/urban/pumademo-1.jpeg" alt="Product image">
+
 											</a>
+
 										</figure>
 
 										<h3 class="product-title">
 											<a href="#">Palermo Sneakers</a>
-										</h3><!-- End .product-title -->
-									</div><!-- End .product -->
+										</h3>End .product-title
+									</div>End .product
+
 								</td>
+
 								<td class="price-col">$10.5</td>
 								<td class="stock-col"><span class="in-stock">In stock</span></td>
+
 								<td class="action-col">
+
                                     <div class="dropdown">
+
 									<button class="btn btn-block btn-outline-primary-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="icon-list-alt"></i>Select Options
                                     </button>
@@ -63,81 +94,135 @@
                                         <a class="dropdown-item" href="#">The best option</a>
                                       </div>
                                     </div>
+
 								</td>
+
 								<td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td>
-							</tr>
+
+							</tr> -->
+
 							<tr>
+
 								<td class="product-col">
+
 									<div class="product">
+
 										<figure class="product-media">
+
 											<a href="#">
-												<img src="assets/images/urban/newBalanceDemo-1.png" alt="Product image">
+												<img src="/productImage/<%= val.productId.images[0] %>" alt="Product image">
 											</a>
+
 										</figure>
 
-										<h3 class="product-title">
-											<a href="#">9060</a>
-										</h3><!-- End .product-title -->
 									</div><!-- End .product -->
+									
 								</td>
-								<td class="price-col">$56.00</td>
-								<td class="stock-col"><span class="in-stock">In stock</span></td>
+
+								<td>
+									<p class=""><%= val.productId.name %></p>
+								</td>
+
+								<td class="price-col">$<%= val.productId.price %></td>
+
+								<td class="stock-col"><span class="<%= val.productId.stock <= 0 ? 'text-danger' : 'text-success' %>"><%= val.productId.stock <= 0 ? 'Out Of Stock' : 'In Stock' %></span></td>
+
 								<td class="action-col">
-									<button class="btn btn-block btn-outline-primary-2"><i class="icon-cart-plus"></i>Add to Cart</button>
+
+									<button class="btn btn-block btn-outline-primary-2" onclick="addCart('<%= val.productId._id %>')" <%= val.productId.stock <= 0 ? 'disabled' : '' %>><i class="icon-cart-plus"></i><%= val.productId.stock <= 0 ? 'OUT OF STOCK' : 'MOVE TO CART' %></button>
+									
 								</td>
-								<td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td>
+
+								<td class="remove-col">
+
+									<button onclick="removeFav('<%= val.productId._id %>')" class="btn-remove"><i class="icon-close"></i></button>
+
+								</td>
+
 							</tr>
+<!-- 							
 							<tr>
+
 								<td class="product-col">
+
 									<div class="product">
+
 										<figure class="product-media">
+
 											<a href="#">
 												<img src="assets/images/urban/nikegreenDemo-1.jpg" alt="Product image">
 											</a>
+
 										</figure>
 
 										<h3 class="product-title">
 											<a href="#">Nike Cortez Vintage</a>
-										</h3><!-- End .product-title -->
-									</div><!-- End .product -->
+										</h3>End .product-title
+
+									</div>End .product
+
 								</td>
+
 								<td class="price-col">$52.00</td>
+								
 								<td class="stock-col"><span class="out-of-stock">Out of stock</span></td>
+
 								<td class="action-col">
+
 									<button class="btn btn-block btn-outline-primary-2 disabled">Out of Stock</button>
+
 								</td>
+
 								<td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td>
-							</tr>
+
+							</tr> -->
+
 						</tbody>
+
+						<%	}); %>
+
 					</table><!-- End .table table-wishlist -->
+
+					<% } else { %>
+
+						<div class="mt-5 mb-5 ">
+							<p class="text-center text-primary">Wishlist Not Found</p>
+						</div>
+
+					<% } %>
+
 	            	<div class="wishlist-share">
+
 	            		<div class="social-icons social-icons-sm mb-2">
+
 	            			<label class="social-label">Share on:</label>
 	    					<a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
 	    					<a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
 	    					<a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
 	    					<a href="#" class="social-icon" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
 	    					<a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
+
 	    				</div><!-- End .soial-icons -->
+
 	            	</div><!-- End .wishlist-share -->
+
             	</div><!-- End .container -->
+
             </div><!-- End .page-content -->
+
         </main><!-- End .main -->
 
 	<!-- Connect Footer -->
 		<%- include('../layouts/footbar-2') %>
-		<!-- Connect Footer -->
+	<!-- Connect Footer -->
      
 	</div><!-- End .page-wrapper -->
-
 
     <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 
 		<!--Connect Mobaile View-->
         <%- include('../layouts/mobileView.ejs') %>
 		<!--Connect Mobaile View-->
-
-   
 
     <!-- Plugins JS File -->
     <script src="assets/js/jquery.min.js"></script>
@@ -149,4 +234,114 @@
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
 
+
+	<script>
+
+    // removeWishlist :-
+
+	function removeFav(id){
+
+		fetch(`/removeWishlist?id=${id}` , {method : 'PUT'})
+
+		.then(res => res.json())
+
+		.then(data => {
+
+			if(data.suc){
+
+				Swal.fire({
+
+					title: "Wishlist Deleted",
+					text: "Deleted Successfully",
+					icon: "success"
+				})
+				
+				$('#reloadDiv').load('/wishlist #reloadDiv');
+
+			} else if(data.fail){
+
+				Swal.fire({
+
+					title: "Error!!!",
+					text: "Somthong Went Wrong!!!",
+					icon: "error"
+
+				});
+
+			}
+
+
+		})
+
+	};
+
+	//	Add Cart :-
+
+	function addCart(id){
+
+		fetch(`/addCartt?id=${id}` , {method : "POST"})
+
+		.then(res => res.json())
+
+		.then(data => {
+
+			if(data.suc){
+
+				const Toast = Swal.mixin({
+
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+
+                    icon: "success",
+                    title: "Added TO Cart"
+                    
+                })
+
+				$('#reloadDiv').load('/wishlist #reloadDiv');
+
+			} else if(data.fail){
+
+				 const Toast = Swal.mixin({
+
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+
+                didOpen: (toast) => {
+
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+
+              });
+              
+              Toast.fire({
+
+                icon: "warning",
+                title: "Already Added"
+
+              });
+
+
+			}
+
+		})
+
+	}
+
+	</script>
+	
 <%- include('../layouts/footer') %>

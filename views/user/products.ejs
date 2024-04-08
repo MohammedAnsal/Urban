@@ -1,6 +1,6 @@
 <%- include('../layouts/header') %>
 
-<div class="page-wrapper">	
+<div class="page-wrapper" id="reloadDiv">	
     
     <%- include('../layouts/navbar-2.ejs') %>
 
@@ -97,15 +97,24 @@
 
                                 <div class="row" id="result">
 									
-									<% productData.forEach(val => { %>
+									<% productData?.forEach(val => { %>
 										
                                     	<div class="col-6 col-md-4 col-lg-4" id="cards">
 
 											<div class="product product-7 text-center">
 
 												<figure class="product-media">
-													
-													<!-- <span class="product-label label-new">New</span> -->
+
+												<% if (val.stock <= 0) { %>
+
+                                                    <span class="product-label text-white text-bg-danger  label-out-of-stock">Out of Stock</span>
+
+                                                <% } else { %>
+
+                                                    <span class="product-label label-new <%= val.discount > 0 ? "bg-danger" : '' %>"><%= val.discount > 0 ? val.discount + '% OFF' : 'New' %></span>
+
+                                                <% } %>
+																										
 													<input hidden value="<%= val.stock %>" id="stock">
 
                                                 	<a href="/productDetails?id=<%= val._id %>">
@@ -115,40 +124,59 @@
                                                 	</a>
 
                                                 	<div class="product-action-vertical">
-                                                    	<a href="/wishlist" class="btn-product-icon btn-wishlist btn-expandable"><span id="">add to wishlist</span></a>
+
+                                                    	<a onclick="addWishlist('<%= val._id %>')" class="btn-product-icon btn-wishlist btn-expandable"><span >add to wishlist</span></a>
+
                                                     	<!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a> -->
                                                     	<!-- <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a> -->
+
                                                 	</div><!-- End .product-action-vertical -->
 
                                                 	<div class="product-action">
-                                                    	<button class="btn-product btn-cartv border-0" id="btns" onclick="addCart('<%= val._id %>')" style="cursor: pointer;"><span id="crt">add to cart</span></button>
-                                                	</div><!-- End .product-action -->
+
+                                                    <button style="cursor: pointer;" onclick="addCart('<%= val._id %>' , '<%= locals.login ? locals.login : false %>')" class="btn-product btn-cart border-0" <%= val.stock <= 0 ? 'disabled' : '' %>>
+
+                                                        <span class="btn-text"><%= val.stock <= 0 ? 'Out of stock' : 'Add to Cart' %></span>
+
+                                                    </button>
+
+                                                </div><!-- End .product-action -->
 
                                             	</figure><!-- End .product-media -->
 
                                             	<div class="product-body">
 
                                                 	<div class="product-cat">
+
                                                     	<a href="#"><%= val.name %></a>
+
                                                		</div><!-- End .product-cat -->
 
                                                 	<h3 class="product-title"><a href="/category"><%= val.category.name %></a></h3><!-- End .product-title -->
 
-													<div class="d-flex justify-content-center gap-2  "> 
+												<div class="product-price d-flex gap-4 ">
 
-													<div class="product-price">
-                                                    	$<%= val.price %>
-                                                	</div><!-- End .product-price -->
+                                                    	<div class=" <%= val.discount > 0 ? 'text-decoration-line-through text-danger opacity-50 ' : '' %> " > $<%= val.price %>.00 </div>
 
+                                                    <% if(val.discount > 0){ %>
 
-													</div>
+                                                    	<div class="text-success">$<%= val.discount_price %>.00</div>
 
-                                                	<!-- <div class="ratings-container">
+                                                    <% } %>
+                                                    
+                                                </div>
+
+                                                	<div class="ratings-container">
+
                                                     	<div class="ratings">
+
                                                         	<div class="ratings-val" style="width: 20%;"></div>
-                                                    	</div>End .ratings
+
+                                                    	</div><!--End .ratings-->
+														
                                                     	<span class="ratings-text">( 2 Reviews )</span>
-                                                	</div>End .rating-container -->
+
+                                                	</div><!--End .rating-container-->
 
                                                 <!-- <div class="product-nav product-nav-thumbs">
                                                     <a href="#" class="active">
@@ -404,6 +432,46 @@
                                     </div><!-- End .widget-body -->
 									</div><!-- End .collapse -->
         						</div><!-- End .widget -->
+
+								<div class="widget widget-collapsible">
+
+    								<h3 class="widget-title">
+
+									    <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true" aria-controls="widget-5">
+									        Sort Items
+									    </a>
+
+									</h3><!-- End .widget-title -->
+
+									<div class="collapse show" id="widget-5">
+
+										<div class="widget-body">
+
+                                        <div class="filter-price">
+
+                                            <div class="form-check form-switch">
+
+											<input class="form-check-input" type="checkbox" role="switch" id="abc" onclick="acendingLetter()">
+
+											<label class="form-check-label" for="abc">Name</label>
+
+											</div>
+
+											<div class="form-check form-switch">
+
+											<input class="form-check-input" type="checkbox" role="switch" id="price" onclick="priceLowHigh()">
+
+											<label class="form-check-label" for="price">Price</label>
+
+											</div>
+
+                                        </div><!-- End .filter-price -->
+
+                                    </div><!-- End .widget-body -->
+
+									</div><!-- End .collapse -->
+        						</div><!-- End .widget -->
+
                 			</div><!-- End .sidebar sidebar-shop -->
                 		</aside><!-- End .col-lg-3 -->
                 	</div><!-- End .row -->
@@ -417,13 +485,14 @@
 		
 </div>
 
-        <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+<button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 
-        <!--Connect Mobaile View-->
-        <%- include('../layouts/mobileView.ejs') %>
-		<!--Connect Mobaile View-->
+<!--Connect Mobaile View-->
+<%- include('../layouts/mobileView.ejs') %>
+<!--Connect Mobaile View-->
 
-    <!-- Plugins JS File -->
+<!-- Plugins JS File -->
+</script>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/jquery.hoverIntent.min.js"></script>
@@ -435,92 +504,83 @@
 
 <script>
 
+//  Add Cart
 
-function addCart(id){
+function addCart(id , user){
 
-    fetch(`/addCart?id=${id}` , {method : 'post'})
+	if(user == 'false'){
 
-    .then(res => res.json())
+		window.location.href = '/login'
 
-        .then(data =>{
+	} else {
 
-			cartAction();	//	Cart Count
-			
-            if(data.exist){
-                
-              const Toast = Swal.mixin({
+		fetch(`/addCart?id=${id}` , {method : 'post'})
 
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
+		.then(res => res.json())
 
-                didOpen: (toast) => {
+			.then(data =>{
 
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                }
+				cartAction();	//	Cart Count
+				
+				if(data.exist){
+						
+					const Toast = Swal.mixin({
 
-              });
-              
-                Toast.fire({
+						toast: true,
+						position: "top-end",
+						showConfirmButton: false,
+						timer: 3000,
+						timerProgressBar: true,
 
-                    icon: "warning",
-                    title: "Already Added"
+						didOpen: (toast) => {
 
-                });
+							toast.onmouseenter = Swal.stopTimer;
+							toast.onmouseleave = Swal.resumeTimer;
+						}
 
-            }else if(data.success){
-                            
-                const Toast = Swal.mixin({
+					});
+					
+					Toast.fire({
 
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
+						icon: "warning",
+						title: "Already Added"
 
-                    didOpen: (toast) => {
-                        toast.onmouseenter = Swal.stopTimer;
-                        toast.onmouseleave = Swal.resumeTimer;
-                    }
-                });
+					});
 
-                Toast.fire({
+				}else if(data.success){
+								
+					const Toast = Swal.mixin({
 
-                    icon: "success",
-                    title: "Added TO Cart"
-                    
-                });
-            }
+						toast: true,
+						position: "top-end",
+						showConfirmButton: false,
+						timer: 3000,
+						timerProgressBar: true,
+
+						didOpen: (toast) => {
+							toast.onmouseenter = Swal.stopTimer;
+							toast.onmouseleave = Swal.resumeTimer;
+						}
+					});
+
+					Toast.fire({
+
+						icon: "success",
+						title: "Added TO Cart"
+						
+					});
+				}
 
 
-        })
+			})
+
+	}
 
 };
 
-//	Out Of Stock :-
+//  Search :-
 
-const cart = document.getElementById('crt');
-const button = document.getElementById('btns')
-const stock = document.getElementById('stock');
-
-
-if (stock.value == 0) {
-    cart.textContent = 'Out of stock';
-    cart.classList.add('text-danger'); 
-    button.disabled = true;
-} else {
-    cart.textContent = 'Add To Cart';
-    cart.classList.remove('text-danger');
-    cart.classList.add('text-dark'); 
-    button.disabled = false; 
-}
-
-    //  Search :-
-
-    function search(val){
+function search(val){
 
         const cards = document.getElementById('cards')
         const result = document.getElementById('result')
@@ -608,7 +668,6 @@ if (stock.value == 0) {
     });
 
 };
-
 
 //	Price Filter :-
 
@@ -703,8 +762,255 @@ function priceFilter(){
 
 }
 
+//  Add Wishlist
+
+function addWishlist(id){
+
+    fetch(`/addWishlist?id=${id}` , {method : 'POST'})
+
+	.then(res => res.json()) 
+
+	.then(data => {
+
+       if(data.suc){
+
+		    const Toast = Swal.mixin({
+
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+
+                didOpen: (toast) => {
+
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+
+            });
+              
+            Toast.fire({
+
+                icon: "warning",
+                title: "Already Added"
+
+            });
+
+	    } else if(data.succ){
+
+            const Toast = Swal.mixin({
+
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+
+            });
+
+            Toast.fire({
+
+                icon: "success",
+                title: "Added TO Wishlist"
+                    
+            });
+
+
+		}
+
+	})
+
+};
+
+//	Acending Pro Name :-
+
+function acendingLetter(){
+
+	const item = document.getElementById('abc');
+	const result = document.getElementById('result')
+
+	const status = true
+
+	if(item.checked){
+
+		fetch(`/sortProduct` , {method : 'put' , headers:{'Content-Type':'application/json'} , body : JSON.stringify({status})})
+	
+		.then(res => res.json())
+	
+		.then(data => {
+	
+			if(data){
+	
+				  result.classList.remove('justify-content-center')
+	
+					result.innerHTML= `${data.map((product,i) => (`
+						
+						<div id="cards"class="col-6 col-md-4 col-lg-4">
+							
+						<div class="product product-7 text-center">
+							
+						<figure class="product-media">
+	
+							<a href='/productDetails?id=${product._id}'>
+								<img src="/productImage/${product.images[0]}" alt="Product image" class="product-image">
+							</a>
+
+								<span class="product-label label-new">New</span>
+
+							<div class="product-action-vertical">
+								<a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+							</div><!-- End .product-action-vertical -->
+	
+							<input hidden value="${product.stock}" id="stock">
+	
+							<div class="product-action">
+								<button onclick="addCart('${product._id}')" id="btns" class="btn-product btn-cart border-0 " style="cursor: pointer;"><span id="crt">add to cart</span></button>
+							</div><!-- End .product-action -->
+	
+						</figure><!-- End .product-media -->
+	
+						<div class="product-body">
+	
+							<div class="product-cat">
+								<a href="#">${product.name}</a>
+							</div><!-- End .product-cat -->
+	
+							<h3 class="product-title"><a href="/products">${product.category.name}</a></h3><!-- End .product-title -->
+	
+							<div class="product-price">
+								$${product.price}.00
+							</div><!-- End .product-price -->
+	
+							<div class="ratings-container">
+
+                                                    	<div class="ratings">
+
+                                                        	<div class="ratings-val" style="width: 20%;"></div>
+
+                                                    	</div><!--End .ratings-->
+														
+                                                    	<span class="ratings-text">( 2 Reviews )</span>
+
+                                                	</div><!--End .rating-container-->
+	
+						</div><!-- End .product-body -->
+	
+						</div><!-- End .product-body -->
+	
+					</div><!-- End .product -->
+	
+					</div>
+	
+				`)).join('')}`
+	
+			}
+		})
+
+	} else {
+
+		$('#reloadDiv').load('/product #reloadDiv')
+		
+	}
+
+};
+
+//	Price Low to High :-
+
+function priceLowHigh(){
+
+	const item = document.getElementById('price');
+	const result = document.getElementById('result')
+
+	const status = true
+
+	if(item.checked){
+
+		fetch(`/sortPrice` , {method : 'put' , headers:{'Content-Type':'application/json'} , body : JSON.stringify({status})})
+	
+		.then(res => res.json())
+	
+		.then(data => {
+	
+			if(data){
+	
+				  result.classList.remove('justify-content-center')
+	
+					result.innerHTML= `${data.map((product,i) => (`
+						
+						<div id="cards"class="col-6 col-md-4 col-lg-4">
+							
+						<div class="product product-7 text-center">
+							
+						<figure class="product-media">
+	
+							<a href='/productDetails?id=${product._id}'>
+								<img src="/productImage/${product.images[0]}" alt="Product image" class="product-image">
+							</a>
+
+								<span class="product-label label-new">New</span>
+	
+							<div class="product-action-vertical">
+								<a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+							</div><!-- End .product-action-vertical -->
+	
+							<input hidden value="${product.stock}" id="stock">
+	
+							<div class="product-action">
+								<button onclick="addCart('${product._id}')" id="btns" class="btn-product btn-cart border-0 " style="cursor: pointer;"><span id="crt">add to cart</span></button>
+							</div><!-- End .product-action -->
+	
+						</figure><!-- End .product-media -->
+	
+						<div class="product-body">
+	
+							<div class="product-cat">
+								<a href="#">${product.name}</a>
+							</div><!-- End .product-cat -->
+	
+							<h3 class="product-title"><a href="/products">${product.category.name}</a></h3><!-- End .product-title -->
+	
+							<div class="product-price">
+								$${product.price}.00
+							</div><!-- End .product-price -->
+	
+							<div class="ratings-container">
+
+                                                    	<div class="ratings">
+
+                                                        	<div class="ratings-val" style="width: 20%;"></div>
+
+                                                    	</div><!--End .ratings-->
+														
+                                                    	<span class="ratings-text">( 2 Reviews )</span>
+
+                                                	</div><!--End .rating-container-->
+	
+						</div><!-- End .product-body -->
+	
+					</div><!-- End .product -->
+	
+					</div>
+	
+				`)).join('')}`
+	
+			} 
+	
+		})
+
+	} else {
+
+		$('#reloadDiv').load('/product #reloadDiv')
+
+	}
+
+};
 
 </script>
-
 
 <%- include('../layouts/footer') %>

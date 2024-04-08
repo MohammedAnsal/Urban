@@ -35,27 +35,27 @@
                               <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
 
                                   <li class="nav-item">
-                                      <a class="nav-link " id="tab-dashboard-link" href="/profile"> My Profile</a>
+                                      <a class="nav-link" id="tab-dashboard-link" href="/profile">My Profile</a>
                                   </li>
 
                                   <li class="nav-item">
                                       <a class="nav-link active" id="tab-orders-link" href="/orders" role="tab">Orders</a>
                                   </li>
 
-                                  <li class="nav-item">
-                                      <a class="nav-link" id="tab-downloads-link" data-toggle="tab" href="#" role="tab">Wishlist</a>
-                                  </li>
+                                  <!-- <li class="nav-item">
+                                      <a class="nav-link" id="tab-downloads-link" href="#" role="tab">Wishlist</a>
+                                  </li> -->
 
                                   <li class="nav-item">
                                       <a class="nav-link" id="tab-address-link"  href="/address">Adresses</a>
                                   </li>
 
                                   <li class="nav-item">
-                                      <a class="nav-link" id="tab-wallet-link" data-toggle="tab" href="#" role="tab">Wallet</a>
+                                      <a class="nav-link" id="tab-wallet-link" href="/wallet" role="tab">Wallet</a>
                                   </li>
 
                                   <li class="nav-item">
-                                      <a class="nav-link" id="tab-coupons-link" data-toggle="tab" href="#" role="tab">Coupons</a>
+                                      <a class="nav-link" id="tab-coupons-link" href="/coupen" role="tab">Coupons</a>
                                   </li>
                                   
                                   <li class="nav-item">
@@ -78,65 +78,103 @@
 
                                     <div class="container">
 
-                        <% if (orderData.find(obj => 'products' in obj)) { %>
+                    <% if (orderData.find(obj => 'products' in obj)) { %>
                                 
-                                    <table class="table table-wishlist table-mobile text-center " style="width: 920px">
+                        <table class="table table-wishlist table-mobile text-center " style="width: 920px">
 
-                                        <thead>
+                                    <thead>
 
                                         <tr>
                                             <th>No</th>
                                             <th>Order Id</th>
-                                            <th>Order Status</th>
+                                            <!-- <th>Order Status</th> -->
                                             <th>Patment Satus</th>
                                             <th>Total price</th>
                                             <th>Detailes</th>
                                         </tr>
 
-                                        </thead>
+                                    </thead>
 
-                                    <tbody class="text-center ">
+                                <tbody class="text-center ">
                                         
-                        <% orderData.forEach((ordVal , ind)=> {  %>
+                            <% orderData.forEach((ordVal , ind)=> {  %>
+
+                             <% if (ordVal.orderAmount == 0) { %>
+
+                                <tr class="fs-4">
+   
+                                        <td><%= ind + 1 %></td>
+   
+                                        <td style="text-decoration:line-through;"><%= ordVal?._id %></td>
+   
+                                        <td class="text-danger " style="text-decoration:line-through;"><%= ordVal?.peyment %></td>
+   
+                                        <td class="" style="text-decoration:line-through;">$<%= ordVal?.orderAmount %></td>
+   
+                                        <td>
+   
+                                        <a
+                                            href="/orderDetails?id=<%= ordVal?._id  %>"
+                                            style="
+                                            border-radius: 5px;
+                                            border: 0px solid transparent;
+                                            outline: 0px;
+                                            transition: all ease 0.5s;
+                                            background-color: #c96;
+                                            "
+                                            class="p-3 rounded-3 text-white">Details</a>
+   
+                                        </td>
+                                </tr>
+                                    
+                             <% } else { %>
+
+                                <tr class="fs-4">
+   
+                                        <td><%= ind + 1 %></td>
+   
+                                        <td><%= ordVal?._id %></td>
+   
+                                        <td class="text-primary"><%= ordVal?.peyment %></td>
+   
+                                        <td class="">$<%= ordVal?.orderAmount %></td>
+   
+                                        <td>
+   
+                                        <a
+                                            href="/orderDetails?id=<%= ordVal?._id  %>"
+                                            style="
+                                            border-radius: 5px;
+                                            border: 0px solid transparent;
+                                            outline: 0px;
+                                            transition: all ease 0.5s;
+                                            background-color: #c96;
+                                            "
+                                            class="p-3 rounded-3 text-white">Details</a>
+   
+                                        </td>
+                                </tr>
+
+                             <% } %>  
                                             
-                                        <tr class="fs-4">
-
-                                            <td><%= ind + 1 %></td>
-
-                                            <td><%= ordVal?._id %></td>
-
-                                            <td class="text-primary "><%= ordVal?.orderStatus %></td>
-
-                                            <td class=""><%= ordVal?.payment %></td>
-
-                                            <td class="">$<%= ordVal?.orderAmount %></td>
-
-                                            <td>
-
-                                            <a
-                                                href="/orderDetails?id=<%= ordVal?._id  %>"
-                                                style="
-                                                border-radius: 5px;
-                                                border: 0px solid transparent;
-                                                outline: 0px;
-                                                transition: all ease 0.5s;
-                                                background-color: #c96;
-                                                "
-                                                class="p-3 rounded-2 text-white">Details</a>
-
-                                            </td>
-                                    </tr>
-
                                 </tbody>
 
 
-                        <% }); %>
+                            <% }); %>
 
                         </table>
 
+                    <% } else {  %>
+
+                        <div class="">
+
+                            <p class=" text-primary">Order Not Found</p>
+                            
+                        </div>
+
                     <% } %>
 
-                            <% if(locals.orderData) {%>
+                            <% if(orderData.find(obj => 'products' in obj)) {%>
 
                                 <div class="wishlist-share">
 
@@ -151,8 +189,6 @@
                                     <!-- End .soial-icons -->
 
                                 </div>
-
-                            <% }else{ %>
 
                                 <!-- <div class="wishlist-share">
 
@@ -205,12 +241,5 @@
 <script src="assets/js/owl.carousel.min.js"></script>
 <!-- Main JS File -->
 <script src="assets/js/main.js"></script>
-
-
-<script>
-
-    console.log('<%= orderData %>');
-
-</script>
 
 <%- include('../layouts/footer') %> 

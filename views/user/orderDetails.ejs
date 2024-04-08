@@ -1,6 +1,6 @@
 <%- include('../layouts/header') %>
 
-<div class="page-wrapper">
+<div class="page-wrapper" >
 
   <%- include('../layouts/navbar-2.ejs') %>
 
@@ -54,25 +54,25 @@
 
                   <div class="mb-3">
 
-                    <label class="form-label"> name:-&nbsp;<%= order.deliveryAddress.name %></label>
+                    <label class="form-label"> name:-&nbsp;<%= order?.deliveryAddress?.name %></label>
 
                   </div>
 
                   <div class="mb-3">
 
-                    <label class="form-label"> city:-&nbsp;<%= order.deliveryAddress.city %></label>
+                    <label class="form-label"> city:-&nbsp;<%= order?.deliveryAddress?.city %></label>
 
                   </div>
 
                   <div class="mb-3">
 
-                    <label class="form-label"> state:-&nbsp;<%= order.deliveryAddress.state %></label>
+                    <label class="form-label"> state:-&nbsp;<%= order?.deliveryAddress?.state %></label>
 
                   </div>
 
                   <div class="mb-3">
 
-                    <label class="form-label"> pincode:-&nbsp;<%= order.deliveryAddress.pincode %></label>
+                    <label class="form-label"> pincode:-&nbsp;<%= order?.deliveryAddress?.pincode %></label>
 
                   </div>
 
@@ -89,7 +89,7 @@
 
                 <div class="container">
 
-                  <table class="table table-wishlist table-mobile text-center " style="width: 920px;">
+                  <table class="table table-wishlist table-mobile text-center" style="width: 920px;">
                     
                     <thead>
 
@@ -101,7 +101,7 @@
                         <th>Quantity </th>
                         <th>Delivery </th>
                         <th>Total Price</th>
-                        <!-- <th>Options</th> -->
+                        <th class="<%= order.products[0].orderProStatus == 'canceled' ? 'disabled' : '' %>"><%= order.products[0].orderProStatus == 'canceled' ? '' : 'options' %></th>
                         
                       </tr>
 
@@ -109,17 +109,19 @@
 
                     <tbody class="text-center ">
 
-                      <% if(locals.order) { %>
+                    <% if(locals.order) { %>
 
-                        <% order.products.forEach((product, index)=>{ %>
+                      <% order.products.forEach((product, index)=>{ %>
 
-                          <tr>
+                        <% if (product.orderProStatus == 'canceled') { %>
+
+                           <tr>
 
                             <td class="product-col">
 
                               <figure class="product-media">
 
-                                <a href="/productDets?proId=<%= product.productId._id %>">
+                                <a href="/productDetails?proId=<%= product.productId._id %>">
 
                                   <img src="/productImage/<%= product.productId.images[0] %> " alt="Product image">
 
@@ -131,7 +133,7 @@
 
                             <td>
 
-                              <a href="/productDets?proId=<%= product.productId._id %>">
+                              <a href="/productDetails?proId=<%= product.productId._id %>" style="text-decoration:line-through;">
 
                                 <%= product.productId.name %>
 
@@ -140,7 +142,62 @@
                               <!-- End .product -->
                             </td>
 
-                            <td class="stock-col ms-3 ">$<%=product.productId.price %></td>
+                            <td class="stock-col ms-3 " style="text-decoration:line-through;">$<%= product.productId.price %></td>
+
+                            <td class="stock-col">
+                              
+                              <span class="in-stock" style="text-decoration:line-through;">
+
+                                <%=product.quantity %>
+
+                              </span>
+                            
+                            </td>
+
+                            <td>
+
+                              <span class="<%= product.orderProStatus == 'canceled' ? 'text-danger' : 'text-primary' %>"><%= product.orderProStatus %></span>
+                              
+                            </td>
+
+                            <td class="price-col" style="text-decoration:line-through;">
+
+                              $<%= product.price %>
+
+                            </td>
+
+                          </tr>
+                            
+                        <% } else { %>
+
+                          <tr>
+
+                            <td class="product-col">
+
+                              <figure class="product-media">
+
+                                <a href="/productDetails?proId=<%= product.productId._id %>">
+
+                                  <img src="/productImage/<%= product.productId.images[0] %> " alt="Product image">
+
+                                </a>
+                                
+                              </figure>
+
+                            </td>
+
+                            <td>
+
+                              <a href="/productDetails?proId=<%= product.productId._id %>">
+
+                                <%= product.productId.name %>
+
+                              </a>
+
+                              <!-- End .product -->
+                            </td>
+
+                            <td class="stock-col ms-3 ">$<%= product.productId.price %></td>
 
                             <td class="stock-col">
                               
@@ -152,10 +209,9 @@
                             
                             </td>
 
-
                             <td>
 
-                              <span class="text-primary"><%= product.orderProStatus %></span>
+                            <span class="<%= product.orderProStatus === 'canceled' ? 'text-danger' : ( product.orderProStatus === 'returned' ? 'text-success' : 'text-primary') %>"><%= product.orderProStatus %></span>
                               
                             </td>
 
@@ -165,24 +221,36 @@
 
                             </td>
 
-                            <td>
-
+                           <td>
+                             
                               <div class="d-flex align-items-center justify-content-between w-100">
 
+                                  <% if (product.orderProStatus == 'delivered' || product.orderProStatus == 'returned') { %>
 
+                                  <button <%= product.orderProStatus == 'returned' && 'disabled' %> type="submit" onclick="returnOrd('<%= product.productId._id %>' , '<%= locals.order._id %>' , '<%= product.price %>' )" style="border-radius: 5px; transition: all ease 0.5s; background-color: #c96;" class="p-3 rounded-3  border-0 text-white <%= product.orderProStatus == 'returned' && 'opacity-50' %>">Return</button>
+                                    
+                                <% } else if (product.orderProStatus == 'shipped' || product.orderProStatus == 'pending' || product.orderProStatus || 'canceled') { %>
+
+                                  <button <%= product.orderProStatus == 'canceled' && 'disabled' %>  type="submit" onclick="cancelOrd('<%= product.productId._id %>' , '<%= locals.order._id %>' , '<%= product.price %>')" style="border-radius: 5px; transition: all ease 0.5s; background-color: #c96;" class=" <%= product.orderProStatus == 'canceled' && 'opacity-50' %>  p-3 rounded-3  border-0 text-white">Cancel</button>
+
+                                <% }  %>
+                                  
                               </div>
 
                             </td>
 
                           </tr>
 
-                        <% })} %>
+
+                        <% } %>
+
+                    <% })} %>
 
                     </tbody>
 
                   </table>
 
-                  <% if(locals.order) {%>
+                  <% if(locals.order ) {%>
 
                     <div class="wishlist-share">
 
@@ -235,5 +303,135 @@
 <script src="assets/js/owl.carousel.min.js"></script>
 <!-- Main JS File -->
 <script src="assets/js/main.js"></script>
+
+<script>
+
+  //  Cancel Order :-
+
+  async function cancelOrd(proId , ordId , price){
+
+    const {value: cancelReason} = await Swal.fire({
+
+      title: "Cancel reason",
+      input: "text",
+      inputLabel: "Cancel reason",
+      showCancelButton: true,
+
+      inputValidator: (value)=>{
+        
+        if(!value){
+
+          return "You need to write something"
+
+        }
+
+      }
+
+    });
+  
+    if(cancelReason){
+
+      Swal.fire({
+
+        title:"succes",
+        text: "Canceled order is success check your wallet",
+        icon: "success"
+
+      }).then(()=>{
+
+        editOrd(proId, ordId , price , cancelReason);
+
+      })
+
+    }
+
+  }
+
+  function editOrd(proId , ordId , price , reason){
+
+    fetch('/cancelOrd' , {method : 'post' , headers : {'Content-Type': 'application/json'} , body : JSON.stringify({proId , ordId , price , reason})})
+
+    .then(res => res.json())
+
+    .then(data => {
+
+      if(data.succ ){
+
+        window.location.reload();
+
+      } else if(data.fail) {
+
+        console.log("poyiii");
+
+      }
+
+    })
+
+  }
+
+  //  Return Order :-
+
+  async function returnOrd(proId , ordId , price){
+
+    const {value: cancelReason} = await Swal.fire({
+
+      title: "Return reason",
+      input: "text",
+      inputLabel: "Return reason",
+      showCancelButton: true,
+
+      inputValidator: (value)=>{
+        
+        if(!value){
+
+          return "You need to write something"
+
+        }
+
+      }
+
+    });
+  
+    if(cancelReason){
+
+      Swal.fire({
+
+        title:"succes",
+        text: "Return Request Sended",
+        icon: "success"
+
+      }).then(()=>{
+
+        editReturnOrd(proId, ordId , price , cancelReason);
+
+      })
+
+    }
+
+  }
+
+  function editReturnOrd(proId , ordId , price , reason){
+
+    fetch('/returnOrd' , {method : 'put' , headers : {'Content-Type': 'application/json'} , body : JSON.stringify({proId , ordId , price , reason})})
+
+    .then(res => res.json())
+
+    .then(data => {
+
+      if(data.succ){
+
+        console.log("Kitty");
+
+      } else if (data.fail){
+
+        console.log("Nothing");
+
+      }
+
+    })
+
+  }
+
+</script>
 
 <%- include('../layouts/footer') %> 

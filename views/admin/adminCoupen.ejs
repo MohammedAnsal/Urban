@@ -1,0 +1,298 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+  <div class="container-scroller">
+
+    <%- include('../layouts/adminSidebar.ejs') %>
+
+    <div class="container-fluid page-body-wrapper">
+
+        <%- include('../layouts/adminNavbar.ejs') %>
+
+      <!-- partial -->
+
+        <div class="main-panel">
+
+          <div class="content-wrapper" id="reloadDiv">
+            
+              <!-- Button trigger modal -->
+              
+              <button type="button" class="btn btn-outline-primary " data-bs-toggle="modal" data-bs-target="#couponModal">
+
+                Add Coupon
+
+              </button>
+
+                    <!-- Modal -->
+
+                    <div class="modal fade" id="couponModal" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
+
+                      <div class="modal-dialog modal-dialog-centered">
+
+                        <div class="modal-content">
+
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="couponModalLabel">Add Coupon</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
+                          </div>
+
+                          <div class="modal-body">
+
+                            <form action="/admin/addCoupen" id="couponForm" method="post" enctype="multipart/form-data">
+
+                              <p id="msg" hidden><%= msgg %></p>
+
+                              <div class="mb-3">
+                                <label for="couponName" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="couponName" name="coupon" placeholder="Enter coupon name">
+                              </div>
+
+                              <div class="mb-3">
+                                <label for="couponImage" class="form-label">Image</label>
+                                <input type="file" class="form-control" id="couponImage" name="image" accept="image/*">
+                              </div>
+
+                              <!-- <div class="mb-3">
+                                <label for="couponCode" class="form-label">Coupon Code</label>
+                                <input type="text" class="form-control" id="couponCode" name="code" placeholder="Enter coupon code">
+                              </div> -->
+
+                              <div class="mb-3 d-flex ">
+                                <div>
+                                    <label for="couponCode" class="form-label">Min</label>
+                                  <input type="number" class="form-control w-50" min="1" name="min"  id="" placeholder="min">
+                                </div>
+
+                                <div class="ms-3">
+                                  <label for="couponCode" class="form-label">Max</label>
+                                  <input type="number" class="form-control w-50 ms-3" min="1" name="max"  id="" placeholder="max">
+                                </div>
+
+                              </div>
+                              
+                              <div class="mb-3">
+                                <label for="toDate" class="form-label">Discount</label>
+                                <input type="number" class="form-control" name="discount" min="1" id="toDate">
+                              </div>
+
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary " data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-outline-success " id="submitBtn">Add Coupon</button>
+                              </div>
+
+                            </form>
+
+                          </div>
+
+                        </div>
+
+                      </div>
+                      
+                    </div>
+
+                    <!--modal end-->
+
+                    <br><br>
+
+                  <div class="row">
+
+                    <% coupenData.forEach(val => { %>
+
+                        
+                        <div class="flip-card col-lg-3" >
+                          
+                          <div class="flip-card-inner">
+                            
+                              <div class="flip-card-front" style="background: url('/productImage/<%= val.image %>'); background-size: cover;">
+
+                                <p class="title text-white" style="padding-bottom: 13rem;"><%= val.name %></p>
+                                
+                              </div>
+                              
+                              <div class="flip-card-back">
+
+                                <p class="title text-white pb-3 "><%= val.name %></p>
+                                <h6 class="text-dark" style="font-weight: bold;"><%= val.discount %>% OFF</h6>
+                                <p class="text-dark">Coupon Code : <%= val.coupenId %></p>
+
+                                <div style="text-align: center;">
+
+                                  <button id="action" class="btn btn-outline-danger" onclick="action('<%= val._id %>')"><%= val.status == true ? 'De-Active' : 'Active' %></button>
+                                  <button id="remove" class="btn btn-outline-danger" style="width: 100px;" onclick="deletCoupen('<%= val._id %>')">Remove</button>
+                                  
+                                </div>
+
+                              </div>
+
+                            </div>
+                            
+                          </div>
+                          
+                      <%  }); %>
+
+                   </div>
+
+          </div>
+
+          <!-- <footer class="footer">
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
+            </div>
+          </footer> -->
+          <!-- partial -->
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script>
+
+  //  AddCoupenSweetAlert :-
+
+  const msg = document.getElementById('msg');
+
+  if(msg.textContent.trim() == 'good'){
+
+    Swal.fire({
+
+      title: "Coupen Added",
+      text: "Coupen Added Successfully",
+      icon: "success"
+
+    });
+
+  }
+
+  //  CoupenAction :-
+
+  const btn = document.getElementById('action');
+
+  function action(id){
+
+    fetch(`/admin/copenAction?id=${id}` , {method : 'put'})
+
+    if (btn.textContent.trim() === 'De-Active') {
+
+        btn.textContent = 'Active'; 
+        btn.classList.remove('btn-outline-danger');
+        btn.classList.add('btn-outline-success');
+
+      } else {
+
+        btn.textContent = 'De-Active'; 
+        btn.classList.remove('btn-outline-success');
+        btn.classList.add('btn-outline-danger');
+      }
+
+  }
+
+  //  CoupenDelete :-
+
+  function deletCoupen(id){ 
+
+    console.log(id);
+
+    fetch(`/admin/deletCoupen?id=${id}` , {method : 'put'})
+
+    .then(res => res.json())
+
+    .then(data => {
+
+      if(data.succ){
+
+        Swal.fire({
+
+        position: "top-end",
+        icon: "success",
+        title: "Coupen Removed Successfully",
+        showConfirmButton: false,
+        timer: 1500
+
+      });
+
+        $('#reloadDiv').load('/admin/adminCoupen #reloadDiv');
+
+      }
+
+    })
+  }
+
+</script>
+
+<style>
+
+  .swal2-popup {
+
+    /* font-size: 16px;  */
+    background-color: #ffffff;
+
+  }
+  .swal2-content, .swal2-title {
+
+    color: #29b926 !important;
+
+  }
+
+.flip-card {
+  background-color: transparent;
+  width: 300px;
+  height: 300px;
+  perspective: 1000px;
+  font-family: sans-serif;
+}
+
+.title {
+  font-size: 1.5em;
+  font-weight: 900;
+  text-align: center;
+  margin: 0;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  box-shadow: 0 8px 14px 0 rgba(0,0,0,0.2);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border: 1px solid coral;
+  border-radius: 1rem;
+}
+
+.flip-card-front {
+  background: linear-gradient(120deg, bisque 60%, rgb(255, 231, 222) 88%,
+     rgb(255, 211, 195) 40%, rgba(255, 127, 80, 0.603) 48%);
+  color: coral;
+}
+
+.flip-card-back {
+  background: linear-gradient(120deg, rgb(255, 174, 145) 30%, coral 88%,
+     bisque 40%, rgb(255, 185, 160) 78%);
+  color: white;
+  transform: rotateY(180deg);
+}
+ 
+</style>
+
+<%- include('../layouts/adminFooter.ejs') %>

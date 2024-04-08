@@ -56,7 +56,7 @@
 
                      <div class="form-group">
                         <label for="exampleInputEmail3">Discount Price ($) :</label>
-                        <input type="number" class="form-control text-white w-50" id="price" name="Discountprice" placeholder="0" value="<%= productData.discount_price %>">
+                        <input type="number" class="form-control text-white w-50" id="disPrice" name="Discountprice" placeholder="0" value="<%= productData.discount_price %>">
                         <p id="price-error"class="text-danger "></p>
                       </div>
 
@@ -192,7 +192,7 @@
                          <p id="msg-desc"class="text-danger"></p>  
                     </div>
 
-                    <button type="submit" class="btn btn-outline-primary mr-2" id="btn" >Submit</button>
+                    <button type="submit" class="btn btn-outline-primary mr-2" id="btn">Submit</button>
                     <button class="btn btn-outline-danger"><a class="text-white text-decoration-none" href="/admin/product">Cancel</a></button>
 
                   </form>
@@ -363,13 +363,15 @@ document.getElementById('myForm').addEventListener('submit', function (event) {
       const initialPrice = "<%= productData.price %>";
       const initialStock = "<%= productData.stock %>";
       const initialDesc = "<%= productData.description %>";
+      const initialDis = "<%= productData.discount_price %>";
 
       const newName = document.getElementById('name').value.trim();
       const newPrice = document.getElementById('price').value.trim();
       const newStock = document.getElementById('stock').value.trim();
       const newDesc = document.getElementById('desc').value.trim();
+      const newDis = document.getElementById('disPrice').value.trim();
 
-    if (initialName === newName && initialPrice === newPrice && initialStock === newStock && initialDesc === newDesc) {
+    if (initialName === newName && initialPrice === newPrice && initialStock === newStock && initialDesc === newDesc && initialDis === newDis) {
 
       // No changes made, redirect to another page
 

@@ -1,6 +1,6 @@
 <%- include('../layouts/header') %>
 
-<div class="page-wrapper">
+<div class="page-wrapper" id="reloadDiv">
 
   <%- include('../layouts/navbar-2.ejs') %>
 
@@ -41,20 +41,20 @@
                                     <a class="nav-link" id="tab-orders-link" href="/orders" role="tab" >Orders</a>
                                 </li>
 
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link" id="tab-downloads-link"  href="#" role="tab" >Wishlist</a>
+                                </li> -->
+
                                 <li class="nav-item">
-                                    <a class="nav-link" id="tab-downloads-link" data-toggle="tab"  href="#" role="tab" >Wishlist</a>
+                                    <a class="nav-link active" id="tab-address-link" href="/address" >Adresses</a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="tab-address-link" data-toggle="tab"  href="/address" >Adresses</a>
+                                    <a class="nav-link" id="tab-wallet-link" href="/wallet" role="tab">Wallet</a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" id="tab-wallet-link" data-toggle="tab"  href="#" role="tab">Wallet</a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a class="nav-link" id="tab-coupons-link" data-toggle="tab"  href="#" role="tab" >Coupons</a>
+                                    <a class="nav-link" id="tab-coupons-link" href="/coupen" role="tab" >Coupons</a>
                                 </li>
                                 
                                 <li class="nav-item">
@@ -75,11 +75,11 @@
 
                                   <div class="container-fluid px-3 d-flex justify-content-end ">
 
-                                    <% if (address?.addresss?.length >= 1) { %>
+                                    <% if (address?.addresss?.length >= 0) { %>
 
                                         <button type="button" class="btn btn-primary mb-3 " data-bs-toggle="modal" data-bs-target="#address" data-bs-whatever="@mdo">Add Address</button>
 
-                                      <%  } %>
+                                    <%  } %>
 
                                         <!-- Modal For Address Add-->
 
@@ -123,10 +123,10 @@
 
                                                   </div>
 
-                                                  <div class="col-lg-11">
+                                                  <div class="col-lg-12">
 
                                                     <label for="display-name" class="requird text-dark"  >Address *</label>
-                                                    <textarea type="text"  id="add" cols="76" rows="3" placeholder="Enter your Address" name="addresss" required></textarea>
+                                                    <textarea type="text" class="form-control " id="add" cols="" rows="3" placeholder="Enter your Address" name="addresss" required></textarea>
 
                                                   </div>
 
@@ -149,8 +149,11 @@
                                               </div>
 
                                               <div class="modal-footer">
+
+                                                <input type="hidden" value="<%= userData._id %>" id="validUserId">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" onclick="addAddress('<%= userData._id %>')">Add</button>
+                                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" onclick="validateForm();">Add</button>
+
                                               </div>
 
                                             </div>
@@ -179,7 +182,7 @@
 
                                                     <h3 class="card-title">Address</h3><!-- End .card-title -->
 
-                                                         <p><span style="font-size: 1vw;"><%= address.addresss[i].name %></span></p>
+                                                         <p><span><%= address.addresss[i].name %></span></p>
                                                           <p><span><%= address.addresss[i].address %></span>,
                                                             <br><span><%= address.addresss[i].locality %>,</span>
                                                             <span><%= address.addresss[i].city %>,</span>
@@ -389,7 +392,8 @@ const msg = document.getElementById('msg');
      
         }).then((result) => {
  
-         window.location.href = '/address'
+          window.location.reload()
+
          
         })
 
@@ -404,7 +408,7 @@ const msg = document.getElementById('msg');
         
         }).then((result) => {
     
-         window.location.href = '/address'
+         window.location.reload()
             
         })
 
@@ -446,7 +450,8 @@ function deleteAddress(id , addId){
 
           if(data.ok){
 
-            window.location.href = '/address'
+            window.location.reload()
+
             
           }
           
@@ -493,6 +498,51 @@ function editAddress(edit){
   })
 
 };
+
+//  Validation For Add Address :-
+
+function validateForm() {
+  
+  const validId = document.getElementById('validUserId').value
+
+  console.log(validId);
+
+  var inputs = document.getElementById("addform").querySelectorAll("input, textarea")
+
+  var isValid = true
+
+    inputs.forEach(function(input) {
+
+      if (input.value.trim() === "") {
+
+        isValid = false;
+        return;
+      }
+
+    });
+
+    if (!isValid) {
+
+      event.preventDefault(); 
+            
+      Swal.fire({
+
+        title: "Oops!!!",
+        text: "Please Fill All Input Fields",
+        icon: "error"
+
+      })
+
+    } else {
+
+      var addressInput = document.getElementById("add")
+
+      event.preventDefault();
+
+      addAddress(validId);
+    }
+
+}
 
 </script>
 

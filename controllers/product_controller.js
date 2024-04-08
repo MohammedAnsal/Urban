@@ -28,7 +28,7 @@ const loadProduct = async (req, res) => {
 
         const msg = req.flash('flash');
         
-        res.render('product' , {product : productData ,  currentPage: page, totalPages , msgg : msg});
+        res.render('product' , {product : productData ,  currentPage: page, totalPages , msgg : msg , login : req.session.user});
         
     } catch (error) {
 
@@ -193,6 +193,8 @@ const verifyProductEdit = async (req, res) => {
     }
 
 };
+
+
 
 
 module.exports = {

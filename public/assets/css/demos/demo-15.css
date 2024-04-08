@@ -3,7 +3,7 @@
 
 .banner-overlay>a:after {
     transition-duration: .5s;
-    opacity: 0 !important;
-    background-color: transparent !important;
+    /* opacity: 0 !important; */
+    /* background-color: transparent !important; */
     border-radius: 20px;
 }

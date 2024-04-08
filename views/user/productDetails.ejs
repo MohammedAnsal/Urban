@@ -76,17 +76,20 @@
                                             <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
                                         </div><!-- End .ratings -->
                                         <a class="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews )</a>
+
                                     </div><!-- End .rating-container -->
 
-                                    <div class="d-flex gap-3 ">
+	                                    <div class="product-price d-flex gap-4">
 
-                                    <div class="product-price">
-                                       $ <%= productData.price %>
-                                    </div><!-- End .product-price -->
+                                            <div class="fs-3 <%= productData.discount > 0 ? 'text-decoration-line-through text-danger opacity-50 ' : '' %>"> $<%= productData.price %>.00 </div>
 
-                                    <!--  -->
+                                                <% if(productData.discount > 0){ %>
 
-                                    </div>
+                                                    <div class="text-success fs-3">$<%= productData.discount_price %>.00</div>
+
+                                                <% } %>
+                                                    
+                                         </div>
                                     
                                     <div class="product-content">
 
@@ -302,7 +305,9 @@
                     <h2 class="title text-center mb-4">You May Also Like</h2><!-- End .title text-center -->
 
                     <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+
                         data-owl-options='{
+                            
                             "nav": false, 
                             "dots": true,
                             "margin": 20,
@@ -327,6 +332,7 @@
                                 }
                             }
                         }'>
+
                         <div class="product product-7 text-center">
                             <figure class="product-media">
                                 <span class="product-label label-new">New</span>
@@ -496,6 +502,8 @@
                         </div><!-- End .product -->
 
                     </div><!-- End .owl-carousel -->
+
+
                 </div><!-- End .container -->
             </div><!-- End .page-content -->
         </main><!-- End .main -->

@@ -17,7 +17,7 @@ const Order = mongoose.Schema({
     
     },
 
-    payment: {
+    peyment: {
       
         type: String,
         required: true,
@@ -32,12 +32,12 @@ const Order = mongoose.Schema({
     
     },
 
-    orderStatus: {
+    // orderStatus: {
         
-        type: String,
-        enum: ['pending', 'shipped', 'delivered', 'canceled'],
-        default: 'pending'
-    },
+    //     type: String,
+    //     enum: ['pending', 'shipped', 'delivered', 'canceled'],
+    //     default: 'pending'
+    // }, 
 
     deliveryAddress: {
       
@@ -80,10 +80,17 @@ const Order = mongoose.Schema({
                 
             type: String,
             required: true,
-            enum: ['pending', 'shipped', 'delivered', 'canceled'],
+            enum: ['pending', 'shipped', 'delivered', 'canceled', 'returned'],
             default: 'pending',
 
-        }
+        },
+
+        canceled: { type: Boolean, default: false },
+        
+        reason: { type: String, default: '' },
+
+        retruned: { type: Boolean, default: false }
+
     }],
 
 });

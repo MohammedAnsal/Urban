@@ -22,6 +22,10 @@ const nodemailer = require('nodemailer');
 //  securely hash passwords :-
 const bcrypt = require('bcrypt');
 
+//  Import Wallet Modal :-
+const Wallet = require('../models/wallet_model');
+
+
 const securePassword = async (password) => {
     
     try {
@@ -571,7 +575,7 @@ const loadCategory = async (req, res) => {
 
         const productData = await Product.aggregate([
         
-          {
+            {
                 $match: {
                 
                   status: true,
@@ -580,7 +584,7 @@ const loadCategory = async (req, res) => {
               
             },
           
-          {
+            {
               $lookup: {
                 
                 from: "categories",
@@ -596,7 +600,8 @@ const loadCategory = async (req, res) => {
               
                 $unwind: "$category",
                 
-        },
+            },
+            
             {
 
                 $match: {
@@ -631,7 +636,7 @@ const loadCategory = async (req, res) => {
 
 //  Load All-Product (Get Method) :-
 
-const loadAllproduct = async (req, res) => {
+const loadAllproduct = async (req, res ) => {
     
     try {
 
@@ -670,11 +675,11 @@ const loadAllproduct = async (req, res) => {
 
 //  Load Product Details (Get Method) :-
 
-const loadPrdctDetails = async (req, res) => {
+const loadPrdctDetails = async (req, res , next) => {
     
     try {
 
-        const id = req.query.id;
+        const id = req.query.id || req.query.proId
 
         const categoryData = await Category.find({ is_Listed: true });      //  Category
 
@@ -693,6 +698,10 @@ const loadPrdctDetails = async (req, res) => {
     } catch (error) {
 
         console.log(error.message);
+
+        console.log('reached catch');
+
+        next(error,req,res);
         
     }
 
@@ -724,7 +733,7 @@ const loadPrdctDetails = async (req, res) => {
         
 //     }
 
-// }; 
+// };
 
 //===============================//
 
@@ -757,33 +766,6 @@ const loadPrdctDetails = async (req, res) => {
 
 //===============================//
 
-//  Load WishList (Get Method) :-
-
-const loadWishlist = async (req, res) => {
-    
-    try {
-
-        const categoryData = await Category.find({ is_Listed: true });
-
-        if (req.session.user) {
-            
-            res.render("wishlist", { login: req.session.user , categoryData });
-
-        } else {
-
-            res.render("wishlist" , {categoryData});
-
-        }
-        
-    } catch (error) {
-        
-        console.log(error.message);
-
-    }
-
-};
-
-//===============================//
 
 //  load ForgotPassword (Get Method) :-
 
@@ -1083,21 +1065,19 @@ const priceFilter = async (req, res) => {
 
 //===============================//
 
-//  404 Page :-
+//  Acending Order Product Name (PUT Method) :-
 
-const catchAll = async (req, res) => {
+const proNameSort = async (req, res) => {
     
     try {
 
-        const categoryData = await Category.find({ is_Listed: true });
+        const { status } = req.body;
 
-        if (req.session.user) {
+        if (status) {
             
-            res.render('404', { login: req.session.user, categoryData });
+            const product = await Product.find({ status: true }).sort({ name: 1 }).populate('category');
 
-        } else {
-
-            res.render('404', { categoryData });
+            res.send(product);
 
         }
         
@@ -1108,6 +1088,117 @@ const catchAll = async (req, res) => {
     }
 
 };
+
+//===============================//
+
+
+//  Price Low to High (PUT Method) :-
+
+const priceLowtoHigh = async (req, res) => {
+    
+    try {
+
+        const { status } = req.body;
+
+        if (status) {
+            
+            const product = await Product.find({ status: true }).sort({ price: 1 }).populate('category');
+
+            res.send(product)
+
+        }
+        
+    } catch (error) {
+
+        console.log(error.message);
+        
+    }
+
+};
+
+//===============================//
+
+//  LoadWallet (Get Method) :-
+
+const loadWallet = async (req, res) => {
+    
+    try {
+
+        const categoryData = await Category.find({ is_Listed: true });
+
+        if (req.session.user) {
+
+            const walletData = await Wallet.findOne({ userId: req.session.user._id });
+
+            res.render('wallet', { login: req.session.user, categoryData, walletData });
+
+        } else {
+
+            res.redirect('/login')
+
+        }
+        
+    } catch (error) {
+
+        console.log(error.message);
+        
+    }
+
+};
+
+//===============================//
+
+//  404 Page :-
+
+// const catchAll = async (req, res) => {
+    
+//     try {
+
+//         // const categoryData = await Category.find({ is_Listed: true });
+
+//         if (req.session.user) {
+            
+//             res.render('404');
+
+//         } else {
+
+//             res.render('404', { categoryData });
+
+//         }
+        
+//     } catch (error) {
+
+//         console.log(error.message);
+        
+//     }
+
+// };
+
+//  500 Page :_
+
+// const catch500 = async (req, res) => {
+    
+//     try {
+
+//         const categoryData = await Category.find({ is_Listed: true });
+
+//         if (req.session.user) {
+            
+//             res.render('500', { login: req.session.user, categoryData });
+
+//         } else {
+
+//             res.render('500', { categoryData });
+
+//         }
+        
+//     } catch (error) {
+
+//         console.log(error.message);
+        
+//     }
+
+// };
 
 module.exports = {
 
@@ -1127,7 +1218,7 @@ module.exports = {
   loadAllproduct,
   loadPrdctDetails,
 //   loadCart,
-  loadWishlist,
+//   loadWishlist,
   loadForgotPassword,
   verifyEmailForgottPass,
   loadConfirmPassword,
@@ -1135,6 +1226,10 @@ module.exports = {
   cartAction,
   searchProduct,
   priceFilter,
-  catchAll,
+//   catchAll,
+  proNameSort,
+  priceLowtoHigh,
+  loadWallet,
+//   catch500,
   
 };

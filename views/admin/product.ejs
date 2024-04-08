@@ -27,7 +27,7 @@
 
            <div class="w-100 container-fluid mt-3 mb-4">
 
-            <table class="table table-dark rounded-2 w-100 " style="border-radius: 10px;">
+            <table class="table table-dark rounded-2 w-100" style="border-radius: 10px;">
 
               <thead class="text-center">
 
@@ -60,7 +60,7 @@
                     
                     <td>
 
-                    <div class="progress d-flex align-items-center  h-100 w-100" style=" background-color: transparent; justify-content: center;">
+                    <div class="progress d-flex align-items-center h-100 w-100" style=" background-color: transparent; justify-content: center;">
 
                     <% product[i].images.forEach(img => { %>
 
@@ -105,6 +105,7 @@
                         <div class="dropdown-menu text-center" aria-labelledby="dropdownMenuButton">
 
                            <a class="dropdown-item text-primary" href="/admin/editProduct?id=<%= product[i]._id %>">Edit</a>
+                           
                             <!-- <a class="dropdown-item text-danger" href="#">Delete</a> -->
                             
                             <button type="button" id="s<%=product[i]._id %>" class="btn px-5 mt-1 <%= product[i].status == false ? 'btn-outline-success' : 'btn-outline-danger' %>" onclick="productAction('<%= product[i]._id %>' , this)" style="margin-right: 5px;"><%= product[i].status ? 'Unlist' :'List'%></button>
