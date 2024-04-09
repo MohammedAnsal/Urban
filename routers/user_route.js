@@ -113,8 +113,7 @@ user_route.get('/wallet', user_controller.loadWallet);
 //  Profile Section :-
 
 //  Profile (get)
-user_route.get('/profile', user_middilware.user , profile_controller.loadProfile);
-
+user_route.get('/profile', user_middilware.user, user_middilware.isBlocked, profile_controller.loadProfile);
 //  Edit Profile (post)
 user_route.post('/editProfile', profile_controller.editProfile);
 
@@ -144,16 +143,16 @@ user_route.post("/chooseAddress", checkout_controller.chooseAddress);
 //  Orders Section :-
 
 //  load Orders (get)
-user_route.get('/orders', user_middilware.user, orders_controller.loadOrder);
+user_route.get('/orders', user_middilware.user, user_middilware.isBlocked, orders_controller.loadOrder);
 
 //  orderDetails (get)
-user_route.get("/orderDetails", user_middilware.user , orders_controller.orderView);
+user_route.get("/orderDetails", user_middilware.user, user_middilware.isBlocked, orders_controller.orderView);
 
 //  Order Kitty (post)
 user_route.post('/getOrder', orders_controller.orderKitty);
 
 //  thanksPage (get)
-user_route.get('/thanks', orders_controller.loadThanks);
+user_route.get('/thanks', user_middilware.user, user_middilware.isBlocked, orders_controller.loadThanks);
 
 //  cancelOrder (post)
 user_route.post('/cancelOrd', orders_controller.orderCancel);
@@ -181,7 +180,7 @@ user_route.post("/cartAction", user_controller.cartAction);
 //  CheckOut Section :-
 
 //  checkout (get)
-user_route.get('/checkout', user_middilware.user, checkout_controller.loadCheckout);
+user_route.get('/checkout', user_middilware.user, user_middilware.isBlocked, checkout_controller.loadCheckout);
 
 //  verifychekout Add Address (post)
 user_route.post("/verifyChekutAdss", checkout_controller.verifyCheckOutAddress);
@@ -215,9 +214,12 @@ user_route.post("/addCartt", user_wishlist.addCart);
 //  Coupen Section :-
 
 //  Coupen (get)
-user_route.get('/coupen', user_coupen.loadCoupen);
+user_route.get('/coupen', user_middilware.user, user_middilware.isBlocked, user_coupen.loadCoupen);
+
+//  coupenCheck (post)
+user_route.post("/coupenCehck", user_coupen.coupenCheck);
 
 //  useCoupen (post)
-user_route.post("/coupenCehck", user_coupen.coupenCheck);
+user_route.post('/useCoupen', user_coupen.useCoupen);
 
 module.exports = user_route;

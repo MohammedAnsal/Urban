@@ -37,49 +37,42 @@
 
                           <div class="modal-body">
 
-                            <form action="/admin/addCoupen" id="couponForm" method="post" enctype="multipart/form-data">
+                       <form action="/admin/addCoupen" id="couponForm" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
 
-                              <p id="msg" hidden><%= msgg %></p>
+                          <p id="msg" hidden class="text-danger "></p>
 
-                              <div class="mb-3">
-                                <label for="couponName" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="couponName" name="coupon" placeholder="Enter coupon name">
-                              </div>
+                          <div class="mb-3">
+                            <label for="couponName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="couponName" name="coupon" placeholder="Enter coupon name">
+                          </div>
 
-                              <div class="mb-3">
-                                <label for="couponImage" class="form-label">Image</label>
-                                <input type="file" class="form-control" id="couponImage" name="image" accept="image/*">
-                              </div>
+                          <div class="mb-3">
+                            <label for="couponImage" class="form-label">Image</label>
+                            <input type="file" class="form-control" id="couponImage" name="image" accept="image/*">
+                          </div>
 
-                              <!-- <div class="mb-3">
-                                <label for="couponCode" class="form-label">Coupon Code</label>
-                                <input type="text" class="form-control" id="couponCode" name="code" placeholder="Enter coupon code">
-                              </div> -->
+                          <div class="mb-3 d-flex">
+                            <div>
+                              <label for="min" class="form-label">Min</label>
+                              <input type="number" class="form-control w-50" min="1" name="min" id="min" placeholder="min">
+                            </div>
 
-                              <div class="mb-3 d-flex ">
-                                <div>
-                                    <label for="couponCode" class="form-label">Min</label>
-                                  <input type="number" class="form-control w-50" min="1" name="min"  id="" placeholder="min">
-                                </div>
+                            <div class="ms-3">
+                              <label for="max" class="form-label">Max</label>
+                              <input type="number" class="form-control w-50 ms-3" min="1" name="max" id="max" placeholder="max">
+                            </div>
+                          </div>
 
-                                <div class="ms-3">
-                                  <label for="couponCode" class="form-label">Max</label>
-                                  <input type="number" class="form-control w-50 ms-3" min="1" name="max"  id="" placeholder="max">
-                                </div>
+                          <div class="mb-3">
+                            <label for="discount" class="form-label">Discount</label>
+                            <input type="number" class="form-control" name="discount" min="1" id="discount">
+                          </div>
 
-                              </div>
-                              
-                              <div class="mb-3">
-                                <label for="toDate" class="form-label">Discount</label>
-                                <input type="number" class="form-control" name="discount" min="1" id="toDate">
-                              </div>
-
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-secondary " data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-outline-success " id="submitBtn">Add Coupon</button>
-                              </div>
-
-                            </form>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-outline-success" id="submitBtn">Add Coupon</button>
+                          </div>
+                        </form>
 
                           </div>
 
@@ -205,15 +198,29 @@
 
       if(data.succ){
 
-        Swal.fire({
+       const Toast = Swal.mixin({
 
-        position: "top-end",
-        icon: "success",
-        title: "Coupen Removed Successfully",
-        showConfirmButton: false,
-        timer: 1500
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
 
-      });
+          didOpen: (toast) => {
+
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+
+          }
+
+        });
+
+        Toast.fire({
+
+          icon: "success",
+          title: "Deleted Successfully"
+          
+        });
 
         $('#reloadDiv').load('/admin/adminCoupen #reloadDiv');
 
@@ -221,6 +228,28 @@
 
     })
   }
+
+  //  Validation For Coupen Adding :-
+
+function validateForm() {
+
+  var couponName = document.getElementById('couponName').value;
+  var couponImage = document.getElementById('couponImage').value;
+  var min = document.getElementById('min').value;
+  var max = document.getElementById('max').value;
+  var discount = document.getElementById('discount').value;
+
+  if (couponName === '' || couponImage === '' || min === '' || max === '' || discount === '') {
+
+    document.getElementById('msg').innerText = 'Please fill all the input fields.';
+    document.getElementById('msg').hidden = false; 
+
+    return false; 
+
+  }
+
+  return true; 
+}
 
 </script>
 

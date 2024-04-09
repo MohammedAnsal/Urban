@@ -130,7 +130,7 @@ admin_route.post('/addBrand', admin_category.BrandAdd);
 //  Admin Orders Section :-
 
 //  Admin Orders List (get)
-admin_route.get('/orders', admin_orders.loadOrders);
+admin_route.get('/orders', admin_middilware.isLogin, admin_orders.loadOrders);
 
 //  Admin Orders Details (post)
 admin_route.get('/ordDetails', admin_orders.ordersDetails);
@@ -142,7 +142,7 @@ admin_route.put("/orderStatusHandling", admin_orders.orderProstatus);
 admin_route.post("/returnManage", admin_orders.returnManaging);
 
 //  Admin Coupen (get)
-admin_route.get('/adminCoupen', coupen_controller.loadAdminCoupen);
+admin_route.get('/adminCoupen', admin_middilware.isLogin, coupen_controller.loadAdminCoupen);
 
 //  AddCoupen (post)
 admin_route.post('/addCoupen', upload.array('image', 1), coupen_controller.addCoupen);
@@ -161,6 +161,9 @@ admin_route.get('/salesReport/:id', admin_middilware.isLogin, admin_salesReport.
 //  Admin Offer Section :-
 
 //  loadIffer (get)
-admin_route.get('/adminOffer', admin_offer.loadOffer);
+admin_route.get('/adminOffer', admin_middilware.isLogin, admin_offer.loadOffer);
+
+//  addOffer (post)
+admin_route.post('/addOffer', admin_offer.addOffer);
 
 module.exports = admin_route;

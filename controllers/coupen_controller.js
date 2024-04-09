@@ -50,7 +50,7 @@ const loadCoupen = async (req, res) => {
 
 };
 
-//  Use Coupen (Post Method) :-
+//  Coupen Checking (Post Method) :- (User)
 
 const coupenCheck = async (req, res) => {
     
@@ -70,6 +70,22 @@ const coupenCheck = async (req, res) => {
 
         }
 
+    } catch (error) {
+
+        console.log(error.message);
+        
+    }
+
+};
+
+//  Use Coupen (Post Method) :- (User)
+
+const useCoupen = async (req, res) => {
+    
+    try {
+
+        
+        
     } catch (error) {
 
         console.log(error.message);
@@ -204,4 +220,5 @@ module.exports = {
     coupenAction,
     deleteCoupen,
     coupenCheck,
+    useCoupen,
 }
