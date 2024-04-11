@@ -166,4 +166,7 @@ admin_route.get('/adminOffer', admin_middilware.isLogin, admin_offer.loadOffer);
 //  addOffer (post)
 admin_route.post('/addOffer', admin_offer.addOffer);
 
+//  offerRenove (put)
+admin_route.put('/offerRemove', admin_offer.offerRemove);
+
 module.exports = admin_route;

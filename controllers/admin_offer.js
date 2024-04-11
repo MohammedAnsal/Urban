@@ -87,12 +87,41 @@ const addOffer = async (req, res) => {
 
 };
 
-//  offerRemove (Put )
+//  offerRemove (Put Method) :-
+
+const offerRemove = async (req, res) => {
+    
+    try {
+
+        const offerId = req.query.id
+        
+        const removed = await Offer.findOneAndDelete({ _id: offerId });
+
+        const cateId = removed.category._id
+
+        if (removed) {
+            
+            const r = await Product.updateMany({ category: cateId }, { $set: { discount: 0, discount_price: 0 } });
+
+            res.send({ succ: true })
+
+        } else {
+
+            res.send({ fail: true })
+
+        }
+
+    } catch (error) {
+
+        console.log(error.message);
+        
+    }
+
+};
 
 module.exports = {
 
     loadOffer,
     addOffer,
-
-
+    offerRemove
 }

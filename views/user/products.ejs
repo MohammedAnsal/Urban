@@ -108,7 +108,7 @@
 												<% if (val.stock <= 0) { %>
 
                                                     <span class="product-label text-white text-bg-danger  label-out-of-stock">Out of Stock</span>
-
+													
                                                 <% } else { %>
 
                                                     <span class="product-label label-new <%= val.discount > 0 ? "bg-danger" : '' %>"><%= val.discount > 0 ? val.discount + '% OFF' : 'New' %></span>
@@ -230,6 +230,7 @@
                                     </div><!-- End .col-sm-6 col-lg-4 -->
 
                                 </div><!-- End .row -->
+
                             </div><!-- End .products -->
 
                 			<nav aria-label="Page navigation">
@@ -257,20 +258,26 @@
 							    </ul>
 							</nav>
                 		</div><!-- End .col-lg-9 -->
+
                 		<aside class="col-lg-3 order-lg-first">
+
                 			<div class="sidebar sidebar-shop">
+
                 				<div class="widget widget-clean">
                 					<label>Filters:</label>
                 					<a href="#" class="sidebar-filter-clear">Clean All</a>
                 				</div><!-- End .widget widget-clean -->
 
                 				<div class="widget widget-collapsible">
+									
     								<h3 class="widget-title">
 									    <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
 									        Category
 									    </a>
 									</h3><!-- End .widget-title -->
+
 									<div class="collapse show" id="widget-1">
+
 										<div class="widget-body">
 											<div class="filter-items filter-items-count">
 												<div class="filter-item">
@@ -290,6 +297,7 @@
 											</div><!-- End .filter-items -->
 										</div><!-- End .widget-body -->
 									</div><!-- End .collapse -->
+
         						</div><!-- End .widget -->
 
         						<div class="widget widget-collapsible">
@@ -357,6 +365,8 @@
 									</div>End .collapse
         						</div>End .widget -->
 
+								
+
         						<div class="widget widget-collapsible">
     								<h3 class="widget-title">
 									    <a data-toggle="collapse" href="#widget-4" role="button" aria-expanded="true" aria-controls="widget-4">
@@ -367,6 +377,7 @@
 									<div class="collapse show" id="widget-4">
 										<div class="widget-body">
 											<div class="filter-items">
+
 												<div class="filter-item">
 													<div class="custom-control custom-checkbox">
 														<input type="checkbox" class="custom-control-input" id="brand-1">
@@ -394,12 +405,14 @@
 														<label class="custom-control-label" for="brand-4">New Balance</label>
 													</div><!-- End .custom-checkbox -->
 												</div><!-- End .filter-item -->
+												
 											</div><!-- End .filter-items -->
 										</div><!-- End .widget-body -->
 									</div><!-- End .collapse -->
         						</div><!-- End .widget -->
 
         						<div class="widget widget-collapsible">
+									
     								<h3 class="widget-title">
 									    <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true" aria-controls="widget-5">
 									        Price
@@ -453,15 +466,23 @@
 
 											<input class="form-check-input" type="checkbox" role="switch" id="abc" onclick="acendingLetter()">
 
-											<label class="form-check-label" for="abc">Name</label>
+											<label class="form-check-label" for="abc">aA - zZ</label>
 
 											</div>
 
 											<div class="form-check form-switch">
 
-											<input class="form-check-input" type="checkbox" role="switch" id="price" onclick="priceLowHigh()">
+											<input class="form-check-input" type="checkbox" role="switch" id="lowTohigh" onclick="lowTohigh()">
 
-											<label class="form-check-label" for="price">Price</label>
+											<label class="form-check-label" for="price">Low to High</label>
+
+											</div>
+
+											<div class="form-check form-switch">
+
+											<input class="form-check-input" type="checkbox" role="switch" id="highTolow" onclick="highTolow()">
+
+											<label class="form-check-label" for="price">High to Low</label>
 
 											</div>
 
@@ -470,6 +491,7 @@
                                     </div><!-- End .widget-body -->
 
 									</div><!-- End .collapse -->
+
         						</div><!-- End .widget -->
 
                 			</div><!-- End .sidebar sidebar-shop -->
@@ -922,16 +944,16 @@ function acendingLetter(){
 
 //	Price Low to High :-
 
-function priceLowHigh(){
+function lowTohigh(){
 
-	const item = document.getElementById('price');
+	const item = document.getElementById('lowTohigh');
 	const result = document.getElementById('result')
 
 	const status = true
 
 	if(item.checked){
 
-		fetch(`/sortPrice` , {method : 'put' , headers:{'Content-Type':'application/json'} , body : JSON.stringify({status})})
+		fetch(`/lowTohigh` , {method : 'put' , headers:{'Content-Type':'application/json'} , body : JSON.stringify({status})})
 	
 		.then(res => res.json())
 	
@@ -1010,6 +1032,97 @@ function priceLowHigh(){
 	}
 
 };
+
+//	Price High to Low :-
+
+function highTolow(){
+
+	const result = document.getElementById('result')
+	const item = document.getElementById('highTolow')
+
+	const status = true
+
+	if(item.checked){
+
+		fetch('/highTolow' , {method : 'put' , headers : {'Content-Type':'application/json'} , body : JSON.stringify({status})})
+
+		.then(res => res.json())
+
+		.then(data => {
+
+			if(data){
+	
+				  result.classList.remove('justify-content-center')
+	
+					result.innerHTML= `${data.map((product,i) => (`
+						
+						<div id="cards"class="col-6 col-md-4 col-lg-4">
+							
+						<div class="product product-7 text-center">
+							
+						<figure class="product-media">
+	
+							<a href='/productDetails?id=${product._id}'>
+								<img src="/productImage/${product.images[0]}" alt="Product image" class="product-image">
+							</a>
+
+								<span class="product-label label-new">New</span>
+	
+							<div class="product-action-vertical">
+								<a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+							</div><!-- End .product-action-vertical -->
+	
+							<input hidden value="${product.stock}" id="stock">
+	
+							<div class="product-action">
+								<button onclick="addCart('${product._id}')" id="btns" class="btn-product btn-cart border-0 " style="cursor: pointer;"><span id="crt">add to cart</span></button>
+							</div><!-- End .product-action -->
+	
+						</figure><!-- End .product-media -->
+	
+						<div class="product-body">
+	
+							<div class="product-cat">
+								<a href="#">${product.name}</a>
+							</div><!-- End .product-cat -->
+	
+							<h3 class="product-title"><a href="/products">${product.category.name}</a></h3><!-- End .product-title -->
+	
+							<div class="product-price">
+								$${product.price}.00
+							</div><!-- End .product-price -->
+	
+							<div class="ratings-container">
+
+                                                    	<div class="ratings">
+
+                                                        	<div class="ratings-val" style="width: 20%;"></div>
+
+                                                    	</div><!--End .ratings-->
+														
+                                                    	<span class="ratings-text">( 2 Reviews )</span>
+
+                                                	</div><!--End .rating-container-->
+	
+						</div><!-- End .product-body -->
+	
+					</div><!-- End .product -->
+	
+					</div>
+	
+				`)).join('')}`
+	
+			} 
+
+		})
+
+	} else {
+
+		$('#reloadDiv').load('/product #reloadDiv')
+
+	}
+
+}
 
 </script>
 

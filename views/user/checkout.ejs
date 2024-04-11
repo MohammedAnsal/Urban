@@ -616,6 +616,8 @@
 
 												<div class="card">
 
+													<% if (cartData?.totalCartPrice >= 1000) { %>
+
 													<div class="card-header" id="heading-1">
 
 														<h2 class="card-title">
@@ -627,6 +629,24 @@
 														</h2>
 
 													</div>
+														
+												<% } else { %>
+
+													<div class="card-header" id="heading-1">
+
+														<h2 class="card-title">
+
+															<input type="radio" name="peyment" value="Cash on Delivery" disabled class="bg-primary opacity-50">
+
+															
+
+															<label for="" style="text-decoration:line-through;">Cash on Delivery</label>
+
+														</h2>
+
+													</div>
+
+												<% } %>
 													
 													<br>
 

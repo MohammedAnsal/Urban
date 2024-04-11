@@ -1091,10 +1091,9 @@ const proNameSort = async (req, res) => {
 
 //===============================//
 
-
 //  Price Low to High (PUT Method) :-
 
-const priceLowtoHigh = async (req, res) => {
+const lowToHigh = async (req, res) => {
     
     try {
 
@@ -1117,6 +1116,32 @@ const priceLowtoHigh = async (req, res) => {
 };
 
 //===============================//
+
+//  Pric eGigh To Low (Put Method) :-
+
+const highTolow = async (req, res) => {
+    
+    try {
+
+        const { status } = req.body;
+
+        if (status) {
+            
+            const product = await Product.find({ status: true }).sort({ price: -1 }).populate('category');
+
+            res.send(product);
+        }
+        
+    } catch (error) {
+
+        console.log(error.message);
+        
+    }
+
+}
+
+//===============================//
+
 
 //  LoadWallet (Get Method) :-
 
@@ -1228,7 +1253,8 @@ module.exports = {
   priceFilter,
 //   catchAll,
   proNameSort,
-  priceLowtoHigh,
+  lowToHigh,
+  highTolow,
   loadWallet,
 //   catch500,
   

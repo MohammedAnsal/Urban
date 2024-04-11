@@ -92,8 +92,11 @@ user_route.put('/priceFilter', user_controller.priceFilter);
 //  SortProName (put)
 user_route.put("/sortProduct", user_controller.proNameSort);
 
-//  SortPrice (put)
-user_route.put("/sortPrice", user_controller.priceLowtoHigh);
+//  lowTohigh (put)
+user_route.put("/lowToHigh", user_controller.lowToHigh);
+
+//  highTolow (put)
+user_route.put('/highTolow', user_controller.highTolow);
 
 //  forgotPassword (get)
 user_route.get('/forgotPass', user_controller.loadForgotPassword);

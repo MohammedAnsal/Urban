@@ -1,6 +1,6 @@
 <%- include('../layouts/adminHeader.ejs') %>
 
-  <div class="container-scroller">
+  <div class="container-scroller" >
 
     <%- include('../layouts/adminSidebar.ejs') %>
 
@@ -12,8 +12,9 @@
 
         <div class="main-panel">
 
-            <div class="content-wrapper">
-                <div class="container-fluid ">
+            <div class="content-wrapper" >
+
+                <div class="container-fluid " id="reloadDiv">
 
                     <div class="container-fluid">
 
@@ -149,7 +150,7 @@
 
                                         <td>
 
-                                            <button class="btn btn-outline-danger">
+                                            <button class="btn btn-outline-danger" onclick="offerRemove('<%= val._id %>')">
                                                 Remove
                                             </button>
 
@@ -183,6 +184,8 @@
 
 <script>
 
+    //  Offer Validation :-
+
 const form = document.getElementById('offerForm');
 const namer = document.getElementById('nameer');
 const num = document.getElementById('numer');
@@ -210,7 +213,54 @@ form.addEventListener('submit', function(event) {
 
 });
 
-</script>
+//  Offer Remove (put) :-
 
+function offerRemove(id){
+
+    fetch(`/admin/offerRemove?id=${id}` , {method : 'put'})
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        if(data.succ){
+
+            const Toast = Swal.mixin({
+
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+
+                didOpen: (toast) => {
+
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+
+                }
+
+            });
+
+            Toast.fire({
+
+                icon: "success",
+                title: "Deleted Successfully"
+                
+            });
+
+            $('#reloadDiv').load('/admin/adminOffer #reloadDiv')
+
+        } else {
+
+            console.log("Illattoo");
+                        
+        }
+
+    })
+
+}
+
+</script>
 
 <%- include('../layouts/adminFooter.ejs') %>
