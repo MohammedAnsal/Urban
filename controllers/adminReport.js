@@ -52,6 +52,16 @@ const loadReport = async (req, res) => {
 
             res.render("salesReport", { report, data: "Year", reportVal: req.params.id });
 
+        } else if ((reportVal == "Custom")) {
+
+            res.render("salesReport", {
+
+                custom: true,
+                reportVal: req.params.id,
+                data: "costum",
+
+            });
+
         } else {
 
             res.redirect("/admin");
@@ -66,8 +76,31 @@ const loadReport = async (req, res) => {
 
 };
 
+//  Sales Custom Report :-
+
+const customReport = async (req, res) => {
+
+    try {
+
+        const startDate = new Date(req.body.startDatee);
+
+        const endDate = new Date(req.body.endDatee);
+
+        const getData = await Order.find({ orderDate: { $gte: startDate, $lte: endDate } });
+
+        res.send({ getData });
+
+    } catch (err) {
+
+        console.log(err.message);
+
+    }
+
+};
+
 module.exports = {
 
-    loadReport
+    loadReport,
+    customReport
 
 }

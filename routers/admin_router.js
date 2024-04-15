@@ -158,6 +158,9 @@ admin_route.put("/deletCoupen", coupen_controller.deleteCoupen);
 //  loadReport (get)
 admin_route.get('/salesReport/:id', admin_middilware.isLogin, admin_salesReport.loadReport);
 
+//  Custom Report (put)
+admin_route.put("/cstmReport", admin_salesReport.customReport);
+
 //  Admin Offer Section :-
 
 //  loadIffer (get)

@@ -36,13 +36,29 @@
 
                         <h2 style='color: #fff;' class="content-title card-title text-white">
 
-                            <%=locals.reportVal %> Report
+                            <%= locals.reportVal %> Report
 
                         </h2>
 
                     </div>
 
                 </div>
+
+                <div class="d-flex align-items-center justify-content-end text-white" style="gap:1rem;">
+
+                    <% if(locals.custom){ %>
+                        
+                        Select Date :
+
+                        <input type="date" onchange="customDate(this)" name="startD" id="startDate">
+
+                        <input type="date" onchange="customDate(this)" name="endD" id="endDate">
+
+                    <% } %>
+
+                </div>
+
+                <div class="pa__middle-btn"> <button class="btn btn-accent" type="reset">Reset</button></div>
 
             </header>
 
@@ -101,11 +117,7 @@
                                             
                                         </tr>
 
-                                    <% })} else { %>
-
-                                        <p class="text-center text-danger">There is No Orders</p>
-
-                                    <% } %>
+                                    <% })} %>
 
                             </tbody>
 
@@ -123,11 +135,84 @@
 
         <!-- card end  -->
 
+<script>
+
+//  Cutom Date :-
+
+const table = document.getElementById('table')
+const startDate = document.getElementById('startDate')
+const endDate = document.getElementById('endDate');
+
+// const form = document.getElementById('myForm');
+
+function customDate(val){
+
+    if(startDate.value !== '' && endDate.value !== '' ){
+        
+        fetch('/admin/cstmReport',{
+
+            method:'put',
+
+            headers:{"Content-Type":'application/json'},
+
+            body:JSON.stringify({ startDatee:startDate.value ,endDatee:endDate.value })
+
+        }).then(res=>res.json()).then(data=>{
+
+            if(data.getData.length > 0){
+
+                table.innerHTML = data.getData.map(( val,indx ) =>
+
+                    ` <tr>
+
+                        <td scope="col">
+                            ${indx + 1}
+                        </td>
+
+                        <td scope="col">
+                            ${val._id}
+                        </td>
+
+                        <td scopval="col">
+                            ${val.deliveryAddress.name}
+                        </td>
+
+                        <td scope="col">
+                            ${val.orderDate.toString().split(' ').slice(0,4).join(' ')}
+                        </td>
+
+                        <td scope="col">
+                            ${val.orderAmount}
+                        </td>
+
+                        <td scope="col">
+                            ${val.peyment}
+                        </td>
+
+                    </tr>`
+
+                ).join('');
+
+            } else{
+
+                table.innerHTML = 'No Orders here'
+
+            }
+
+        })
+
+    }
+}
+
+</script>
+
     </section>
 
     <% if(locals.data){ %>
 
     <style>
+
+
 
         table{
 
