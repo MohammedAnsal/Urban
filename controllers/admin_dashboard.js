@@ -14,63 +14,308 @@ const Category = require("../models/category_model");
 
 const loadDahboard = async (req, res) => {
     
-    try {
+  try {
 
-        const order = await Order.find();   //  Order
+    const order = await Order.find();   //  Order
 
-        const totalOrdAmount = order.reduce((acc, val) => acc + val.orderAmount, 0);    //  TotalAmount
+    const totalOrdAmount = order.reduce((acc, val) => acc + val.orderAmount, 0);    //  TotalAmount
 
-        const totalProduct = await Product.find()   //  Product
+    const totalProduct = await Product.find()   //  Product
 
-        //  Best Selling Products :-
+    //  Best Selling Products :-
 
-        const bestSellPro = await Order.aggregate([
+    const bestSellPro = await Order.aggregate([
         
-            {
-                $unwind: "$products",
-            },
+      {
+        $unwind: "$products",
+      },
 
-            {
-                $group: {
+      {
+        $group: {
 
-                    _id: "$products.productId",
-                    ttlCount: { $sum: "$products.quantity" },
+          _id: "$products.productId",
+          ttlCount: { $sum: "$products.quantity" },
                     
-                },
-            },
+        },
+      },
 
-            {
-                $lookup: {
+      {
+        $lookup: {
 
-                    from: "products",
-                    localField: "_id",
-                    foreignField: "_id",
-                    as: "productData",
-                },
-            },
+          from: "products",
+          localField: "_id",
+          foreignField: "_id",
+          as: "productData",
+        },
+      },
 
-            {
-                $sort: { ttlCount: -1 },
-            },
+      {
+        $sort: { ttlCount: -1 },
+      },
 
-            {
-                $limit: 5,
-            },
+      {
+        $limit: 5,
+      },
 
-        ]);
+    ]);
+      
+    //  Top Selling Category :-
 
-        res.render('dashbord', { order, totalOrdAmount, totalProduct, bestSellPro });
+    const bestSellCate = await Order.aggregate([
+    
+      { $unwind: "$products" },
+
+      {
+        $group: {
+
+          _id: "$products.productId",
+          totalQuantity: { $sum: "$products.quantity" },
+        },
+
+      },
+
+      { $sort: { totalQuantity: -1 } },
+      { $limit: 3 },
+
+      {
+
+        $lookup: {
+
+          from: "products",
+          localField: "_id",
+          foreignField: "_id",
+          as: "productDetails",
+
+        },
+
+      },
+
+      { $unwind: "$productDetails" },
+
+      {
+        $lookup: {
+
+          from: "categories",
+          localField: "productDetails.category",
+          foreignField: "_id",
+          as: "categoryDetails",
+
+        },
+
+      },
+
+      {
+        $group: {
+
+          _id: "$categoryDetails._id",
+          categoryName: { $first: "$categoryDetails.name" },
+          totlCate: { $sum: "$totalQuantity" },
+        },
+
+      },
+
+      { $sort: { totalCategoryQuantity: -1 } },
+
+      { $limit: 2 },
+
+    ]);
+
+    //  Top Selling Brand :-
+
+    const bestSellBrand = await Order.aggregate([
+    
+      {
+        $unwind: "$products",
+      },
+
+      {
+
+        $group: {
+
+          _id: "$products.productId",
+          totalQuantity: { $sum: "$products.quantity" },
+
+        },
+
+      },
+
+      {
+
+        $lookup: {
+
+          from: "products",
+          localField: "_id",
+          foreignField: "_id",
+          as: "products",
+
+        },
+
+      },
+
+      {
+        $unwind: "$products",
+      },
+
+      {
+
+        $group: {
+
+          _id: "$products.brand",
+          totalQuantity: { $sum: "$totalQuantity" },
+
+        },
+
+      },
+
+      {
+
+        $sort: { totalQuantity: -1 },
+
+      },
+
+      {
+
+        $limit: 3,
         
-    } catch (error) {
+      },
 
-        console.log(error.message);
+    ]);
+
+    res.render('dashbord', { order, totalOrdAmount, totalProduct, bestSellPro, bestSellCate, bestSellBrand });
         
-    }
+  } catch (error) {
+
+    console.log(error.message);
+        
+  }
+
+};
+
+//  Year Chart (Put Method) :-
+
+const chartYear = async (req, res) => {
+
+  try {
+
+    const curntYear = new Date().getFullYear();
+
+    const yearChart = await Order.aggregate([
+        
+      {
+        
+        $match: {
+
+          orderDate: {
+
+            $gte: new Date(`${curntYear - 5}-01-01`),
+            $lte: new Date(`${curntYear}-12-31`),
+
+          },
+
+        },
+
+      },
+
+      {
+        $group: {
+
+          _id: { $year: "$orderDate" },
+          totalAmount: { $sum: "$orderAmount" },
+
+        },
+
+      },
+
+      {
+        $sort: { _id: 1 },
+      },
+
+    ]);
+
+    res.send({ yearChart });
+
+  } catch (err) {
+
+    console.log(err.message);
+
+  }
+
+};
+
+//  Month Chart (Put Method) :-
+
+const monthChart = async (req, res) => {
+
+  try {
+    
+    const monthName = [
+
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    const curntYear = new Date().getFullYear();
+
+    const monData = await Order.aggregate([
+    
+      {
+        $match: {
+
+          orderDate: {
+
+            $gte: new Date(`${curntYear}-01-01`),
+            $lte: new Date(`${curntYear}-12-31`),
+            
+          },
+
+        },
+      },
+
+      {
+        $group: {
+          _id: { $month: "$orderDate" },
+          totalAmount: { $sum: "$orderAmount" },
+        },
+      },
+
+      {
+        $sort: { _id: 1 },
+      },
+
+    ]);
+
+    const salesData = Array.from({ length: 12 }, (_, i) => {
+
+      const monthData = monData.find((item) => item._id === i + 1);
+
+      return monthData ? monthData.totalAmount : 0;
+
+    });
+
+    res.json({ months: monthName, salesData });
+
+  } catch (err) {
+
+    console.log(err.message);
+   
+  }
 
 };
 
 module.exports = {
 
-    loadDahboard,
+  loadDahboard,
+  chartYear,
+  monthChart
 
 };

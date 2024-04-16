@@ -401,6 +401,28 @@ const returnOrd = async (req, res) => {
 
 };
 
+//  Download Invoice (Put Method) :-
+
+const downloadInvoice = async (req, res) => {
+    
+    try {
+
+        const categoryData = await Category.find({ is_Listed: true });
+
+        const ordId = req.query.id
+        
+        const ordData = await Order.findOne({ _id: ordId }).populate('products.productId')
+
+        res.render('invoice', { ordData, categoryData })
+        
+    } catch (error) {
+
+        console.log(error.message);
+        
+    }
+
+};
+
 module.exports = {
 
     loadOrder,
@@ -409,5 +431,6 @@ module.exports = {
     orderView,
     orderCancel,
     returnOrd,
+    downloadInvoice
 
 };

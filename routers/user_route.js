@@ -163,6 +163,9 @@ user_route.post('/cancelOrd', orders_controller.orderCancel);
 //  returnOrder (post)
 user_route.put('/returnOrd', orders_controller.returnOrd);
 
+//  Download Invoice (put)
+user_route.get("/downloadInvoice", orders_controller.downloadInvoice);
+
 //  Cart Section :-
 
 //  cart (get)

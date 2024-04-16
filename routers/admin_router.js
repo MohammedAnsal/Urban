@@ -161,6 +161,12 @@ admin_route.get('/salesReport/:id', admin_middilware.isLogin, admin_salesReport.
 //  Custom Report (put)
 admin_route.put("/cstmReport", admin_salesReport.customReport);
 
+//  Year Chart (put)
+admin_route.put('/chartYear', admin_dashboard.chartYear);
+
+//  Month Chart (put)
+admin_route.put('/monthChart', admin_dashboard.monthChart);
+
 //  Admin Offer Section :-
 
 //  loadIffer (get)

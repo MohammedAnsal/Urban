@@ -27,8 +27,11 @@
         <div class="container-fluid  py-5 h-100 position-relative ">
 
           <div class="row d-flex    align-items-start  h-100" style="gap: 10rem;">
+
             <aside class="col-md-2 col-lg-2  ">
+
               <!-- profile nave -->
+
               <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
 
                 <li class="nav-item">
@@ -36,7 +39,18 @@
                 </li>
 
               </ul>
+
               <br>
+
+              <% if (order.products[0].orderProStatus == 'delivered') { %>
+                
+                <div class="mb-2">
+    
+                  <button class="btn border"><a href="/downloadInvoice?id=<%= order._id %>">Download Invoice</a></button>
+    
+                </div>
+
+            <%  } %>
 
               <div class="card" style="border:.1rem solid #ebebeb !important; border-radius: 8px; padding-left: 20px;">
 
@@ -80,6 +94,7 @@
                 </div>
 
               </div>
+              
 
             </aside>
 

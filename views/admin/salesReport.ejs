@@ -44,7 +44,7 @@
 
                 </div>
 
-                <div class="d-flex align-items-center justify-content-end text-white" style="gap:1rem;">
+                <div class="d-flex align-items-center justify-content-center text-white" style="gap:1rem;">
 
                     <% if(locals.custom){ %>
                         
@@ -58,8 +58,6 @@
 
                 </div>
 
-                <div class="pa__middle-btn"> <button class="btn btn-accent" type="reset">Reset</button></div>
-
             </header>
 
             <!-- card-header end// -->
@@ -70,7 +68,7 @@
 
                     <div id="reloadDiv" class="w-100 container-fluid">
 
-                        <table class="table table-dark">
+                        <table class="table table-dark" id="download">
 
                             <thead class="text-center">
                                 <tr>
@@ -252,7 +250,137 @@ function customDate(val){
    
 <% } %>
 
+<style>
+
+    .dataTables_info{
+
+        display: none !important;
+
+    }
+
+    .pa__middle-btn{
+
+        display: none !important;
+
+    }
+    
+
+    table{
+
+        border-radius: 70px !important
+
+    }
+
+    body {
+
+        padding: 2rem;
+        background-color: #212529;
+    }
+
+    select {
+
+        -webkit-appearance:none;
+        -moz-appearance:none;
+        -ms-appearance:none;
+        appearance:none;
+        outline:0;
+        box-shadow:none;
+        border:0!important;
+        background: #5c6664;
+        background-image: none;
+        /* flex: 1; */
+        padding: 0 .5em;
+        color:#fff;
+        cursor:pointer;
+        font-size: 1em;
+        font-family: ' Open Sans', sans-serif; 
+
+    }
+
+    select::-ms-expand { display: none; } 
+    
+    /* Style PDF button */
+.dataTables_wrapper .dt-buttons .buttons-pdf {
+
+    background-color: transparent; /* Make background transparent */
+    color: #dc3545; /* Set text color to danger color */
+    border: 2px solid #dc3545; /* Set border to danger color */
+    border-radius: 5px; /* Add border radius */
+    padding: 5px 10px; /* Adjust padding as needed */
+    margin-right: 5px; /* Adjust margin as needed */
+
+}
+
+/* .dataTables_wrapper .dt-buttons .buttons-pdf:hover {
+
+    background-color: #dc3545; Set background color on hover
+    color: #fff; Set text color to white on hover
+} */
+
+/* Style Excel button */
+.dataTables_wrapper .dt-buttons .buttons-excel {
+    
+    background-color: transparent; /* Make background transparent */
+    color: #28a745; /* Set text color to success color */
+    border: 2px solid #28a745; /* Set border to success color */
+    border-radius: 5px; /* Add border radius */
+    padding: 5px 10px; /* Adjust padding as needed */
+    margin-right: 5px; /* Adjust margin as needed */
+}
+
+/* .dataTables_wrapper .dt-buttons .buttons-excel:hover {
+    
+    background-color: #28a745; Set background color on hover
+    color: #fff; Set text color to white on hover
+} */
+.dataTables_wrapper .dt-buttons {
+
+    display: flex; /* Use flexbox */
+    justify-content: flex-end; /* Align buttons to the end of the container */
+    margin-bottom: 10px; /* Adjust margin as needed */
+}
+
+.dataTables_wrapper .dt-buttons .buttons-pdf,
+
+.dataTables_wrapper .dt-buttons .buttons-excel {
+
+    
+}
+
+</style>
+
 </body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+
+<script>
+
+    $(document).ready(function() {
+
+        $('#download').DataTable( {
+
+            dom: 'Bfrtip',
+
+            buttons: [
+
+                'excel', 'pdf'
+
+            ],
+             
+            paging: false,
+            searching: false
+
+        } );
+
+    } );
+
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"crossorigin="anonymous"></script>
 

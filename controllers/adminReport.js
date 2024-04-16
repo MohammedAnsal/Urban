@@ -65,7 +65,6 @@ const loadReport = async (req, res) => {
         } else {
 
             res.redirect("/admin");
-
         }
 
     } catch (err) {
@@ -103,4 +102,4 @@ module.exports = {
     loadReport,
     customReport
 
-}
+};

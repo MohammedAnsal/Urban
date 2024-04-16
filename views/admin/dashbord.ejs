@@ -148,7 +148,7 @@
                 </div>
               </div>
 
-              <div class="col-md-8 grid-margin stretch-card">
+              <div class="col-4 grid-margin stretch-card">
 
                 <div class="card">
 
@@ -156,17 +156,21 @@
                     
                     <div class="d-flex flex-row justify-content-between">
 
-                      <h4 class="card-title mb-1">Top Selling Categoery</h4>
+                      <h4 class="card-title mb-3 text-warning ">Top Selling Categoery</h4>
+
+                      <h4>Total Count</h4>
 
                     </div>
 
                     <div class="row">
 
+                      <% bestSellCate.forEach((val , indx) => { %>
+                        
                       <div class="col-12">
 
-                        <div class="preview-list">
+                        <div class="preview-list border-top">
 
-                          <div class="preview-item border-bottom">
+                          <div class="preview-item">
 
                             <!-- <div class="preview-thumbnail">
                               <div class="preview-icon bg-primary">
@@ -176,27 +180,27 @@
 
                             <div class="preview-item-content d-sm-flex flex-grow">
 
+                              <h5><%= indx + 1 %> : </h5>
+
                               <div class="flex-grow">
-                                <h6 class="preview-subject">Admin dashboard design</h6>
-                                <p class="text-muted mb-0">Broadcast web app mockup</p>
+                                <h5 class="preview-subject">&nbsp;&nbsp;<%= val.categoryName %></h5>
                               </div>
 
                               <div class="mr-auto text-sm-right pt-2 pt-sm-0">
-                                <p class="text-muted">15 minutes ago</p>
-                                <p class="text-muted mb-0">30 tasks, 5 issues </p>
+                                <h5 class="text-muted">Total Product : <%= val.totlCate %></h5>
                               </div>
 
                             </div>
 
                           </div>
 
-                          <div class="preview-item border-bottom">
+                          <!-- <div class="preview-item border-bottom">
 
-                            <!-- <div class="preview-thumbnail">
+                            <div class="preview-thumbnail">
                               <div class="preview-icon bg-success">
                                 <i class="mdi mdi-cloud-download"></i>
                               </div>
-                            </div> -->
+                            </div>
 
                             <div class="preview-item-content d-sm-flex flex-grow">
 
@@ -212,7 +216,7 @@
 
                             </div>
 
-                          </div>
+                          </div> -->
 
                           <!-- <div class="preview-item border-bottom">
                             <div class="preview-thumbnail">
@@ -272,6 +276,146 @@
 
                       </div>
 
+                      <%  }); %>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div> 
+
+               <div class="col-4 grid-margin stretch-card">
+
+                <div class="card">
+
+                  <div class="card-body">
+                    
+                    <div class="d-flex flex-row justify-content-between">
+
+                      <h4 class="card-title mb-3 text-warning">Top Selling Brand</h4>
+
+                      <h4>Total Count</h4>
+
+                    </div>
+
+                    <div class="row">
+
+                      <% bestSellBrand.forEach((val , indx) => { %>
+                        
+                      <div class="col-12">
+
+                        <div class="preview-list border-top">
+
+                          <div class="preview-item">
+
+                            <!-- <div class="preview-thumbnail">
+                              <div class="preview-icon bg-primary">
+                                <i class="mdi mdi-file-document"></i>
+                              </div>
+                            </div> -->
+
+                            <div class="preview-item-content d-sm-flex flex-grow">
+
+                              <h5><%= indx + 1 %> : </h5>
+
+                              <div class="flex-grow">
+                                <h5 class="preview-subject">&nbsp;&nbsp;<%= val._id %></h5>
+                              </div>
+
+                              <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                <h5 class="text-muted">Total Product : <%= val.totalQuantity %></h5>
+                              </div>
+
+                            </div>
+
+                          </div>
+
+                          <!-- <div class="preview-item border-bottom">
+
+                            <div class="preview-thumbnail">
+                              <div class="preview-icon bg-success">
+                                <i class="mdi mdi-cloud-download"></i>
+                              </div>
+                            </div>
+
+                            <div class="preview-item-content d-sm-flex flex-grow">
+
+                              <div class="flex-grow">
+                                <h6 class="preview-subject">Wordpress Development</h6>
+                                <p class="text-muted mb-0">Upload new design</p>
+                              </div>
+
+                              <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                <p class="text-muted">1 hour ago</p>
+                                <p class="text-muted mb-0">23 tasks, 5 issues </p>
+                              </div>
+
+                            </div>
+
+                          </div> -->
+
+                          <!-- <div class="preview-item border-bottom">
+                            <div class="preview-thumbnail">
+                              <div class="preview-icon bg-info">
+                                <i class="mdi mdi-clock"></i>
+                              </div>
+                            </div>
+                            <div class="preview-item-content d-sm-flex flex-grow">
+                              <div class="flex-grow">
+                                <h6 class="preview-subject">Project meeting</h6>
+                                <p class="text-muted mb-0">New project discussion</p>
+                              </div>
+                              <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                <p class="text-muted">35 minutes ago</p>
+                                <p class="text-muted mb-0">15 tasks, 2 issues</p>
+                              </div>
+                            </div>
+                          </div> -->
+
+                          <!-- <div class="preview-item border-bottom">
+                            <div class="preview-thumbnail">
+                              <div class="preview-icon bg-danger">
+                                <i class="mdi mdi-email-open"></i>
+                              </div>
+                            </div>
+                            <div class="preview-item-content d-sm-flex flex-grow">
+                              <div class="flex-grow">
+                                <h6 class="preview-subject">Broadcast Mail</h6>
+                                <p class="text-muted mb-0">Sent release details to team</p>
+                              </div>
+                              <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                <p class="text-muted">55 minutes ago</p>
+                                <p class="text-muted mb-0">35 tasks, 7 issues </p>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="preview-item">
+                            <div class="preview-thumbnail">
+                              <div class="preview-icon bg-warning">
+                                <i class="mdi mdi-chart-pie"></i>
+                              </div>
+                            </div>
+                            <div class="preview-item-content d-sm-flex flex-grow">
+                              <div class="flex-grow">
+                                <h6 class="preview-subject">UI Design</h6>
+                                <p class="text-muted mb-0">New application planning</p>
+                              </div>
+                              <div class="mr-auto text-sm-right pt-2 pt-sm-0">
+                                <p class="text-muted">50 minutes ago</p>
+                                <p class="text-muted mb-0">27 tasks, 4 issues </p>
+                              </div>
+                            </div>
+                          </div> -->
+
+                        </div>
+
+                      </div>
+
+                      <%  }); %>
+
                     </div>
 
                   </div>
@@ -290,7 +434,7 @@
 
                   <div class="card-body">
 
-                    <h5>Total Orders</h5>
+                    <h5 class=" text-warning ">Total Orders</h5>
 
                     <div class="row">
 
@@ -328,7 +472,7 @@
 
                   <div class="card-body">
 
-                    <h5>Total Sales</h5>
+                    <h5 class=" text-warning ">Total Sales</h5>
 
                     <div class="row">
 
@@ -366,7 +510,7 @@
 
                   <div class="card-body">
 
-                    <h5>Total Products</h5>
+                    <h5 class=" text-warning ">Total Products</h5>
 
                     <div class="row">
 
@@ -400,9 +544,6 @@
 
             </div>
 
-
-
-
              <div class="row">
 
               <div class="col-12 grid-margin">
@@ -411,7 +552,7 @@
 
                   <div class="card-body">
 
-                    <h4 class="card-title">Top Selling Products</h4>
+                    <h4 class="card-title text-warning ">Top Selling Products</h4>
 
                     <div class="table-responsive">
 
@@ -569,6 +710,42 @@
                 </div>
               </div>
             </div> 
+
+            <div class="row">
+              
+              <div class="col-lg-6 grid-margin stretch-card">
+
+                <div class="card">
+
+                  <div class="card-body">
+
+                    <h4 class="card-title  text-warning ">Month</h4>
+
+                    <canvas id="monthlyChart" style="height:200px"></canvas>
+
+                  </div>
+
+                </div>
+
+              </div>
+              
+              <div class="col-lg-6 grid-margin stretch-card">
+
+                <div class="card">
+
+                  <div class="card-body">
+
+                    <h4 class="card-title  text-warning ">Year</h4>
+
+                    <canvas id="areaChart" style="height:200px"></canvas>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
             
             <!-- <div class="row">
               <div class="col-md-6 col-xl-4 grid-margin stretch-card">
@@ -824,4 +1001,237 @@
   </div>  <!-- container-scroller -->
 
 <%- include('../layouts/adminFooter.ejs') %>
+
+<script>
+
+//  Year :-
+
+const currentYear = new Date().getFullYear();
+const next5Years = Array.from({ length: 6 }, (_, index) => (currentYear+3) - index);
+const previeYear = next5Years.reverse();
+var date = [];
+
+fetch('/admin/chartYear', {
+
+  method: 'put',
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({})
+
+})
+    .then(res => res.json())
+
+    .then(data => {
+
+
+  previeYear.forEach((e, i) => {
+
+    let yearFound = false;
+
+    data.yearChart.forEach((year, ind) => {
+
+      if (e === year._id) {
+
+        date[i] = year.totalAmount;
+        yearFound = true;
+
+      }
+
+    });
+
+    if (!yearFound) {
+
+      date[i] = 0;
+
+    }
+
+  });
+
+    if ($("#areaChart").length) {
+
+      var areaData = {
+
+        labels: previeYear,
+
+        datasets: [{
+
+          label: 'sales',
+          data: date,
+
+          backgroundColor: [
+
+            'rgba(54, 162, 235, 0.2)', 
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+
+          borderColor: [
+
+            'rgba(54, 162, 235, 1)', 
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+
+          ],
+
+            borderWidth: 1,
+            fill: true,
+
+        }]
+
+      }; 
+
+    var areaOptions = {
+
+      plugins: {
+
+        filler: {
+
+          propagate: true
+
+        }
+
+      },
+
+      scales: {
+
+        yAxes: [{
+
+          gridLines: {
+            color: "rgba(204, 204, 204,0.1)"
+          }
+
+        }],
+
+        xAxes: [{
+
+          gridLines: {
+            color: "rgba(204, 204, 204,0.1)"
+          }
+
+        }]
+
+      }
+      
+    }
+
+      var areaChartCanvas = $("#areaChart").get(0).getContext("2d");
+
+      var areaChart = new Chart(areaChartCanvas, {
+
+        type: 'line',
+        data: areaData,
+        options: areaOptions
+
+      });
+
+    }
+
+  //  Month :-
+
+    const monthName = [
+
+      "January", "February", "March",
+      "April", "May", "June", "July",
+      "August", "September", "October",
+      "November", "December"
+      
+    ];
+
+    fetch('/admin/monthChart', {
+
+      method: 'put',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({})
+
+    })
+
+    .then(res => res.json())
+
+    .then(data => {
+
+      const months = monthName;
+      const salesData = data.salesData;
+
+      if ($("#monthlyChart").length) {
+
+          var monthlyData = {
+
+            labels: months,
+
+            datasets: [{
+
+              label: 'Sales',
+              data: salesData,
+              backgroundColor: 'rgba(54, 162, 235, 0.2)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1,
+              fill: true,
+
+            }]
+
+          };
+
+          var monthlyOptions = {
+
+            plugins: {
+
+              filler: {
+
+               propagate: true
+
+              }
+
+            },
+
+            scales: {
+
+              yAxes: [{
+
+                 gridLines: {
+
+                  color: "rgba(204, 204, 204,0.1)"
+
+                }
+
+              }],
+              
+              xAxes: [{
+
+                gridLines: {
+
+                  color: "rgba(204, 204, 204,0.1)"
+
+                }
+
+              }]
+
+            }
+
+          };
+
+            var monthlyChartCanvas = $("#monthlyChart").get(0).getContext("2d");
+
+            var monthlyChart = new Chart(monthlyChartCanvas, {
+
+              type: 'line',
+              data: monthlyData,
+              options: monthlyOptions
+
+            });
+        }
+
+      console.log(salesData);
+
+    })
+
+  .catch(error => console.error('Error fetching monthly sales data:', error));
+  
+})
+
+</script>
 
