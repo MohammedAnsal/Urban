@@ -13,6 +13,9 @@ const Category = require("../models/category_model");
 //  Import Cart Modal :-
 const Cart = require('../models/cart_model');
 
+//  Import Coupen Model :-
+const Coupen = require('../models/coupen_model');
+
 //  Load Cart Page (Get Method) :-
 
 const loadCart = async (req, res) => {
@@ -43,7 +46,13 @@ const loadCart = async (req, res) => {
 
                 const overAll = newData ? newData : cartData;   // TotalPrice Managing
 
-                const totall = overAll.products.reduce((acc, product) => acc + product.price, 0);  //  Calculating Cart Total Pricee
+                let totall = overAll.products.reduce((acc, product) => acc + product.price, 0);  //  Calculating Cart Total Pricee
+
+                if (cartData.coupenDiscount >= 0) {
+                    
+                    totall -= cartData.coupenDiscount
+
+                }
 
                 await Cart.findOneAndUpdate({ userId: userIdd }, { $set: { totalCartPrice: totall } }, { new: true, upsert: true }).exec();
 
@@ -147,10 +156,12 @@ const deleteCart = async (req, res) => {
         const userIdd = req.session.user._id
 
         const removeCart = await Cart.updateOne({ userId: userIdd }, { $pull: { products: { productId: cartIdd } } });
+        await Cart.updateOne({ userId: req.session.user._id }, { $set: { coupenDiscount: 0 } });
 
         if (removeCart) {
             
             console.log("success");
+
             res.send(true);
 
         } else {
@@ -225,7 +236,7 @@ const updateCart = async (req, res) => {
         
     } catch (err) {
 
-        console.log(err.message + "cart edit");
+        console.log(err.message);
         
     }
 

@@ -141,66 +141,112 @@ const table = document.getElementById('table')
 const startDate = document.getElementById('startDate')
 const endDate = document.getElementById('endDate');
 
-// const form = document.getElementById('myForm');
+function customDate(val) {
 
-function customDate(val){
+    if (startDate.value !== '' && endDate.value !== '') {
 
-    if(startDate.value !== '' && endDate.value !== '' ){
-        
-        fetch('/admin/cstmReport',{
+        fetch('/admin/cstmReport', {
 
-            method:'put',
+            method: 'put',
+            headers: { "Content-Type": 'application/json' },
+            
+            body: JSON.stringify({ startDatee: startDate.value, endDatee: endDate.value })
 
-            headers:{"Content-Type":'application/json'},
+        }).then(res => res.json()).then(data => {
 
-            body:JSON.stringify({ startDatee:startDate.value ,endDatee:endDate.value })
+            if (data.getData.length > 0) {
 
-        }).then(res=>res.json()).then(data=>{
+                $('#download').DataTable().clear().draw();
 
-            if(data.getData.length > 0){
+                data.getData.forEach(function (val, indx) {
 
-                table.innerHTML = data.getData.map(( val,indx ) =>
+                    $('#download').DataTable().row.add([
 
-                    ` <tr>
+                        indx + 1,
+                        val._id,
+                        val.deliveryAddress.name,
+                        val.orderDate.toString().split(' ').slice(0, 4).join(' '),
+                        val.orderAmount,
+                        val.peyment
 
-                        <td scope="col">
-                            ${indx + 1}
-                        </td>
+                    ]).draw();
 
-                        <td scope="col">
-                            ${val._id}
-                        </td>
+                });
 
-                        <td scopval="col">
-                            ${val.deliveryAddress.name}
-                        </td>
+            } else {
 
-                        <td scope="col">
-                            ${val.orderDate.toString().split(' ').slice(0,4).join(' ')}
-                        </td>
-
-                        <td scope="col">
-                            ${val.orderAmount}
-                        </td>
-
-                        <td scope="col">
-                            ${val.peyment}
-                        </td>
-
-                    </tr>`
-
-                ).join('');
-
-            } else{
-
-                table.innerHTML = 'No Orders here'
+                $('#download').DataTable().clear().draw();
+                $('#download').DataTable().row.add(['No Orders here']).draw();
 
             }
 
-        })
+        });
 
     }
+
 }
+
+// // const form = document.getElementById('myForm');
+
+// function customDate(val){
+
+//     if(startDate.value !== '' && endDate.value !== '' ){
+        
+//         fetch('/admin/cstmReport',{
+
+//             method:'put',
+
+//             headers:{"Content-Type":'application/json'},
+
+//             body:JSON.stringify({ startDatee:startDate.value ,endDatee:endDate.value })
+
+//         }).then(res=>res.json()).then(data=>{
+
+//             if(data.getData.length > 0){
+
+//                 table.innerHTML = data.getData.map(( val,indx ) =>
+
+//                     ` <tr>
+
+//                         <td scope="col">
+//                             ${indx + 1}
+//                         </td>
+
+//                         <td scope="col">
+//                             ${val._id}
+//                         </td>
+
+//                         <td scopval="col">
+//                             ${val.deliveryAddress.name}
+//                         </td>
+
+//                         <td scope="col">
+//                             ${val.orderDate.toString().split(' ').slice(0,4).join(' ')}
+//                         </td>
+
+//                         <td scope="col">
+//                             ${val.orderAmount}
+//                         </td>
+
+//                         <td scope="col">
+//                             ${val.peyment}
+//                         </td>
+
+//                     </tr>`
+
+//                 ).join('');
+
+//             } else{
+
+//                 table.innerHTML = 'No Orders here'
+
+//             }
+
+//         })
+
+//     }
+// }
+
 
 </script>
 
@@ -337,7 +383,8 @@ function customDate(val){
 
     display: flex; /* Use flexbox */
     justify-content: flex-end; /* Align buttons to the end of the container */
-    margin-bottom: 10px; /* Adjust margin as needed */
+    margin-bottom: 15px; /* Adjust margin as needed */
+    
 }
 
 .dataTables_wrapper .dt-buttons .buttons-pdf,

@@ -99,7 +99,7 @@
 
                                                                               <di class="coupon-row pt-1">
                                                                                 <span id="cpnCode"><%= val.coupenId %></span>
-                                                                                <span id="cpnBtn">Copy Code</span>
+                                                                                <span onclick="copyCode('<%= val.coupenId %>' , this)" id="cpnBtn">Copy Code</span>
                                                                                </di>
 
                                                                         </div>
@@ -159,14 +159,14 @@
    var btn = document.getElementById("cpnBtn");
    var cpnCode = document.getElementById("cpnCode");
 
-    btn.onclick = function(){
+    function copyCode(e,elem){
 
-      navigator.clipboard.writeText(cpnCode.innerHTML);
-      btn.innerHTML ="COPIED";
+      navigator.clipboard.writeText(e);
+      elem.innerHTML ="COPIED";
       
       setTimeout(function(){
 
-        btn.innerHTML="COPY CODE";
+        elem.innerHTML="COPY CODE";
 
       }, 3000);
 
@@ -179,6 +179,7 @@
   #cpnCode{
     border: 1px dashed #fff;
     padding: 10px 20px;
+	  display: none;
     border-right: 0;
 
 }
@@ -248,5 +249,6 @@
 }
 
 </style>
+
 
 <%- include('../layouts/footer') %> 

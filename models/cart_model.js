@@ -23,7 +23,7 @@ const cartSchema = new mongoose.Schema({
             type: Number,
             required: true
 
-        }, 
+        },
 
     }],
 
@@ -39,6 +39,13 @@ const cartSchema = new mongoose.Schema({
         type: String,
         required: true
     
+    },
+
+    coupenDiscount: {
+        
+        type: Number,
+        required: true
+
     },
 
 });

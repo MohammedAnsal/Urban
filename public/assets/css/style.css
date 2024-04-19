@@ -10401,10 +10401,10 @@ button:focus {
 }
 .filter-price {
   padding-top: 0.2rem;
-  padding-bottom: 3rem;
+  padding-bottom: 1rem;
 }
 .filter-price-text {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   letter-spacing: -0.01em;
 }
 #filter-price-range {

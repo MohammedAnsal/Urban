@@ -32,9 +32,11 @@ const loadCoupen = async (req, res) => {
 
         if (req.session.user) {
 
+            const msg = req.flash('flash')
+
             const coupenData = await Coupen.find({ status: true });
             
-            res.render("coupen", { login: req.session.user, categoryData, coupenData });
+            res.render("coupen", { login: req.session.user, categoryData, coupenData, msgg: msg });
 
         } else {
 
@@ -84,7 +86,28 @@ const useCoupen = async (req, res) => {
     
     try {
 
+        const coupenId = req.body.coupen;
         
+        const cartData = await Cart.findOne({ userId: req.session.user._id });
+        const coupenCheck = await Coupen.findOne({ coupenId: coupenId });
+
+        const cartPrice = cartData.totalCartPrice;  //  CartPrice
+        const coupenDis = coupenCheck.discount     //  Coupen Discount
+
+        if (coupenCheck) {
+            
+            const offerValue = Math.round((cartPrice) - (cartPrice * coupenDis / 100));
+            const discountedValue = cartPrice - offerValue
+
+            const updateCart = await Cart.findOneAndUpdate({ _id: cartData._id }, { $set: { totalCartPrice: offerValue, coupenDiscount: discountedValue } }, { new: true });
+
+            if (updateCart) {
+               
+                req.flash("flash", "coupen");
+                res.redirect("/checkout");
+
+            }
+        }
         
     } catch (error) {
 

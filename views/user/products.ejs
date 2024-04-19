@@ -264,8 +264,10 @@
                 			<div class="sidebar sidebar-shop">
 
                 				<div class="widget widget-clean">
+
                 					<label>Filters:</label>
-                					<a href="#" class="sidebar-filter-clear">Clean All</a>
+                					<a href="#" class="sidebar-filter-clear" onclick="cleanFilters()" id="clean">Clean All</a>
+
                 				</div><!-- End .widget widget-clean -->
 
                 				<div class="widget widget-collapsible">
@@ -300,12 +302,12 @@
 
         						</div><!-- End .widget -->
 
-        						<div class="widget widget-collapsible">
+        						<!-- <div class="widget widget-collapsible">
     								<h3 class="widget-title">
 									    <a data-toggle="collapse" href="#widget-2" role="button" aria-expanded="true" aria-controls="widget-2">
 									        Size
 									    </a>
-									</h3><!-- End .widget-title -->
+									</h3>End .widget-title
 
 									<div class="collapse show" id="widget-2">
 										<div class="widget-body">
@@ -314,33 +316,33 @@
 													<div class="custom-control custom-checkbox">
 														<input type="checkbox" class="custom-control-input" id="size-3">
 														<label class="custom-control-label" for="size-3">6</label>
-													</div><!-- End .custom-checkbox -->
-												</div><!-- End .filter-item -->
+													</div>End .custom-checkbox
+												</div>End .filter-item
 
 												<div class="filter-item">
 													<div class="custom-control custom-checkbox">
 														<input type="checkbox" class="custom-control-input" id="size-4">
 														<label class="custom-control-label" for="size-4">7</label>
-													</div><!-- End .custom-checkbox -->
-												</div><!-- End .filter-item -->
+													</div>End .custom-checkbox
+												</div>End .filter-item
 
 												<div class="filter-item">
 													<div class="custom-control custom-checkbox">
 														<input type="checkbox" class="custom-control-input" id="size-5">
 														<label class="custom-control-label" for="size-5">8</label>
-													</div><!-- End .custom-checkbox -->
-												</div><!-- End .filter-item -->
+													</div>End .custom-checkbox
+												</div>End .filter-item
 
 												<div class="filter-item">
 													<div class="custom-control custom-checkbox">
 														<input type="checkbox" class="custom-control-input" id="size-6">
 														<label class="custom-control-label" for="size-6">9</label>
-													</div><!-- End .custom-checkbox -->
-												</div><!-- End .filter-item -->
-											</div><!-- End .filter-items -->
-										</div><!-- End .widget-body -->
-									</div><!-- End .collapse -->
-        						</div><!-- End .widget -->
+													</div>End .custom-checkbox
+												</div>End .filter-item
+											</div>End .filter-items
+										</div>End .widget-body
+									</div>End .collapse
+        						</div>End .widget -->
 
         						<!-- <div class="widget widget-collapsible">
     								<h3 class="widget-title">
@@ -420,8 +422,11 @@
 									</h3><!-- End .widget-title -->
 
 									<div class="collapse show" id="widget-5">
+
 										<div class="widget-body">
+
                                         <div class="filter-price">
+
                                             <div class="filter-price-text">
                                                 Price Range:
                                                 <span id="filter-price-range"></span>
@@ -436,14 +441,16 @@
                                             </div><!-- End .price-inputs -->
                                             
                                             <div id="price-slider"></div><!-- End #price-slider -->
+
                                         </div><!-- End .filter-price -->
                             
                                         <div class="submit-button">
-                                            <button type="submit" class="rounded-pill bg-dark  border-0 px-4 text-white" onclick="priceFilter()">Apply</button>
+                                            <button type="submit" class="rounded-pill bg-dark border-0 px-3 text-white" onclick="priceFilter()">Apply</button>
                                         </div><!-- End .submit-button -->
 
                                     </div><!-- End .widget-body -->
 									</div><!-- End .collapse -->
+
         						</div><!-- End .widget -->
 
 								<div class="widget widget-collapsible">
@@ -462,27 +469,33 @@
 
                                         <div class="filter-price">
 
-                                            <div class="form-check form-switch">
+                                            <div class="form-check">
+												
+											<input class="form-check-input" type="radio" name="flexRadioDefault" onclick="acendingLetter()" id="abc">
 
-											<input class="form-check-input" type="checkbox" role="switch" id="abc" onclick="acendingLetter()">
-
-											<label class="form-check-label" for="abc">aA - zZ</label>
-
-											</div>
-
-											<div class="form-check form-switch">
-
-											<input class="form-check-input" type="checkbox" role="switch" id="lowTohigh" onclick="lowTohigh()">
-
-											<label class="form-check-label" for="price">Low to High</label>
+											<label class="form-check-label" for="flexRadioDefault1">
+												aA - zZ
+											</label>
 
 											</div>
 
-											<div class="form-check form-switch">
+											<div class="form-check">
 
-											<input class="form-check-input" type="checkbox" role="switch" id="highTolow" onclick="highTolow()">
+											<input class="form-check-input" type="radio" name="flexRadioDefault" onclick="lowTohigh()" id="lowTohigh">
 
-											<label class="form-check-label" for="price">High to Low</label>
+											<label class="form-check-label" for="flexRadioDefault1">
+												Low to High
+											</label>
+
+											</div>
+
+											<div class="form-check">
+
+											<input class="form-check-input" type="radio" name="flexRadioDefault" onclick="highTolow()" id="highTolow">
+
+											<label class="form-check-label" for="flexRadioDefault2">
+												High to Low
+											</label>
 
 											</div>
 
@@ -709,7 +722,7 @@ function priceFilter(){
 
 		if(data.fail == 'failed'){
 			
-			disErr.textContent = 'Price Required!!!'
+			disErr.textContent = 'Put Price!!!'
 
 		} else if(data.success.length == 0) {
 			
@@ -774,7 +787,6 @@ function priceFilter(){
         </div>
 
             `)).join('')}`
-
 
 		}
 
@@ -1037,8 +1049,8 @@ function lowTohigh(){
 
 function highTolow(){
 
-	const result = document.getElementById('result')
 	const item = document.getElementById('highTolow')
+	const result = document.getElementById('result')
 
 	const status = true
 
@@ -1117,6 +1129,20 @@ function highTolow(){
 		})
 
 	} else {
+
+		$('#reloadDiv').load('/product #reloadDiv')
+
+	}
+
+}
+
+//	Clean All Filters :-
+
+function cleanFilters(){
+
+	const val = true
+
+	if(val == true){
 
 		$('#reloadDiv').load('/product #reloadDiv')
 

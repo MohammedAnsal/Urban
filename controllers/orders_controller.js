@@ -174,7 +174,7 @@ const orderKitty = async (req, res) => {
             
                     //  Update Cart :-
             
-                    const cartRemove = await Cart.updateOne({ userId: userIdd }, { $unset: { products: 1 }, $set: { totalCartPrice: 0 } });
+                    const cartRemove = await Cart.updateOne({ userId: userIdd }, { $unset: { products: 1 }, $set: { totalCartPrice: 0, coupenDiscount: 0 } });
                         
                     if (cartRemove) {
             

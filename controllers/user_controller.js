@@ -1065,7 +1065,7 @@ const priceFilter = async (req, res) => {
 
 //===============================//
 
-//  Acending Order Product Name (PUT Method) :-
+//  Acending Order Product Name (Put Method) :-
 
 const proNameSort = async (req, res) => {
     
@@ -1091,7 +1091,7 @@ const proNameSort = async (req, res) => {
 
 //===============================//
 
-//  Price Low to High (PUT Method) :-
+//  Price Low to High (Put Method) :-
 
 const lowToHigh = async (req, res) => {
     
@@ -1117,7 +1117,7 @@ const lowToHigh = async (req, res) => {
 
 //===============================//
 
-//  Pric eGigh To Low (Put Method) :-
+//  Price High To Low (Put Method) :-
 
 const highTolow = async (req, res) => {
     

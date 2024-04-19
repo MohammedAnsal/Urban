@@ -209,17 +209,89 @@
 
             			</div>End .checkout-discount -->
 
-					<!-- Coupen Area -->
+					<!---- Available Coupen Modal --->
 
-					<p id="msgg"></p>
+					<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#coupenModal"> -->
+
+					<span class="text-primary " data-bs-toggle="modal" data-bs-target="#coupenModal" style="cursor: pointer;">Available Coupens</span>
+
+					<!-- </button> -->
+
+					<!-- Modal -->
+
+					<div class="modal fade" id="coupenModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+					<div class="modal-dialog">
+
+						<div class="modal-content">
+
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="exampleModalLabel">Available Coupens</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+
+						<div class="modal-body p-5 h-100 ">
+
+							<div class="row w-100 g-3 ">
+
+                            <% coupenData.forEach((val,i) => { %>
+            
+                                <div class="flip-card col-lg-3" >
+                                                                    
+                                    <div class="flip-card-inner">
+                                                                        
+                                    	<div class="flip-card-front" style="background: url('/productImage/<%= val.image %>'); background-size: cover;">
+
+                                            <p class="title text-white" ><%= val.name %></p>
+                                                                            
+                                        </div>
+                                                                        
+                                        <div class="flip-card-back">
+
+                                            <p class="title text-white pb-1"><%= val.name %></p>
+                                            <h6 class="text-dark" style="font-weight: bold;"><%= val.discount %>% OFF</h6>
+
+                                            <di class="coupon-row pt-1">
+
+                                                <span id="cpnCode"><%= val.coupenId %></span>
+                                                <span onclick="copyCode('<%= val.coupenId %>',this)" id="cpnBtn">Copy Code</span>
+
+                                            </di>
+
+                                        </div>
+
+                                     </div>
+                                                                        
+                                </div>
+                                                                    
+                            <%  }); %>
+
+							</div>
+							
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+						</div>
+
+						</div>
+
+					</div>
+
+					</div>
+
+					<!-- Coupen Area -->
 
 						<div class="cart-discount">
 
-							<form action="" method="post">
+							<form action="/useCoupen" method="post">
+								
+								<div class="input-group mt-1 ">
 
-								<div class="input-group">
+									<p hidden class="msg"><%= msgg %></p>
 
-								<input type="text" class="form-control" oninput="coupenCheck(this)" placeholder="coupon code">
+								<input type="text" class="form-control" name="coupen" oninput="coupenCheck(this)" placeholder="coupon code" required>
 
 									<div class="input-group-append">
 
@@ -230,6 +302,8 @@
 								</div><!-- End .input-group -->
 
 							</form>
+
+							<p id="msgg"></p>
 
 						</div><!-- End .cart-discount -->
 					
@@ -586,26 +660,50 @@
                                                         <tr>
 
                                                             <td><a href="#">
+
                                                                 <%=product?.productId.name %>
+
                                                                 </a></td>
+
                                                             <td>$<%=product.price%>.00</td>
+															
                                                         </tr>
 
                                                     <% }) %>
 
                                                             <tr class="summary-subtotal">
+
                                                                 <td>Subtotal:</td>
-                                                                <td>$<%= cartData?.totalCartPrice %>.00</td>
+
+                                                            <% if (cartData.coupenDiscount >= 1) { %>
+
+																<td>$<%= cartData?.totalCartPrice + cartData.coupenDiscount %></td>
+																	
+															<%	} else { %>
+
+																<td>$<%= cartData?.totalCartPrice %>.00</td>
+															
+															<% } %>
+
                                                             </tr><!-- End .summary-subtotal -->
 
-                                                            <tr>
-                                                                <td>Shipping:</td>
-                                                                <td>Free shipping</td>
+                                                        <% if (cartData.coupenDiscount >= 1) { %>
+
+															<tr>
+                                                                <td>Coupen Offer:</td>
+
+                                                                <td class="text-success ">- $<%= cartData.coupenDiscount %>.00</td>
+
                                                             </tr>
+																
+														<%	} %>
 
                                                             <tr class="summary-total">
+
                                                                 <td>Total:</td>
-                                                                <td>$<%= cartData?.totalCartPrice %>.00</td>
+                                                                																	
+																<td>$<%= cartData?.totalCartPrice %>.00</td>
+
                                                             </tr><!-- End .summary-total -->
 															
                                                 </tbody>
@@ -814,7 +912,7 @@
 
 function deleteAdd(id , addId){
 
-	fetch(`deleteCheckAdd?id=${id}&&userid=${addId}` , {method : 'post'})
+   fetch(`deleteCheckAdd?id=${id}&&userid=${addId}` , {method : 'post'})
 
   .then(data =>{
 
@@ -940,7 +1038,32 @@ if(msg.textContent == 'Address Edited'){
 
 	});
 
-} 
+} else if(msg.textContent == 'coupen'){
+
+		const Toast = Swal.mixin({
+
+		toast: true,
+		position: "top-end",
+		showConfirmButton: false,
+		timer: 3000,
+	    timerProgressBar: true,
+
+		didOpen: (toast) => {
+
+			toast.onmouseenter = Swal.stopTimer;
+		   toast.onmouseleave = Swal.resumeTimer;
+		}
+
+	});
+					
+	Toast.fire({
+
+		icon: "success",
+		title: "Coupen Applied"		
+
+	});
+		
+}
 
 //	Payment Sumbit :-
 
@@ -1141,5 +1264,104 @@ function validateForm() {
 }
 
 </style>
+
+<script>
+
+  //  Copy Coupen Code :-
+
+   var btn = document.getElementById("cpnBtn");
+   var cpnCode = document.getElementById("cpnCode");
+
+    function copyCode(e,elem){
+
+      navigator.clipboard.writeText(e);
+      elem.innerHTML ="COPIED";
+      
+      setTimeout(function(){
+
+        elem.innerHTML="COPY CODE";
+
+      }, 3000);
+
+    }
+
+</script>
+
+<style>
+
+  #cpnCode{
+    border: 1px dashed #fff;
+    padding: 10px 20px;
+	display: none;
+    border-right: 0;
+
+}
+#cpnBtn{
+    border: 1px solid #fff;
+    background: #fff;
+    padding: 10px 20px;
+    color: #000000;
+    cursor: pointer;
+}
+
+    
+.flip-card {
+
+  background-color: transparent;
+  width: 150px;
+  height: 200px;
+  perspective: 1000px;
+  font-family: sans-serif;
+}
+
+.title {
+  font-size: 1.5em;
+  font-weight: 900;
+  text-align: center;
+  margin: 0;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  box-shadow: 0 8px 14px 0 rgba(0,0,0,0.2);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border: 1px solid coral;
+  border-radius: 1rem;
+}
+
+.flip-card-front {
+  background: linear-gradient(120deg, bisque 60%, rgb(255, 231, 222) 88%,
+     rgb(255, 211, 195) 40%, rgba(255, 127, 80, 0.603) 48%);
+  color: coral;
+}
+
+.flip-card-back {
+  background: linear-gradient(120deg, rgb(255, 174, 145) 30%, coral 88%,
+     bisque 40%, rgb(255, 185, 160) 78%);
+  color: white;
+  transform: rotateY(180deg);
+}
+
+</style>
+
 
 <%- include('../layouts/footer') %>

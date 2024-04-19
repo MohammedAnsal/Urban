@@ -19,6 +19,9 @@ const instance = require('../config/razorpay');
 //  Import Wallet Modal :-
 const Wallet = require('../models/wallet_model');
 
+//  Import Coupen Model :-
+const Coupen = require('../models/coupen_model');
+
 //    Load Checkout (Get Method) :-
 
 const loadCheckout = async (req, res) => {
@@ -27,25 +30,34 @@ const loadCheckout = async (req, res) => {
 
         const categoryData = await Category.find({ is_Listed: true });
 
+        
         if (req.session.user) {
-
+            
             const msg = req.flash('flash');
-
+            
             const userData = await User.findById({ _id: req.session.user._id });
-
+            
             const addresData = await Address.findOne({ userId: req.session.user._id });
-
+            
             const cartDataa = await Cart.findOne({ userId: req.session.user._id }).populate('products.productId');
 
             const walletData = await Wallet.findOne({ userId: req.session.user._id });
 
             if (cartDataa) {
+
+                const coupenData = await Coupen.find();
                 
-                const newTprice = cartDataa.products.reduce((acc, val) => acc + val.price, 0);
+                let newTprice = cartDataa.products.reduce((acc, val) => acc + val.price, 0);
+
+                if (cartDataa.coupenDiscount >= 0) {
+                    
+                    newTprice -= cartDataa.coupenDiscount;
+
+                }
                 
                 const cartData = await Cart.findOneAndUpdate({ userId: req.session.user._id }, { $set: { totalCartPrice: newTprice } }, { upsert: true, new: true });
                             
-                res.render("checkout", { login: req.session.user, categoryData, addres: addresData, userData, msgg: msg, cartData, walletData });
+                res.render("checkout", { login: req.session.user, categoryData, addres: addresData, userData, msgg: msg, cartData, walletData, coupenData });
                 
             } else {
 

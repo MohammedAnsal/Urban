@@ -149,7 +149,7 @@
 													<tr class="summary-subtotal">
 
 														<td>Subtotal:</td>
-														<td id="sub-total">$<%= totalPrice %>.00</td>
+														<td id="sub-total">$<%= totalPrice + cartData.coupenDiscount %>.00</td>
 
 													</tr><!-- End .summary-subtotal -->
 
@@ -159,44 +159,61 @@
 													</tr>End .summary-discount -->
 
 													<tr class="summary-shipping">
+
 														<td>Shipping:</td>
 														<td>&nbsp;</td>
+
 													</tr>
 
 													<tr class="summary-shipping-row">
+
 														<td>
 															<div class="custom-control custom-radio">
 																<input type="radio" id="free-shipping" name="shipping" class="custom-control-input">
 																<label class="custom-control-label" for="free-shipping">Free Shipping</label>
 															</div><!-- End .custom-control -->
 														</td>
-														<td>$0.00</td>
-													</tr><!-- End .summary-shipping-row -->
 
+														<td>$0.00</td>
+														
+													</tr><!-- End .summary-shipping-row -->
+<!-- 
 													<tr class="summary-shipping-row">
 														<td>
 															<div class="custom-control custom-radio">
 																<input type="radio" id="standart-shipping" name="shipping" class="custom-control-input">
 																<label class="custom-control-label" for="standart-shipping">Standart:</label>
-															</div><!-- End .custom-control -->
+															</div>End .custom-control
 														</td>
 														<td>$0.00</td>
-													</tr><!-- End .summary-shipping-row -->
+													</tr>End .summary-shipping-row
 
 													<tr class="summary-shipping-row">
 														<td>
 															<div class="custom-control custom-radio">
 																<input type="radio" id="express-shipping" name="shipping" class="custom-control-input">
 																<label class="custom-control-label" for="express-shipping">Express:</label>
-															</div><!-- End .custom-control -->
+															</div>End .custom-control
 														</td>
 														<td>$0.00</td>
-													</tr><!-- End .summary-shipping-row -->
+													</tr>End .summary-shipping-row -->
 
 													<tr class="summary-shipping-estimate">
 														<td>Estimate for Your Country<br> <a href="/address">Change address</a></td>
 														<td>&nbsp;</td>
 													</tr><!-- End .summary-shipping-estimate -->
+
+													 <% if (cartData.coupenDiscount >= 1) { %>
+
+														<tr>
+
+                                                            <td>Coupen Offer:</td>
+
+                                                            <td class="text-success ">- $<%= cartData.coupenDiscount %>.00</td>
+
+                                                        </tr>
+																
+													<%	} %>
 
 													<tr class="summary-total">
 
@@ -204,6 +221,7 @@
 														<td id="total">$<%= totalPrice %>.00</td>
 
 													</tr><!-- End .summary-total -->
+
 												</tbody>
 											</table><!-- End .table table-summary -->
 
@@ -225,7 +243,7 @@
 
 							<% } else { %>
 									
-								<div class="p-5 ">
+								<div class="p-5">
 
 									<p class="text-warning">Your Cart Is Empty...</p>
 

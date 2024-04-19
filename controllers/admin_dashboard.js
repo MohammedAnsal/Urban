@@ -134,7 +134,7 @@ const loadDahboard = async (req, res) => {
 
           _id: "$products.productId",
           totalQuantity: { $sum: "$products.quantity" },
-
+          
         },
 
       },
@@ -142,25 +142,23 @@ const loadDahboard = async (req, res) => {
       {
 
         $lookup: {
-
           from: "products",
           localField: "_id",
           foreignField: "_id",
-          as: "products",
-
+          as: "product",
         },
 
       },
 
       {
-        $unwind: "$products",
+        $unwind: "$product",
       },
 
       {
 
         $group: {
 
-          _id: "$products.brand",
+          _id: "$product.brand",
           totalQuantity: { $sum: "$totalQuantity" },
 
         },
@@ -168,15 +166,11 @@ const loadDahboard = async (req, res) => {
       },
 
       {
-
         $sort: { totalQuantity: -1 },
-
       },
 
       {
-
         $limit: 3,
-        
       },
 
     ]);

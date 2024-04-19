@@ -44,6 +44,8 @@
                           <div class="mb-3">
                             <label for="couponName" class="form-label">Name</label>
                             <input type="text" class="form-control" id="couponName" name="coupon" placeholder="Enter coupon name">
+                            <p id="name" class="text-danger "></p>
+
                           </div>
 
                           <div class="mb-3">
@@ -55,22 +57,28 @@
                             <div>
                               <label for="min" class="form-label">Min</label>
                               <input type="number" class="form-control w-50" min="1" name="min" id="min" placeholder="min">
+                              <p id="minimum" class="text-danger "></p>
+
                             </div>
 
                             <div class="ms-3">
                               <label for="max" class="form-label">Max</label>
                               <input type="number" class="form-control w-50 ms-3" min="1" name="max" id="max" placeholder="max">
+                              <p id="maximum" class="text-danger "></p>
+
                             </div>
                           </div>
 
                           <div class="mb-3">
                             <label for="discount" class="form-label">Discount</label>
                             <input type="number" class="form-control" name="discount" min="1" id="discount">
+                            <p id="dis" class="text-danger "></p>
+
                           </div>
 
                           <div class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-outline-success" id="submitBtn">Add Coupon</button>
+                            <button type="submit" class="btn btn-outline-success" id="sub">Add Coupon</button>
                           </div>
                         </form>
 
@@ -141,7 +149,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 
 <script>
 
@@ -229,27 +236,58 @@
     })
   }
 
-  //  Validation For Coupen Adding :-
 
-function validateForm() {
+  //  Coupen Validation :-
 
-  var couponName = document.getElementById('couponName').value;
-  var couponImage = document.getElementById('couponImage').value;
-  var min = document.getElementById('min').value;
-  var max = document.getElementById('max').value;
-  var discount = document.getElementById('discount').value;
+  document.getElementById('couponForm').addEventListener('submit', function(event) {
+    
+    event.preventDefault();
+    
+    document.getElementById('name').textContent = '';
+    document.getElementById('minimum').textContent = '';
+    document.getElementById('maximum').textContent = '';
+    document.getElementById('dis').textContent = '';
 
-  if (couponName === '' || couponImage === '' || min === '' || max === '' || discount === '') {
+    // Get form inputs
 
-    document.getElementById('msg').innerText = 'Please fill all the input fields.';
-    document.getElementById('msg').hidden = false; 
+    var couponName = document.getElementById('couponName').value.trim();
+    var discount = document.getElementById('discount').value.trim();
+    var minimum = document.getElementsByName('min')[0].value.trim();
+    var maximum = document.getElementsByName('max')[0].value.trim();
 
-    return false; 
+    // Validation
 
-  }
+    var isValid = true;
 
-  return true; 
-}
+    if (couponName === '') {
+
+      document.getElementById('name').textContent = 'Coupon name is required';
+      isValid = false;
+
+    }
+
+    if (isNaN(minimum) || minimum === '' || minimum <= 0) {
+      document.getElementById('minimum').textContent = 'Enter positive number';
+      isValid = false;
+    }
+
+    if (isNaN(maximum) || maximum === '' || maximum <= 0) {
+      document.getElementById('maximum').textContent = 'must be a positive number';
+      isValid = false;
+    }
+
+    if (isNaN(discount) || discount === '' || discount < 0 || discount > 99) {
+      document.getElementById('dis').textContent = 'Discount rate maximujm upto 99 %';
+      isValid = false;
+    }
+
+    if (isValid) {
+
+      event.target.submit();
+
+    }
+
+  });
 
 </script>
 
