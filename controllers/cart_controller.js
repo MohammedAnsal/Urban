@@ -112,6 +112,7 @@ const addCart = async (req, res) => {
                             products: {
                                 
                                 productId: productIdd,
+                                name : cartProduct.name,
                                 price: total,
                                 quantity: qty,
                             },

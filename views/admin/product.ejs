@@ -50,19 +50,19 @@
 
         <% if (product.length > 0) { %>
                                                             
-            <% for (let i = 0 ; i < product.length; i++) { %>
-                    
+            <% product.slice().reverse().forEach((pro , indx) => { %>
+        
                 <tr class="text-center">
                     
-                    <td><%= i + 1 %></td>
+                    <td><%= indx + 1 %></td>
 
-                    <td><%= product[i].name %></td>
+                    <td><%= pro.name %></td>
                     
                     <td>
 
                     <div class="progress d-flex align-items-center h-100 w-100" style=" background-color: transparent; justify-content: center;">
 
-                    <% product[i].images.forEach(img => { %>
+                    <% pro.images.forEach(img => { %>
 
                         <div class="cir" style="display: inline-block; width: 30px; height: 30px;  border-radius: 50%; overflow: hidden;">
                             <img style="width: 100%; height: 100%; object-fit: cover; " src='/productImage/<%= img %>' alt="">
@@ -74,21 +74,21 @@
 
                     </td>
                           
-                        <td><%= product[i].stock %></td>
-                        <td><%= product[i].price %></td>
-                        <td><%= product[i].discount %>%</td>
-                        <td><%= product[i].category.name %></td>
-                        <td><%= product[i].brand %></td>
+                        <td><%= pro.stock %></td>
+                        <td><%= pro.price %></td>
+                        <td><%= pro.discount %>%</td>
+                        <td><%= pro.category.name %></td>
+                        <td><%= pro.brand %></td>
 
                         <td>
                             
-                        <% if (product[i].status == true) { %>
+                        <% if (pro.status == true) { %>
 
-                            <span class="text-success" id="s<%= product[i]._id %>">Listed</span>
+                            <span class="text-success" id="s<%= pro._id %>">Listed</span>
                             
                             <%  } else { %>
                                 
-                            <span class="text-danger" id="s<%= product[i]._id %>">Unlisted</span>
+                            <span class="text-danger" id="s<%= pro._id %>">Unlisted</span>
 
                         <% } %>
                         
@@ -104,11 +104,11 @@
 
                         <div class="dropdown-menu text-center" aria-labelledby="dropdownMenuButton">
 
-                           <a class="dropdown-item text-primary" href="/admin/editProduct?id=<%= product[i]._id %>">Edit</a>
+                           <a class="dropdown-item text-primary" href="/admin/editProduct?id=<%= pro._id %>">Edit</a>
                            
                             <!-- <a class="dropdown-item text-danger" href="#">Delete</a> -->
                             
-                            <button type="button" id="s<%=product[i]._id %>" class="btn px-5 mt-1 <%= product[i].status == false ? 'btn-outline-success' : 'btn-outline-danger' %>" onclick="productAction('<%= product[i]._id %>' , this)" style="margin-right: 5px;"><%= product[i].status ? 'Unlist' :'List'%></button>
+                            <button type="button" id="s<%=pro._id %>" class="btn px-5 mt-1 <%= pro.status == false ? 'btn-outline-success' : 'btn-outline-danger' %>" onclick="productAction('<%= pro._id %>' , this)" style="margin-right: 5px;"><%= pro.status ? 'Unlist' :'List'%></button>
 
                         </div>
 
@@ -119,9 +119,8 @@
 
                 </tr>
 
-            <% } %>
+            <%  }); %>
 
-               
         <% } else { %>
 
             <tr>

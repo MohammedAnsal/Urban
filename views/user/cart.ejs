@@ -42,7 +42,7 @@
 								
 									<tbody>
 
-                                                <% cartData.products.forEach((product, index)=> { %>
+                                                <% cartData.products.slice().reverse().forEach((product, index)=> { %>
 
 													<tr>
 															<td class="product-col">
@@ -77,17 +77,20 @@
 
 																<div class="cart-product-quantity">
 
-																	<input type="number" class="form-control"
+																	<input readonly type="number" class="form-control"
 
-																		oninput="cartUpdate(this,'<%=product.productId.price %>','<%= product.productId._id  %>','<%= locals.cartData._id%>')"
+																		oninput="cartUpdate(this,'<%=product.productId.price %>','<%= product.productId._id  %>','<%= locals.cartData._id%>') ; stockCheck(this , '<%= product.productId.stock %>')"
 
 																		value="<%= product.quantity %>" min="1"
 
 																		max="<%= product.productId.stock %>" step="1"
 
-																		data-decimals="0" required>
+																		data-decimals="0"  required>
+
 
 																</div>
+
+																<input id="stockCheck<%= product.productId.stock %>" hidden type="text" value="<%= product.productId.stock %>">
 
 															</td>
 
@@ -177,7 +180,7 @@
 														<td>$0.00</td>
 														
 													</tr><!-- End .summary-shipping-row -->
-<!-- 
+<!--
 													<tr class="summary-shipping-row">
 														<td>
 															<div class="custom-control custom-radio">
@@ -243,11 +246,7 @@
 
 							<% } else { %>
 									
-								<div class="p-5">
-
-									<p class="text-warning">Your Cart Is Empty...</p>
-
-								</div>
+								<span class="text-warning" style="padding-left: 520px;">Your Cart Is Empty...</span>
 
 							<% } %>
 	                			
@@ -277,6 +276,7 @@
     <script src="assets/js/jquery.waypoints.min.js"></script>
     <script src="assets/js/superfish.min.js"></script>
     <script src="assets/js/owl.carousel.min.js"></script>
+	    <script src="assets/js/bootstrap-input-spinner.js"></script>
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
 
@@ -285,7 +285,7 @@
 
 	//	Remove Cart :-
 
-	function deleteCart(id){
+function deleteCart(id){
 
  Swal.fire({
 
@@ -333,7 +333,7 @@
 
 	//	Update Cart Put :-
 
-	function cartUpdate(e, price, proId, cartId) {
+function cartUpdate(e, price, proId, cartId) {
 
 		const Tprice = document.getElementById(`price${proId}`);
 		const Total = document.getElementById(`total`);
@@ -372,10 +372,31 @@
 
 	};
 
+//	Stock Check :-  
+
+function stockCheck(item,sto){
+
+	const stockk = document.getElementById(`stockCheck${sto}`).value
+
+	if(stockk == item.value){
+
+		Swal.fire({
+
+			title: "Available Stock Limit Exceed!",
+			icon: 'warning',
+
+			customClass: {
+
+				popup: 'my-custom-size', 
+			}
+		
+		})
+
+	}
+}
+
 </script>
 
 <%- include('../layouts/footer') %>
-
-
 
 

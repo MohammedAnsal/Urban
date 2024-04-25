@@ -18,10 +18,10 @@ const Cart = require('../models/cart_model');
 const loadWishlist = async (req, res) => {
     
     try {
-
-        const categoryData = await Category.find({ is_Listed: true });
-
+        
         if (req.session.user) {
+
+            const categoryData = await Category.find({ is_Listed: true });
 
             const wishlistData = await Wishlist.findOne({ userId: req.session.user._id }).populate('products.productId');
          
@@ -36,6 +36,7 @@ const loadWishlist = async (req, res) => {
                         var newData = await Wishlist.findOneAndUpdate({ userId: req.session.user._id }, { $pull: { products: { productId: product.productId._id } } }, { new: true }).populate('products.productId');
     
                     }
+                    
                     res.render("wishlist", { login: req.session.user, categoryData, wishlistData: newData });
                     
                 } else {

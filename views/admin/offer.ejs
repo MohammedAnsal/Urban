@@ -128,7 +128,7 @@
 
                         <% if(offer.length > 0) {%>
 
-                                <% offer.forEach((val , indx) => { %>
+                                <% offer.slice().reverse().forEach((val , indx) => { %>
 
                                     <tr>
 
@@ -163,7 +163,9 @@
                         <% }else{ %>
 
                             <td colspan="6" class="text-center  text-danger ">
-                                <p>NO Offer</p>
+
+                                <p>No Offer</p>
+
                             </td>
 
                         <% } %>

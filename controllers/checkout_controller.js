@@ -42,11 +42,11 @@ const loadCheckout = async (req, res) => {
             const cartDataa = await Cart.findOne({ userId: req.session.user._id }).populate('products.productId');
 
             const walletData = await Wallet.findOne({ userId: req.session.user._id });
-
+        
             if (cartDataa) {
 
-                const coupenData = await Coupen.find();
-                
+                const coupenData = await Coupen.find({ status: true });
+                                
                 let newTprice = cartDataa.products.reduce((acc, val) => acc + val.price, 0);
 
                 if (cartDataa.coupenDiscount >= 0) {
@@ -110,7 +110,7 @@ const verifyCheckOutAddress = async (req, res) => {
                         address: req.body.addressData.address,
                         status: true,
                     
-                      },
+                    },
                       
                   },
                   

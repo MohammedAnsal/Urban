@@ -68,7 +68,7 @@
 
                     <div id="reloadDiv" class="w-100 container-fluid">
 
-                        <table class="table table-dark" id="download">
+                        <table class="table table-bordered  table-dark" id="download">
 
                             <thead class="text-center">
                                 <tr>
@@ -85,7 +85,7 @@
 
                                     <% if(locals.report){ %>
 
-                                    <% locals.report.forEach(( val , indx)=>{ %>
+                                    <% locals.report.slice().reverse().forEach(( val , indx)=>{ %>
 
                                         <tr>
 

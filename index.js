@@ -50,15 +50,15 @@ app.use('/admin', adminRoute);
 
 //  ErrorHandler :-
 
-// app.use(errorHandler);
+app.use(errorHandler);
 
 //  404 Page :-
 
-// app.get('*', (req, res) => {
+app.get('*', (req, res) => {
     
-//     res.redirect('/404');
+    res.redirect('/404');
 
-// });
+});
 
 const PORT = process.env.PORT || 7007;
 

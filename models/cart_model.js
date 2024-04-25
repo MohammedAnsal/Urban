@@ -11,6 +11,13 @@ const cartSchema = new mongoose.Schema({
 
         },
 
+        name: {
+            
+            type: String,
+            required: true
+
+        },
+
         quantity: {
             
             type: Number,
@@ -44,9 +51,19 @@ const cartSchema = new mongoose.Schema({
     coupenDiscount: {
         
         type: Number,
-        required: true
+        required: true,
+        default: 0
 
     },
+
+    percentage: {
+        
+        type: Number,
+        required: true,
+        default: 0
+        
+
+    }
 
 });
 

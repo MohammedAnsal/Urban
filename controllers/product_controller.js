@@ -194,9 +194,6 @@ const verifyProductEdit = async (req, res) => {
 
 };
 
-
-
-
 module.exports = {
 
     loadProduct,

@@ -1,235 +1,376 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	    <title>Urban</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="keywords" content="HTML5 Template">
-    <meta name="description" content="Molla - Bootstrap eCommerce Template">
-    <meta name="author" content="p-themes">
-    <!-- Favicon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/urban/mainIconShoes.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/urban/mainIconShoes.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/urban/mainIconShoes.png">
-    <link rel="manifest" href="/assets/images/icons/site.html">
-    <link rel="mask-icon" href="/user/assets/images/icons/new/v-logo.jpg" color="#666666">
-    <link rel="shortcut icon" href="/user/assets/images/new/v-logo.jpg">
-    <meta name="apple-mobile-web-app-title" content="Molla">
-    <meta name="application-name" content="Molla">
-    <meta name="msapplication-TileColor" content="#cc9966">
-    <meta name="msapplication-config" content="/user/assets/images/new/v-logo.jpg">
-    <meta name="theme-color" content="#ffffff">
-    <!-- Plugins CSS File -->
-    <link rel="stylesheet" href="/user/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/user/assets/css/plugins/owl-carousel/owl.carousel.css">
-    <link rel="stylesheet" href="/user/assets/css/plugins/magnific-popup/magnific-popup.css">
-    <!-- Main CSS File -->
-    <link rel="stylesheet" href="/user/assets/css/style.css">
-    <link rel="stylesheet" href="/user/assets/css/demos/demo-18.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css'>
+    
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Urban</title>
+   <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/urban/mainIconShoes.png">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
-    integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
 </head>
 
 <body>
 
+   <div class="container">
+
+      <div class="row gutters">
+
+         <div class="row gutters">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+               <div class="custom-actions-btns mb-5">
+                  <!-- Add an id to the download button -->
+                  <a href="#" id="downloadBtn" onclick="downloadPDF()" class="btn btn-success  ">
+                     <i class="icon-download"></i> Download
+                  </a>
+                  
+               </div>
+            </div>
+         </div>
+
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+               <div class="card">
+
+                  <div class="card-body p-0">
+
+                     <div class="invoice-container" id="myBillingArea">
+
+                        <div class="invoice-header">
+
+                           <!-- Row start -->
+                           
+                           <!-- Row end -->
+                           <!-- Row start -->
+
+                           <div class="row gutters">
+
+                              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+
+                                 <img src="/assets/images/urban/mainIconShoesBlack.png" style="width: 75px;" alt="">
+                                 <P style="font-weight: bold;">URBAN</P>
+                                
+                              </div>
+
+                              <div class="col-lg-6 col-md-6 col-sm-6 ">
+                                
+
+                                 <% ordData.forEach((e,i) => { %>
+
+                                    <u style="font-weight: bold;">Address</u>
+                                 
+                                   <address class="text-dark">
+                                      <%= e.deliveryAddress.name %>, <%= e.deliveryAddress.locality %>.<br>
+                                      <%= e.deliveryAddress.city %>, <%= e.deliveryAddress.state %>, India.<br>
+                                      Pincode : <%= e.deliveryAddress.pincode %><br>
+                                      Phone : <%= e.deliveryAddress.phone %>
+                                    </address>
+                               
+                              </div>
+
+                           </div>
+
+                           <!-- Row end -->
+                           <!-- Row start -->
+
+                           <div class="row gutters">
+
+                              <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+
+                                 <div class="invoice-details">
+
+                                    <address class="text-dark ">
+                                       <%= e.deliveryAddress.name %><br>
+                                       <%= e.deliveryAddress.city %>, <%= e.deliveryAddress.state %>, Ind
+                                    </address>
+
+                                 </div>
+
+                              </div>
+
+                              <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+
+                                 <div class="invoice-details">
+                                    <div class="invoice-num">
+                                       <div>Invoice - #00<%= i + 1 %></div>
+                                       <div></div>
+                                    </div>
+                                 </div>		
+
+                              </div>
+
+                           </div>
+                           <!-- Row end -->
+
+                        </div>
+
+                        <div class="invoice-body">
+
+                           <!-- Row start -->
+
+                           <div class="row gutters">
+                              <div class="col-lg-12 col-md-12 col-sm-12">
+                                 <div class="table-responsive">
+
+                                    <table class="table custom-table m-0">
+
+                                       <thead class="text-center ">
+
+                                          <tr>
+                                             <th>No</th>
+                                             <th>Items</th>
+                                             <th>price</th>
+                                             <th>Quantity</th>
+                                             <th>Total</th>
+                                          </tr>
+
+                                       </thead>
+
+                                       <% ordData[0].products.forEach((e,n) => { %>
+
+                                       <tbody class="text-center ">
+
+                                          <tr>
+
+                                            <td><%= n+1 %></td>
+
+                                             <td class="d-flex gap-4 p-3">
+                                               
+                                                <div class="cir bg-white " style="  display: inline-block; width: 30px; height: 30px;  border-radius: 50%; overflow: hidden;">
+                                                   <img style="width: 100%; height: 100%; object-fit: cover; " src='/productImage/<%= e.productId.images[0] %>' alt="">
+                                               </div>
+
+                                               <p class="m-0 text-muted">
+                                                   <%= e.productId.name %>
+                                                </p>
+
+                                             </td>
+
+                                             <td>$<%= e.productId.price %></td>
+                                             <td><%= e.quantity %></td>
+                                             <td>$<%= e.productId.price * e.quantity %></td>
+
+                                          </tr>
+                                       
+                                    <% }) %>
+
+                                          <tr class="text-end ">
+
+                                             <td>&nbsp;</td>
+                                             <td></td>
+
+                                             <td colspan="2">
+
+                                                <p>
+                                                  <span class="text-warning "> Subtotal</span> <br>
+                                                  <span class="text-success  ">Discount</span> <br>
+                                                   
+                                                </p>
+                                                <h5 class="text-primary ">Grand Total</h5>
+                                             </td>	
+
+                                             <td>
+                                                <p>
+                                                   $<%= e.orderAmount + e.coupenDis %><br>
+                                                  -$<%= e.coupenDis %><br>
+                                                 
+                                                </p>
+                                                <h5 class="text-success">$<%= e.orderAmount %></h5>
+                                             </td>
+
+                                          </tr>
+
+                                       </tbody>
+                                       
+                                       <% }) %>
+
+                                    </table>
+
+                                 </div>
+
+                              </div>
+
+                           </div>
+
+                           <!-- Row end -->
+
+                        </div>
+
+                        <div class="invoice-footer">
+                           Happy Shopping,Visit Again
+                        </div>
+
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+</body>
+
 <style>
-    body{margin-top:20px;
-    background-color:#eee;
-    
-}
-
-.card {
-    box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
-}
-.card {
+   body{margin-top:20px;
+    color: #2e323c;
+    background: #f5f6fa;
     position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #fff;
-    background-clip: border-box;
-    border: 0 solid rgba(0,0,0,.125);
-    border-radius: 1rem;
+    height: 100%;
 }
-p{
-    color: #000;
-    font-size: 15px;
-    font-weight: 500;
+.invoice-container {
+    padding: 1rem;
 }
-h5{
-    font-size: 15px;
+.invoice-container .invoice-header .invoice-logo {
+    margin: 0.8rem 0 0 0;
+    display: inline-block;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #2e323c;
+}
+.invoice-container .invoice-header .invoice-logo img {
+    max-width: 130px;
+}
+.invoice-container .invoice-header address {
+    font-size: 0.8rem;
+    color: #9fa8b9;
+    margin: 0;
+}
+.invoice-container .invoice-details {
+    margin: 1rem 0 0 0;
+    padding: 1rem;
+    line-height: 180%;
+    background: #f5f6fa;
+}
+.invoice-container .invoice-details .invoice-num {
+    text-align: right;
+    font-size: 0.8rem;
+}
+.invoice-container .invoice-body {
+    padding: 1rem 0 0 0;
+}
+.invoice-container .invoice-footer {
+    text-align: center;
+    font-size: 0.7rem;
+    margin: 5px 0 0 0;
 }
 
+.invoice-status {
+    text-align: center;
+    padding: 1rem;
+    background: #ffffff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+.invoice-status h2.status {
+    margin: 0 0 0.8rem 0;
+}
+.invoice-status h5.status-title {
+    margin: 0 0 0.8rem 0;
+    color: #9fa8b9;
+}
+.invoice-status p.status-type {
+    margin: 0.5rem 0 0 0;
+    padding: 0;
+    line-height: 150%;
+}
+.invoice-status i {
+    font-size: 1.5rem;
+    margin: 0 0 1rem 0;
+    display: inline-block;
+    padding: 1rem;
+    background: #f5f6fa;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+}
+.invoice-status .badge {
+    text-transform: uppercase;
+}
+
+@media (max-width: 767px) {
+    .invoice-container {
+        padding: 1rem;
+    }
+}
+
+
+.custom-table {
+    border: 1px solid #e0e3ec;
+}
+.custom-table thead {
+    background: #8eaac1;
+}
+.custom-table thead th {
+    border: 0;
+    color: #ffffff;
+}
+.custom-table > tbody tr:hover {
+    background: #fafafa;
+}
+.custom-table > tbody tr:nth-of-type(even) {
+    background-color: #ffffff;
+}
+.custom-table > tbody td {
+    border: 1px solid #e6e9f0;
+}
+
+
+.card {
+    background: #ffffff;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 0;
+    margin-bottom: 1rem;
+}
+
+.text-success {
+    color: #00bb42 !important;
+}
+
+.text-muted {
+    color: #9fa8b9 !important;
+}
+
+.custom-actions-btns {
+    margin: auto;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.custom-actions-btns .btn {
+    margin: .3rem 0 .3rem .3rem;
+}
 </style>
 
-    <div class="container">
-        <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">  
-                        <div class="card-body">
-                            <div class="invoice-title">
-                                <h5 class="float-end font-size-15">Invoice <span class="badge bg-success font-size-12 ms-2">Paid</span></h5>
-                                <div class="mb-4">
-                                   <h2 class="tit"  style="font-size: 30px; color: #000;">Urban Online Shop</h2>
-                                </div>
-                                <div class="text-muted">
-                                    <p class="mb-1">Calicut Kerala India</p>
-                                    <p class="mb-1"><i class="uil uil-envelope-alt me-1"></i> www.urbanonlineshop.com</p>
-                                    <p><i class="uil uil-phone me-1"></i>1515-1515</p>
-                                </div>
-                            </div>
-        
-                            <hr class="my-4">
-        
-                            <div class="row">
-								
-                                <div class="col-sm-6">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js "></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
 
-                                    <div class="text-muted">
+   
+window.jsPDF = window.jspdf.jsPDF;
+var docPDF = new jsPDF();
 
-                                        <h5 class="font-size-16 mb-3">Billed To:</h5>
+function downloadPDF(invoiceNo) {
 
-                                        <!-- Display user's billing information -->
+    var elementHTML = document.querySelector("#myBillingArea");
 
-                                        <p class="font-size-15 mb-2"> <%= ordData.deliveryAddress.name %></p>
+    html2canvas(elementHTML).then(function(canvas) {
 
-                                            <p class="box-content">
+        var imgData = canvas.toDataURL('image/png');
+        var docPDF = new jsPDF();
+        var imgHeight = canvas.height * 208 / canvas.width; 
+        docPDF.addImage(imgData, 'PNG', 15, 15, 170, imgHeight); 
+        docPDF.save(invoiceNo + '.pdf'); 
 
-                                               <%= ordData.deliveryAddress.address %> - <%= ordData.deliveryAddress.pincode %> <br>
-                                               <%= ordData.deliveryAddress.locality %><br>  <%= ordData.deliveryAddress.city %> , <%= ordData.deliveryAddress.state %> <br>
-                                               <%= ordData.deliveryAddress.phone %>
+   });
 
-                                            </p>
-                                    </div>
+}
 
-                                </div>
-                                
-                                <!-- end col -->
-
-                                <div class="col-sm-6">
-
-                                    <div class="text-muted text-sm-end">
-
-                                        <div>
-                                            <h5 class="font-size-15 mb-1">Invoice No:</h5>
-                                            <p>#DZ0112</p>
-                                        </div>
-
-                                        <div class="mt-4">
-                                            <h5 class="font-size-15 mb-1">Invoice Date:</h5>
-                                            <p><%= ordData.orderDate.toString().split(' ').slice(0,4).join(' ') %></p>
-                                        </div>
-
-                                        <div class="mt-4">
-                                            <h5 class="font-size-15 mb-1">Order No:</h5>
-                                            <p>#<%= ordData._id %></p>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <!-- end col -->
-
-                            </div>
-
-                            <!-- end row -->
-                            
-                            <div class="py-2">
-
-                                <h5 class="font-size-15">Order Summary</h5>
-        
-                                <div class="table-responsive">
-
-                                    <table class="table align-middle table-nowrap table-centered mb-0">
-
-                                        <thead>
-
-                                            <tr>
-                                                <th style="width: 70px; color: black;">No.</th>
-                                                <th style="color: black;">Item</th>
-                                                <th style="color: black;">Price</th>
-                                                <th style="color: black;">Quantity</th>
-                                                <th class="text-end" style="width: 120px; color: black;">Total</th>
-                                            </tr>
-
-                                        </thead>
-
-                                        <tbody>
-
-                                            <% ordData.products.forEach((product, indx) => { %>
-
-                                                <tr>
-
-                                                    <td><%= indx + 1 %></td>
-
-                                                    <td>
-                                                        <div>
-                                                            <h5 style="font-size: 15px; font-weight: bold;" class="text-truncate font-size-14 mb-1"><%= product.productId.name %></h5>
-                                                        </div>
-                                                    </td>
-
-                                                    <!-- Display product price, quantity, and total -->
-                                                    <td style="font-size: 15px; font-weight: bold;">$<%= product.productId.price%></td>
-                                                    <td style="font-size: 15px; font-weight: bold;"><%= product.quantity %></td>
-                                                    <td style="font-size: 15px; font-weight: bold;" class="text-end">$ <%= product.productId.price * product.quantity %></td>
-                                                </tr>											
-
-												<!-- <tr>
-													<th  style="font-size: 15px; font-weight: 400; color: #000;" scope="row" colspan="4" class="border-0 text-end">
-														Discount :</th>
-													<td style="font-size: 15px; font-weight: 400;" class="border-0 text-end">$<%= product.productId.discount_price %></td>
-												</tr> -->
-
-												<!-- <tr>
-													<th  style="font-size: 15px; font-weight: 400; color: #000;" scope="row" colspan="4" class="border-0 text-end">
-														Shipping Charge :</th>
-													<td  style="font-size: 15px; font-weight: 400;" class="border-0 text-end">$00.00</td>
-												</tr>
-
-												<tr>
-													<th  style="font-size: 15px; font-weight: 400; color: #000;" scope="row" colspan="4" class="border-0 text-end">
-														Tax:</th>
-													<td  style="font-size: 15px; font-weight: 400;" class="border-0 text-end">$00.00</td>
-												</tr> -->
-
-                                                
-                                                <% }) %>
-                                                
-                                                <tr>
-                                                    <th  style="font-size: 15px; font-weight: 400; color: #000;"  scope="row" colspan="4" class="text-end">Sub Total</th>
-													<td  style="font-size: 15px; font-weight: 400;" class="text-end">$<%= ordData.orderAmount %></td>
-												</tr>
-                                                <tr>
-                                                    <th  style="font-size: 15px; font-weight: 400; color: #000;" scope="row" colspan="4" class="border-0 text-end">Total</th>
-                                                    <td  style="font-size: 15px; font-weight: 400;" class="border-0 text-end"><h4  style="font-size: 15px; font-weight: bold;" class="m-0 fw-semibold">$<%= ordData.orderAmount %></h4></td>
-                                                </tr>
-
-                                        </tbody><!-- end tbody -->
-
-                                    </table><!-- end table -->
-
-                                </div><!-- end table responsive -->
-
-                                <div class="d-print-none mt-4">
-
-                                    <div class="float-end">
-
-                                        <a href="javascript:window.print()" class="btn btn-success me-1"><i class="fa fa-print"></i></a>
-                                        <!-- <a href="#" class="btn btn-primary w-md">Send</a> -->
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+   </script>
+   
+   
+</html>

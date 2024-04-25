@@ -35,27 +35,27 @@
 
                             <% if (users.length > 0) { %>
                                 
-                                <% for (let i = 0 ; i < users.length; i++) { %>
+                                <% users.slice().reverse().forEach((user , indx) => { %>
                                     
                                     <tr>
-                                        <td><%= i + 1 %></td>
+                                        <td><%= indx + 1 %></td>
                                          <th>
                                             <img width="29" height="29" src="https://img.icons8.com/office/40/person-male-skin-type-4.png" alt="person-male-skin-type-4"/>
                                         </th>
-                                        <td><%= users[i].fullName %></td>
-                                        <td><%= users[i].email %></td>
-                                        <td><%= users[i].phone %></td>
+                                        <td><%= user.fullName %></td>
+                                        <td><%= user.email %></td>
+                                        <td><%= user.phone %></td>
 
                                         <!-- This One Checking User Active or Not -->
                                         
                                         <td>
-                                                <% if (users[i].is_blocked == false) { %>
+                                                <% if (user.is_blocked == false) { %>
                                                 
-                                                <span class="text-success" id="status <%= users[i]._id %>" >Active</span>
+                                                <span class="text-success" id="status <%= user._id %>" >Active</span>
                                                 
                                                 <% } else { %>
 
-                                                    <span class="text-danger" id="status <%= users[i]._id %>" >Blocked</span>
+                                                    <span class="text-danger" id="status <%= user._id %>" >Blocked</span>
 
                                                 <% } %>
                                         </td>
@@ -64,29 +64,29 @@
 
                                         <td>
 
-                                    <% if(users[i].is_blocked == false) { %>
+                                    <% if(user.is_blocked == false) { %>
 
                                         <!-- Block Button with Modal -->
 
-                                        <button type="button" id="buttonn <%= users[i]._id %>" class="btn btn-outline-danger btn-fw" data-bs-toggle="modal" data-bs-target="#blockModal<%= i %>">Block</button>
+                                        <button type="button" id="buttonn <%= user._id %>" class="btn btn-outline-danger btn-fw" data-bs-toggle="modal" data-bs-target="#blockModal<%= indx %>">Block</button>
                                     
                                         <!-- Block Modal -->
-                                        <div class="modal fade" id="blockModal<%= i %>" tabindex="-1" aria-labelledby="blockModalLabel<%= i %>" aria-hidden="true">
+                                        <div class="modal fade" id="blockModal<%= indx %>" tabindex="-1" aria-labelledby="blockModalLabel<%= indx %>" aria-hidden="true">
 
                                           <div class="modal-dialog">
                                             <div class="modal-content">
                                               <div class="modal-header">
-                                                <h5 class="modal-title" id="blockModalLabel<%= i %>">Block User</h5>
+                                                <h5 class="modal-title" id="blockModalLabel<%= indx %>">Block User</h5>
                                                 <button type="button" class="btn-close btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">x</button>
                                               </div>
 
                                               <div class="modal-body bg-dark p-5">
-                                                Are you sure you want to block : <span class="text-primary "><%=users[i].fullName%></span> ?
+                                                Are you sure you want to block : <span class="text-primary "><%=user.fullName%></span> ?
                                               </div>
 
                                               <div class="modal-footer">
                                                 <button type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-outline-danger" data-bs-dismiss="modal" onclick="userAction('<%= users[i]._id %>')">Yes</button>
+                                                <button type="submit" class="btn btn-outline-danger" data-bs-dismiss="modal" onclick="userAction('<%= user._id %>')">Yes</button>
                                               </div>
                                               
                                             </div>
@@ -97,24 +97,24 @@
                                     <% } else { %>
 
                                         <!-- Unblock Button with Modal -->
-                                        <button type="submit" id="buttonn <%= users[i]._id %>" class="btn btn-outline-success btn-fw" data-bs-toggle="modal" data-bs-target="#unblockModal<%= i %>">Unblock</button>
+                                        <button type="submit" id="buttonn <%= user._id %>" class="btn btn-outline-success btn-fw" data-bs-toggle="modal" data-bs-target="#unblockModal<%= indx %>">Unblock</button>
                                     
                                         <!-- Unblock Modal -->
-                                        <div class="modal fade" id="unblockModal<%= i %>" tabindex="-1" aria-labelledby="unblockModalLabel<%= i %>" aria-hidden="true">
+                                        <div class="modal fade" id="unblockModal<%= indx %>" tabindex="-1" aria-labelledby="unblockModalLabel<%= indx %>" aria-hidden="true">
                                           <div class="modal-dialog">
                                             <div class="modal-content">
                                               <div class="modal-header">
-                                                <h5 class="modal-title" id="unblockModalLabel<%= i %>">Unblock User</h5>
+                                                <h5 class="modal-title" id="unblockModalLabel<%= indx %>">Unblock User</h5>
                                                 <button type="button" class="btn-close btn-outline-danger " data-bs-dismiss="modal" aria-label="Close">x</button>
                                               </div>
 
                                               <div class="modal-body bg-dark p-5 ">
-                                                Are you sure you want to unblock : <span class="text-primary "><%=users[i].fullName%></span> ?
+                                                Are you sure you want to unblock : <span class="text-primary "><%=user.fullName%></span> ?
                                               </div>
 
                                               <div class="modal-footer">
                                                 <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-outline-success" data-bs-dismiss="modal" onclick="userAction('<%= users[i]._id %>')">Yes</button>
+                                                <button type="submit" class="btn btn-outline-success" data-bs-dismiss="modal" onclick="userAction('<%= user._id %>')">Yes</button>
                                               </div>
 
                                             </div>
@@ -127,7 +127,7 @@
 
                                     </tr>
                                     
-                                <% } %>
+                                <%  }); %>
                                     
                                 
                             <% } else { %>

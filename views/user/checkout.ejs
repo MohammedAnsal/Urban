@@ -92,7 +92,7 @@
                                               <div class="modal-footer">
 												<input type="hidden" value="<%= userData._id %>" id="validUserId">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" onclick="validateForm()" >Add</button>
+                                                <button type="submit" class="btn btn-primary" onclick="validateForm()">Add</button>
                                               </div>
 
                                             </div>
@@ -234,7 +234,7 @@
 
 							<div class="row w-100 g-3 ">
 
-                            <% coupenData.forEach((val,i) => { %>
+                            <% coupenData.slice().reverse().forEach((val,i) => { %>
             
                                 <div class="flip-card col-lg-3" >
                                                                     
@@ -285,21 +285,42 @@
 
 						<div class="cart-discount">
 
-							<form action="/useCoupen" method="post">
-								
+							<p hidden class="msg"><%= msgg %></p>
+							
+							<% if (cartData.coupenDiscount == 0) { %>
+
+								<form action="/useCoupen" method="post">
+
 								<div class="input-group mt-1 ">
 
-									<p hidden class="msg"><%= msgg %></p>
+									<input type="text" class="form-control" name="coupen" oninput="coupenCheck(this)" placeholder="coupon code" required>
 
-								<input type="text" class="form-control" name="coupen" oninput="coupenCheck(this)" placeholder="coupon code" required>
-
-									<div class="input-group-append">
+									<div class="input-group-append">											
 
 										<button class="btn btn-outline-primary-2 mb-2 " id="btn" type="submit"><i class="icon-long-arrow-right"></i></button>
 
 									</div><!-- .End .input-group-append -->
 
 								</div><!-- End .input-group -->
+
+								</form>
+									
+							<%	} else { %>
+
+
+								<div class="input-group mt-1">
+
+								<input type="text" class="form-control" name="coupen" placeholder="coupon code" disabled>
+
+									<div class="input-group-append">											
+
+										<button class="btn btn-outline-danger mb-2" style="padding: 8px;" onclick="removeCoupen()" id="btn" type="submit">Remove</button>
+
+									</div><!-- .End .input-group-append -->
+
+								</div><!-- End .input-group -->
+
+							<% } %>
 
 							</form>
 
@@ -496,22 +517,22 @@
 
                                                         <div class="col-lg-6">
                                                             <label for="name" class="col-form-label text-black">Name *</label>
-                                                            <input type="text" class="form-control" name="name" id="name" placeholder="Enter your Name" required>
+                                                            <input type="text" class="form-control" name="name" id="namee" placeholder="Enter your Name" required>
                                                         </div>
 
                                                         <div class="col-lg-6">
                                                             <label for="phone" class="col-form-label text-black">Mobile Number *</label>
-                                                            <input type="text" class="form-control" name="phone" id="phone" placeholder="Enter your Mobile" required>
+                                                            <input type="text" class="form-control" name="phone" id="phonee" placeholder="Enter your Mobile" required>
                                                         </div>
 
                                                         <div class="col-lg-6">
                                                             <label for="locality" class="col-form-label text-black">Loacality *</label>
-                                                            <input type="text" class="form-control" name="locality" id="locality" placeholder="Enter your Locality" required>
+                                                            <input type="text" class="form-control" name="locality" id="localityy" placeholder="Enter your Locality" required>
                                                         </div>
 
                                                         <div class="col-lg-6">
                                                             <label for="pincode" class="col-form-label text-black">Pincode *</label>
-                                                            <input type="text" class="form-control" name="pincode" id="pincode" placeholder="Enter your pincode" required>
+                                                            <input type="text" class="form-control" name="pincode" id="pincodee" placeholder="Enter your pincode" required>
                                                         </div>
 
                                                         </div>
@@ -527,17 +548,17 @@
 
                                                           <div class="col-lg-6">
                                                             <label for="city" class="col-form-label text-black">City *</label>
-                                                            <input type="text" class="form-control" name="city" id="city" placeholder="Enter your City" required>
+                                                            <input type="text" class="form-control" name="city" id="cityy" placeholder="Enter your City" required>
                                                         </div>
 
                                                         <div class="col-lg-6">
                                                             <label for="state" class="col-form-label text-black">State *</label>
-                                                            <input type="text" class="form-control" name="state" id="state" placeholder="Enter your State" required>
+                                                            <input type="text" class="form-control" name="state" id="statee" placeholder="Enter your State" required>
                                                         </div>
 
                                                         </div>
 
-                                                        <input type="hidden" name="id" id="id">
+                                                        <input type="hidden" name="id" id="idd">
 														
 														<div class="modal-footer">
 															<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -661,11 +682,11 @@
 
                                                             <td><a href="#">
 
-                                                                <%=product?.productId.name %>
+                                                                <%= product.name %>
 
                                                                 </a></td>
 
-                                                            <td>$<%=product.price%>.00</td>
+                                                            <td>$<%= product.price %>.00</td>
 															
                                                         </tr>
 
@@ -958,14 +979,14 @@ function deleteAdd(id , addId){
 
 function editAddress(edit){
 
-	const namee = document.getElementById('name')
-	const phonee = document.getElementById('phone')
-	const localityy = document.getElementById('locality')
-	const pincodee = document.getElementById('pincode')
+	const namee = document.getElementById('namee')
+	const phonee = document.getElementById('phonee')
+	const localityy = document.getElementById('localityy')
+	const pincodee = document.getElementById('pincodee')
 	const addressss = document.getElementById('addresssss')
-	const cityy = document.getElementById('city')
-	const statee = document.getElementById('state')
-	const idd = document.getElementById('id');
+	const cityy = document.getElementById('cityy')
+	const statee = document.getElementById('statee')
+	const idd = document.getElementById('idd');
 
   fetch('/editAddressCheckout' , {method : 'put'  , headers : {'Content-Type': 'application/json'} , body : JSON.stringify({edit})})
 
@@ -1040,7 +1061,7 @@ if(msg.textContent == 'Address Edited'){
 
 } else if(msg.textContent == 'coupen'){
 
-		const Toast = Swal.mixin({
+	const Toast = Swal.mixin({
 
 		toast: true,
 		position: "top-end",
@@ -1063,6 +1084,31 @@ if(msg.textContent == 'Address Edited'){
 
 	});
 		
+} else if(msg.textContent == 'usedOne'){
+
+	const Toast = Swal.mixin({
+
+		toast: true,
+		position: "top-end",
+		showConfirmButton: false,
+		timer: 3000,
+	    timerProgressBar: true,
+
+		didOpen: (toast) => {
+
+			toast.onmouseenter = Swal.stopTimer;
+		   toast.onmouseleave = Swal.resumeTimer;
+		}
+
+	});
+					
+	Toast.fire({
+
+		icon: "warning",
+		title: "Already Used!!!"		
+
+	});
+
 }
 
 //	Payment Sumbit :-
@@ -1200,6 +1246,27 @@ function coupenCheck(val){
 	})
 
 }
+
+//	Remove Coupen :-
+
+function removeCoupen(){
+
+	fetch(`/removeCop` , {method : 'put'})
+
+	.then(res => res.json())
+
+	.then(data => {
+
+		if(data.succ){
+
+			window.location.reload()
+
+		}
+
+	})
+
+}
+
 
 //  Validation For Add Address :-
 

@@ -26,7 +26,7 @@
 
         <div class="container-fluid  py-5 h-100 position-relative ">
 
-          <div class="row d-flex    align-items-start  h-100" style="gap: 10rem;">
+          <div class="row d-flex align-items-start  h-100" style="gap: 10rem;">
 
             <aside class="col-md-2 col-lg-2  ">
 
@@ -126,7 +126,7 @@
 
                     <% if(locals.order) { %>
 
-                      <% order.products.forEach((product, index)=>{ %>
+                      <% order.products.slice().reverse().forEach((product, index)=>{ %>
 
                         <% if (product.orderProStatus == 'canceled') { %>
 
@@ -218,7 +218,7 @@
                               
                               <span class="in-stock">
 
-                                <%=product.quantity %>
+                                <%= product.quantity %>
 
                               </span>
                             
@@ -232,9 +232,12 @@
 
                             <td class="price-col">
 
-                              $<%= product.price %>
+                              $<%= product.price %> 
 
+                              <p class="fs-6 <%= order.coupenDis <= 0 ? '' : 'text-success' %>"><%= order.coupenDis <= 0 ? '' : 'Coupen Applied' %></p>
+                              
                             </td>
+
 
                            <td>
                              

@@ -35,7 +35,8 @@ const securePassword = async (password) => {
         
     } catch (error) {
         
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
     
@@ -52,7 +53,8 @@ const secureToken = async (token) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -62,7 +64,7 @@ const secureToken = async (token) => {
 
 //  Load Home (Get Method) :-
 
-const loadhome = async (req, res) => {
+const loadhome = async (req, res,next) => {
     
     try {
         
@@ -80,7 +82,8 @@ const loadhome = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -90,7 +93,7 @@ const loadhome = async (req, res) => {
 
 //  User SignUp (Get Method) :-
 
-const loadsignUp = async (req, res) => {
+const loadsignUp = async (req, res,next) => {
     
     try {
 
@@ -105,14 +108,15 @@ const loadsignUp = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 };
 
 //  Fetch User data and store data in (DataBase) :- (Post of Signup)
 
-const insertUser = async (req, res) => {
+const insertUser = async (req, res,next) => {
     
     try {
 
@@ -182,7 +186,8 @@ const insertUser = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -192,7 +197,7 @@ const insertUser = async (req, res) => {
 
 //  Load Verify Email (For Send Mail) (Function) :-
 
-const sendOtpMail = async (name , email , otpp , res , token) => {
+const sendOtpMail = async (name , email , otpp , res , token , next) => {
     
     try {
 
@@ -247,7 +252,8 @@ const sendOtpMail = async (name , email , otpp , res , token) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -274,7 +280,7 @@ const generateOTP = () => {
 
 //  Load Otp (Get Method) :-
 
-const loadOtpp = async (req , res) => { 
+const loadOtpp = async (req , res , next) => { 
     
     try {
         
@@ -298,14 +304,15 @@ const loadOtpp = async (req , res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
     
     }
 };
 
 //  Load Otp (Post Method) :-
 
-const verifyOtpp = async (req , res) => {
+const verifyOtpp = async (req , res , next) => {
     
     try {
 
@@ -375,7 +382,8 @@ const verifyOtpp = async (req , res) => {
 
     } catch (error) {
 
-        console.log(error);
+        next(error,req,res);
+
         
     }
 
@@ -385,7 +393,7 @@ const verifyOtpp = async (req , res) => {
 
 //  Load Resend Otp (Get Method) :-
 
-const loadResendOtp = async (req, res) => {
+const loadResendOtp = async (req, res , next) => {
     
     try {
 
@@ -411,7 +419,8 @@ const loadResendOtp = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error);
+        next(error,req,res);
+
         
     }
 
@@ -421,7 +430,7 @@ const loadResendOtp = async (req, res) => {
 
 //  Load Login (Get Method) :-
 
-const loadlogin = async (req, res) => {
+const loadlogin = async (req, res , next) => {
     
     try {
 
@@ -439,7 +448,8 @@ const loadlogin = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -447,7 +457,7 @@ const loadlogin = async (req, res) => {
 
 //  Load Login (Get Method) :-
 
-const verifylogin = async (req, res) => {
+const verifylogin = async (req, res , next) => {
 
     const emaill = req.body.email;
     const Password = req.body.password;
@@ -481,7 +491,8 @@ const verifylogin = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 };
@@ -490,7 +501,7 @@ const verifylogin = async (req, res) => {
 
 //  Load Logout (Post Method) :-
 
-const loadlogout = async (req, res) => {
+const loadlogout = async (req, res , next) => {
     
     try {
 
@@ -500,7 +511,8 @@ const loadlogout = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -509,7 +521,7 @@ const loadlogout = async (req, res) => {
 
 //  Load About (Get Method) :-
 
-const loadAbout = async (req, res) => {
+const loadAbout = async (req, res,next) => {
     
     try {
 
@@ -527,7 +539,8 @@ const loadAbout = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -537,7 +550,7 @@ const loadAbout = async (req, res) => {
 
 //  Load Contact (Get Method) :-
 
-const loadContact = async (req, res) => {
+const loadContact = async (req, res , next) => {
     
     try {
 
@@ -555,7 +568,8 @@ const loadContact = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -565,7 +579,7 @@ const loadContact = async (req, res) => {
 
 //  Load Category (Get Method) :-
 
-const loadCategory = async (req, res) => {
+const loadCategory = async (req, res , next) => {
     
     try {
 
@@ -626,7 +640,8 @@ const loadCategory = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -636,7 +651,7 @@ const loadCategory = async (req, res) => {
 
 //  Load All-Product (Get Method) :-
 
-const loadAllproduct = async (req, res ) => {
+const loadAllproduct = async (req, res ,next) => {
     
     try {
 
@@ -664,7 +679,8 @@ const loadAllproduct = async (req, res ) => {
         
     } catch (error) {
 
-        console.log(error.mess);
+        next(error,req,res);
+
 
         
     }
@@ -697,10 +713,6 @@ const loadPrdctDetails = async (req, res , next) => {
         
     } catch (error) {
 
-        console.log(error.message);
-
-        console.log('reached catch');
-
         next(error,req,res);
         
     }
@@ -729,7 +741,8 @@ const loadPrdctDetails = async (req, res , next) => {
         
 //     } catch (error) {
 
-//         console.log(error.message);
+//               next(error,req,res);
+
         
 //     }
 
@@ -758,7 +771,8 @@ const loadPrdctDetails = async (req, res , next) => {
 
 //     } catch (error) {
 
-//         console.log(error.message);
+//               next(error,req,res);
+
         
 //     }
 
@@ -769,7 +783,7 @@ const loadPrdctDetails = async (req, res , next) => {
 
 //  load ForgotPassword (Get Method) :-
 
-const loadForgotPassword = async (req, res) => {
+const loadForgotPassword = async (req, res,next) => {
     
     try {
 
@@ -780,7 +794,8 @@ const loadForgotPassword = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -790,7 +805,7 @@ const loadForgotPassword = async (req, res) => {
 
 //  verifyEmail (Forgot Password) (Post Method) :-
 
-const verifyEmailForgottPass = async (req, res) => {
+const verifyEmailForgottPass = async (req, res,next) => {
     
     try {
 
@@ -820,7 +835,8 @@ const verifyEmailForgottPass = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -830,7 +846,7 @@ const verifyEmailForgottPass = async (req, res) => {
 
 //  SendMail For ForgotPassword :-
 
-const sndMailForgotPassword = async (name , email, otpp, res , token) => {
+const sndMailForgotPassword = async (name , email, otpp, res , token , next) => {
     
     try {
         
@@ -888,7 +904,8 @@ const sndMailForgotPassword = async (name , email, otpp, res , token) => {
         
     } catch (error) {
         
-        console.log(error.message);
+        next(error,req,res);
+
 
     }
     
@@ -898,7 +915,7 @@ const sndMailForgotPassword = async (name , email, otpp, res , token) => {
 
 //  loadConfirmPassword (Get Method) :-
 
-const loadConfirmPassword = async (req, res) => {
+const loadConfirmPassword = async (req, res , next) => {
     
     try {
 
@@ -910,7 +927,8 @@ const loadConfirmPassword = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -940,7 +958,7 @@ const generateTokenForgottPassword = () => {
 
 //  verifyConfirmPassword (Post Method) :-
 
-const verifyConfirmPassword = async (req , res) => {
+const verifyConfirmPassword = async (req , res , next) => {
     
     try {
 
@@ -966,7 +984,8 @@ const verifyConfirmPassword = async (req , res) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -976,7 +995,7 @@ const verifyConfirmPassword = async (req , res) => {
 
 //  CartAction (Get Method) :-
 
-const cartAction = async (req, res) => {
+const cartAction = async (req, res , next) => {
     
     try {
 
@@ -998,7 +1017,8 @@ const cartAction = async (req, res) => {
        
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -1007,7 +1027,7 @@ const cartAction = async (req, res) => {
 
 //  Search Product  :-
 
-const searchProduct = async (req, res) => {
+const searchProduct = async (req, res , next) => {
 
     try {
       
@@ -1018,7 +1038,8 @@ const searchProduct = async (req, res) => {
     
     } catch (error) {
         
-        console.log(error.message);
+        next(error,req,res);
+
       
     }
   
@@ -1028,7 +1049,7 @@ const searchProduct = async (req, res) => {
 
 //  Price Filter (Put Metthod) :-
 
-const priceFilter = async (req, res) => {
+const priceFilter = async (req, res , next) => {
     
     try {
 
@@ -1057,7 +1078,8 @@ const priceFilter = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -1067,7 +1089,7 @@ const priceFilter = async (req, res) => {
 
 //  Acending Order Product Name (Put Method) :-
 
-const proNameSort = async (req, res) => {
+const aAzZ = async (req, res , next) => {
     
     try {
 
@@ -1083,7 +1105,35 @@ const proNameSort = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
+        
+    }
+
+};
+
+//===============================//
+
+//  Decending Order Product Name (Put Method) :-
+
+const zZaA = async (req, res , next) => {
+    
+    try {
+
+        const { status } = req.body;
+
+        if (status) {
+            
+            const product = await Product.find({ status: true }).sort({ name: -1 }).populate('category');
+
+            res.send(product);
+
+        }
+        
+    } catch (error) {
+
+        next(error,req,res);
+
         
     }
 
@@ -1093,7 +1143,7 @@ const proNameSort = async (req, res) => {
 
 //  Price Low to High (Put Method) :-
 
-const lowToHigh = async (req, res) => {
+const lowToHigh = async (req, res , next) => {
     
     try {
 
@@ -1109,7 +1159,8 @@ const lowToHigh = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -1119,7 +1170,7 @@ const lowToHigh = async (req, res) => {
 
 //  Price High To Low (Put Method) :-
 
-const highTolow = async (req, res) => {
+const highTolow = async (req, res , next) => {
     
     try {
 
@@ -1134,7 +1185,8 @@ const highTolow = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -1145,7 +1197,7 @@ const highTolow = async (req, res) => {
 
 //  LoadWallet (Get Method) :-
 
-const loadWallet = async (req, res) => {
+const loadWallet = async (req, res , next) => {
     
     try {
 
@@ -1165,7 +1217,8 @@ const loadWallet = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -1175,29 +1228,30 @@ const loadWallet = async (req, res) => {
 
 //  404 Page :-
 
-// const catchAll = async (req, res) => {
+const catchAll = async (req, res , next) => {
     
-//     try {
+    try {
 
-//         // const categoryData = await Category.find({ is_Listed: true });
+        const categoryData = await Category.find({ is_Listed: true });
 
-//         if (req.session.user) {
+        if (req.session.user) {
             
-//             res.render('404');
+            res.render('404');
 
-//         } else {
+        } else {
 
-//             res.render('404', { categoryData });
+            res.render('404', { categoryData });
 
-//         }
+        }
         
-//     } catch (error) {
+    } catch (error) {
 
-//         console.log(error.message);
+        next(error,req,res);
+
         
-//     }
+    }
 
-// };
+};
 
 //  500 Page :_
 
@@ -1219,7 +1273,8 @@ const loadWallet = async (req, res) => {
         
 //     } catch (error) {
 
-//         console.log(error.message);
+//               next(error,req,res);
+
         
 //     }
 
@@ -1227,35 +1282,36 @@ const loadWallet = async (req, res) => {
 
 module.exports = {
 
-  loadhome,
-  loadlogin,
-  verifylogin,
-  loadsignUp,
-  insertUser,
-  loadOtpp,
-  verifyOtpp,
-  loadAbout,
-//   loadCheckout,
-  loadContact,
-  loadlogout,
-  loadResendOtp,
-  loadCategory,
-  loadAllproduct,
-  loadPrdctDetails,
-//   loadCart,
-//   loadWishlist,
-  loadForgotPassword,
-  verifyEmailForgottPass,
-  loadConfirmPassword,
-  verifyConfirmPassword,
-  cartAction,
-  searchProduct,
-  priceFilter,
-//   catchAll,
-  proNameSort,
-  lowToHigh,
-  highTolow,
-  loadWallet,
-//   catch500,
+    loadhome,
+    loadlogin,
+    verifylogin,
+    loadsignUp,
+    insertUser,
+    loadOtpp,
+    verifyOtpp,
+    loadAbout,
+    //   loadCheckout,
+    loadContact,
+    loadlogout,
+    loadResendOtp,
+    loadCategory,
+    loadAllproduct,
+    loadPrdctDetails,
+    //   loadCart,
+    //   loadWishlist,
+    loadForgotPassword,
+    verifyEmailForgottPass,
+    loadConfirmPassword,
+    verifyConfirmPassword,
+    cartAction,
+    searchProduct,
+    priceFilter,
+      catchAll,
+    aAzZ,
+    zZaA,
+   lowToHigh,
+    highTolow,
+    loadWallet,
+    //   catch500,
   
 };

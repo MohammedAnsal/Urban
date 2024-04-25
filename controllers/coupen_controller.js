@@ -86,27 +86,77 @@ const useCoupen = async (req, res) => {
     
     try {
 
-        const coupenId = req.body.coupen;
+        const coupenIdd = req.body.coupen;
         
-        const cartData = await Cart.findOne({ userId: req.session.user._id });
-        const coupenCheck = await Coupen.findOne({ coupenId: coupenId });
+        const coupen = await Coupen.findOne({ coupenId: coupenIdd, status: true });
 
-        const cartPrice = cartData.totalCartPrice;  //  CartPrice
-        const coupenDis = coupenCheck.discount     //  Coupen Discount
-
-        if (coupenCheck) {
+        if (coupen) {
             
-            const offerValue = Math.round((cartPrice) - (cartPrice * coupenDis / 100));
-            const discountedValue = cartPrice - offerValue
+            const cartData = await Cart.findOne({ userId: req.session.user._id });
 
-            const updateCart = await Cart.findOneAndUpdate({ _id: cartData._id }, { $set: { totalCartPrice: offerValue, coupenDiscount: discountedValue } }, { new: true });
+            const exist = await User.findOne({ _id: req.session.user._id, applyCoupen: { $in: [coupen.coupenId] } });
 
-            if (updateCart) {
-               
-                req.flash("flash", "coupen");
+            if (!exist) {
+                
+                const cartPrice = cartData.totalCartPrice;  //  CartPrice
+                const coupenDis = coupen.discount     //  Coupen Discount
+                
+                if (coupen) {
+                            
+                    const offerValue = Math.round((cartPrice) - (cartPrice * coupenDis / 100));
+                    const discountedValue = cartPrice - offerValue
+                
+                    const updateCart = await Cart.findOneAndUpdate({ _id: cartData._id }, { $set: { totalCartPrice: offerValue, coupenDiscount: discountedValue, percentage: coupen.discount } }, { new: true });
+                    await User.findOneAndUpdate({ _id: req.session.user._id }, { $push: { applyCoupen: coupen.coupenId } });
+                
+                    if (updateCart) {
+                               
+                        req.flash("flash", "coupen");
+                        res.redirect("/checkout");
+                
+                    }
+                }
+
+            } else {
+
+                req.flash('flash', 'usedOne');
                 res.redirect("/checkout");
 
             }
+
+        } else {
+
+
+
+        }
+        
+    } catch (error) {
+
+        console.log(error.message);
+        
+    }
+
+};
+
+//  RemoveCoupen (Put Method) :- (User)
+
+const removeCop = async (req, res) => {
+    
+    try {
+
+        const userIdd = req.session.user._id
+
+        const cartData = await Cart.findOne({ userId: userIdd });
+
+        const addPrice = cartData.coupenDiscount
+
+        const updateCart = await Cart.findOneAndUpdate({ userId: userIdd }, { $set: { coupenDiscount: 0, percentage: 0 } }, { $inc: { totalCartPrice: addPrice } });   //  Update Cart
+
+        await User.findOneAndUpdate({ _id: userIdd }, { $pop: { applyCoupen: 1 } }); //  Remove Coupen Id in User Side
+        
+        if (updateCart) {
+            
+            res.send({ succ: true });
         }
         
     } catch (error) {
@@ -244,4 +294,5 @@ module.exports = {
     deleteCoupen,
     coupenCheck,
     useCoupen,
+    removeCop
 }

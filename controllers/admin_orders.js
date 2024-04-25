@@ -143,82 +143,82 @@ const returnManaging = async (req, res) => {
 
     try {
 
-        const ordId = req.query.id
+        const ordId = req.query.id      // Order Id
+        const proIdd = req.query.proId  // Order Pro Main Id
 
-        const findReturnOrd = await Order.find({ _id: ordId, "products.retruned": true });
+        await Order.findOneAndUpdate(
+        
+            { _id: ordId, "products._id": proIdd },
 
-        //  Itrating OrdId :-
+            { $set: { "products.$.orderProStatus": "returned" } },
 
-        for (const ordData of findReturnOrd) {
+            { new: true }
+        );
 
-            const userIdd = ordData.userId;     //  UserId
+        //  Find Single Product And Other Things :-
+        
+        const findOrder = await Order.findOne(
+        
+            {
+                _id: ordId,
+                "products._id": proIdd,
+                "products.retruned": true,
+            },
 
-            for (const element of ordData.products) {
+            { "products.$": 1, userId: 1, percentage: 1, orderAmount: 1 }
+          
+        );
 
-                if (element.retruned) {
+        if (findOrder) {
+            
+            //  There is Stock Menaging :-
 
-                    await Order.findOneAndUpdate(
-                  
-                        { _id: ordId, "products.productId": element.productId },
-                    
-                        { $set: { "products.$.orderProStatus": "returned" } },
-                    
-                        { new: true }
-                    
-                    );
-                    
-                    // Adding Stock Back :-
+            const findStock = findOrder.products[0].quantity;
 
-                    const findOrder = await Order.findOne(
-                  
-                        {
-                            _id: ordId,
-                            "products.productId": element.productId,
-                            "products.retruned": true,
-                      
-                        },
-
-                        { "products.$": 1 }
-                    
-                    );
-
-                    if (findOrder) {
-                      
-                        const findStock = element.quantity;
-
-                        await Product.findOneAndUpdate(
+            await Product.findOneAndUpdate(
+            
                         
-                            { _id: element.productId },
+                { _id: proIdd },
 
-                            { $inc: { stock: findStock } }
+                { $inc: { stock: findStock } }
 
-                        );
+            );
 
-                        //  Money Managing :-
+            //  Money Managing :-
       
-                        const moneyDecreses = element.price;
+            let moneyDecreses = findOrder.products[0].price;
       
-                        await Order.findOneAndUpdate(
-      
-                            { _id: ordId, "products.productId": element.productId },
-      
-                            { $inc: { orderAmount: -moneyDecreses } }
-      
-                        );
-                        
-                    };
+            //  There Is If Coupen Used Product Came (Menaging) :-
+            
+            if (findOrder.percentage >= 1) {
 
-                };
-
-                if (element.retruned && ordId.peyment !== 'Cash on Delivery') {
+                let newVal = Math.floor((findOrder.orderAmount) - (moneyDecreses - (moneyDecreses * findOrder.percentage / 100)));
                 
-                    await Wallet.findOneAndUpdate({ userId: userIdd }, { $inc: { balance: element.price }, $push: { transaction: { amount: element.price, creditOrDebit: 'credit' } } }, { new: true, upsert: true });
-                
-                }
+                await Order.findOneAndUpdate({ _id: ordId, 'products._id': proIdd }, { $set: { orderAmount: newVal } });
+
+            } else {
+
+                await Order.findOneAndUpdate({ _id: ordId, "products._id": proIdd }, { $inc: { orderAmount: -moneyDecreses } });
             }
 
-        }
+            if (findOrder.products[0].retruned && ordId.peyment !== 'Cash on Delivery') {
 
+                if (findOrder.percentage >= 1) {
+                    
+                    let newVall = Math.floor((moneyDecreses - (moneyDecreses * findOrder.percentage / 100)));
+                     
+                    await Wallet.findOneAndUpdate({ userId: findOrder.userId }, { $inc: { balance: newVall }, $push: { transaction: { amount: newVall, creditOrDebit: 'credit' } } }, { new: true, upsert: true });
+
+                } else {
+
+                    await Wallet.findOneAndUpdate({ userId: findOrder.userId }, { $inc: { balance: moneyDecreses }, $push: { transaction: { amount: moneyDecreses, creditOrDebit: 'credit' } } }, { new: true, upsert: true });
+
+                }
+                
+            }
+                        
+        };
+ 
     } catch (error) {
 
         console.log(error.message);
@@ -226,7 +226,6 @@ const returnManaging = async (req, res) => {
     }
 
 };
-
 
 module.exports = {
 

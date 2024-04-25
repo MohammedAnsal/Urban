@@ -36,7 +36,7 @@ const user_wishlist = require('../controllers/wishlist_controller');
 const user_coupen = require('../controllers/coupen_controller');
 
 //  404 Page :-
-// user_route.get('/404', user_controller.catchAll);
+user_route.get('/404', user_controller.catchAll);
 
 //  500 Page :-
 // user_route.get('/500', user_controller.catch500);
@@ -90,7 +90,10 @@ user_route.put("/searchProduct", user_controller.searchProduct);
 user_route.put('/priceFilter', user_controller.priceFilter);
 
 //  SortProName (put)
-user_route.put("/sortProduct", user_controller.proNameSort);
+user_route.put("/aAzZ", user_controller.aAzZ);
+
+//  SortProName (put)
+user_route.put("/zZaA", user_controller.zZaA);
 
 //  lowTohigh (put)
 user_route.put("/lowToHigh", user_controller.lowToHigh);
@@ -117,6 +120,7 @@ user_route.get('/wallet', user_controller.loadWallet);
 
 //  Profile (get)
 user_route.get('/profile', user_middilware.user, user_middilware.isBlocked, profile_controller.loadProfile);
+
 //  Edit Profile (post)
 user_route.post('/editProfile', profile_controller.editProfile);
 
@@ -227,5 +231,8 @@ user_route.post("/coupenCehck", user_coupen.coupenCheck);
 
 //  useCoupen (post)
 user_route.post('/useCoupen', user_coupen.useCoupen);
+
+//  removeCouepn (put)
+user_route.put('/removeCop', user_coupen.removeCop);
 
 module.exports = user_route;

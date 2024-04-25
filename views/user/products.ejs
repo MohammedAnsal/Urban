@@ -97,7 +97,7 @@
 
                                 <div class="row" id="result">
 									
-									<% productData?.forEach(val => { %>
+									<% productData?.slice().reverse().forEach(val => { %>
 										
                                     	<div class="col-6 col-md-4 col-lg-4" id="cards">
 
@@ -471,10 +471,20 @@
 
                                             <div class="form-check">
 												
-											<input class="form-check-input" type="radio" name="flexRadioDefault" onclick="acendingLetter()" id="abc">
+											<input class="form-check-input" type="radio" name="flexRadioDefault" onclick="aAzZ()" id="aAzZ">
 
 											<label class="form-check-label" for="flexRadioDefault1">
 												aA - zZ
+											</label>
+
+											</div>
+
+											<div class="form-check">
+												
+											<input class="form-check-input" type="radio" name="flexRadioDefault" onclick="zZaA()" id="zZaA">
+
+											<label class="form-check-label" for="flexRadioDefault1">
+												zZ - aA
 											</label>
 
 											</div>
@@ -862,18 +872,18 @@ function addWishlist(id){
 
 };
 
-//	Acending Pro Name :-
+//	aA zZ Pro Name :-
 
-function acendingLetter(){
+function aAzZ(){
 
-	const item = document.getElementById('abc');
+	const item = document.getElementById('aAzZ');
 	const result = document.getElementById('result')
 
 	const status = true
 
 	if(item.checked){
 
-		fetch(`/sortProduct` , {method : 'put' , headers:{'Content-Type':'application/json'} , body : JSON.stringify({status})})
+		fetch(`/aAzZ` , {method : 'put' , headers:{'Content-Type':'application/json'} , body : JSON.stringify({status})})
 	
 		.then(res => res.json())
 	
@@ -953,6 +963,98 @@ function acendingLetter(){
 	}
 
 };
+
+//	zZ aA Pro Name :-
+
+function zZaA(){
+
+	const item = document.getElementById('zZaA');
+	const result = document.getElementById('result')
+
+	const status = true
+
+	if(item.checked){
+
+		fetch(`/zZaA` , {method : 'put' , headers:{'Content-Type':'application/json'} , body : JSON.stringify({status})})
+	
+		.then(res => res.json())
+	
+		.then(data => {
+	
+			if(data){
+	
+				  result.classList.remove('justify-content-center')
+	
+					result.innerHTML= `${data.map((product,i) => (`
+						
+						<div id="cards"class="col-6 col-md-4 col-lg-4">
+							
+						<div class="product product-7 text-center">
+							
+						<figure class="product-media">
+	
+							<a href='/productDetails?id=${product._id}'>
+								<img src="/productImage/${product.images[0]}" alt="Product image" class="product-image">
+							</a>
+
+								<span class="product-label label-new">New</span>
+
+							<div class="product-action-vertical">
+								<a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+							</div><!-- End .product-action-vertical -->
+	
+							<input hidden value="${product.stock}" id="stock">
+	
+							<div class="product-action">
+								<button onclick="addCart('${product._id}')" id="btns" class="btn-product btn-cart border-0 " style="cursor: pointer;"><span id="crt">add to cart</span></button>
+							</div><!-- End .product-action -->
+	
+						</figure><!-- End .product-media -->
+	
+						<div class="product-body">
+	
+							<div class="product-cat">
+								<a href="#">${product.name}</a>
+							</div><!-- End .product-cat -->
+	
+							<h3 class="product-title"><a href="/products">${product.category.name}</a></h3><!-- End .product-title -->
+	
+							<div class="product-price">
+								$${product.price}.00
+							</div><!-- End .product-price -->
+	
+							<div class="ratings-container">
+
+                                                    	<div class="ratings">
+
+                                                        	<div class="ratings-val" style="width: 20%;"></div>
+
+                                                    	</div><!--End .ratings-->
+														
+                                                    	<span class="ratings-text">( 2 Reviews )</span>
+
+                                                	</div><!--End .rating-container-->
+	
+						</div><!-- End .product-body -->
+	
+						</div><!-- End .product-body -->
+	
+					</div><!-- End .product -->
+	
+					</div>
+	
+				`)).join('')}`
+	
+			}
+		})
+
+	} else {
+
+		$('#reloadDiv').load('/product #reloadDiv')
+		
+	}
+
+}
 
 //	Price Low to High :-
 

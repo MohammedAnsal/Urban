@@ -30,7 +30,7 @@
                 <div class="modal-footer">
 
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" onclick="acceptReturn()" class="btn btn-primary"data-bs-dismiss="modal">YES</button>
+                <button type="button" id="yes" id onclick="acceptReturn(this)" class="btn btn-primary"data-bs-dismiss="modal">YES</button>
 
                 </div>
 
@@ -180,7 +180,7 @@
 
                                                                             <td> 
                                                                             
-                                                                            <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-outline-success">Yes</button>
+                                                                            <button onclick="idchange('<%= product._id %>')"data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-outline-success">Sure</button>
                                                                                     
                                                                             </td>
                                                                                         
@@ -198,7 +198,7 @@
 
                                                                             <td> 
                                                                             
-                                                                            <button <%= ordDettails.orderAmount == 0 && 'disabled' %> data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-outline-success <%= ordDettails.orderAmoun == 0  && 'opacity-50' %>">Yes</button>
+                                                                            <button <%= ordDettails.orderAmount == 0 && 'disabled' %> data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-outline-success <%= ordDettails.orderAmoun == 0  && 'opacity-50' %>">Sure</button>
                                                                                     
                                                                             </td>
                                                                                         
@@ -244,7 +244,12 @@
     
                                                                             <td>$<%= product.productId.price %>.00</td>
                                                                             <td><%= product.quantity %></td>
-                                                                            <td>$<%= product.price %>.00</td>
+                                                                            <td>$<%= product.price %>.00
+                                                                            
+                                                                                <p style="font-size: 10px;" class="mt-1 <%= ordDettails.coupenDis <= 0 ? '' : 'text-success' %>"><%= ordDettails.coupenDis <= 0 ? '' : 'Coupen Applied' %></p>
+
+                                                                            </td>
+
     
                                                                             <td> 
                                                                             
@@ -306,7 +311,14 @@
 <div hidden id="oderId" ><%= ordId %></div>
 
 <script>
-    
+
+    function idchange(id){
+
+       const modal = document.getElementById('yes');
+
+       modal.dataset.id = id
+    }
+
     //  Order Handling :-
     
     function orderProstatus(e,ordId,proId){
@@ -340,9 +352,9 @@
 
 const orderId = document.getElementById('oderId').textContent
 
-function acceptReturn(){
-        
-    fetch(`/admin/returnManage?id=${orderId}` , {method : 'POST'})
+function acceptReturn(e){
+
+    fetch(`/admin/returnManage?id=${orderId}&&proId=${e.dataset.id}` , {method : 'POST'})
     
 }
 

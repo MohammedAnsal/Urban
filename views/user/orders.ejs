@@ -97,7 +97,7 @@
 
                                 <tbody class="text-center ">
                                         
-                            <% orderData.forEach((ordVal , ind)=> {  %>
+                            <% orderData.slice().reverse().forEach((ordVal , ind)=> {  %>
 
                              <% if (ordVal.orderAmount == 0) { %>
 
@@ -207,6 +207,8 @@
                     </aside>
 
                               </div>
+
+                            <%- include('../layouts/pageNavigation') %>
 
                           </div><!-- End .col-lg-9 -->
                       </div><!-- End .row -->

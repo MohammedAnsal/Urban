@@ -75,7 +75,7 @@
 
                                     <div class="row w-100" style="gap: 2rem">
 
-                                        <div class="container">
+                                        <div class="container"  style="overflow-y: scroll; height: 300px;">
 
                     <% if (walletData?.transaction.length >= 1) { %>
 
@@ -94,7 +94,7 @@
 
                                 </thead>
 
-                            <% walletData?.transaction.forEach((element , index) => { %>
+                            <% walletData?.transaction.slice().reverse().forEach((element , index) => { %>
                                     
                                 <tbody>
 
@@ -158,6 +158,9 @@
                             </div>
                         </aside>
                     </div>
+                    
+                        <%- include('../layouts/pageNavigation') %>
+
                 </div>
                 
     </main><!-- End .main -->

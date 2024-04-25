@@ -22,29 +22,58 @@ const Wallet = require('../models/wallet_model');
 //  loadOrder (Get Method) :-
 
 const loadOrder = async (req, res) => {
-    
+
     try {
 
         const categoryData = await Category.find({ is_Listed: true });
-        
+
         if (req.session.user) {
 
-            const addressDataa = await Address.findOne({ userId: req.session.user._id });     //  Passing Address Data into Ejs Page
+            const addressData = await Address.findOne({
 
-            const orderData = await Order.find({ userId: req.session.user._id }).populate('products.productId');
-           
-            res.render('orders', { login: req.session.user, categoryData, address: addressDataa, orderData});
+                userId: req.session.user._id,
+
+            });
+
+            const limit = 3;
+            const page = parseInt(req.query.page) || 1;
+            const skip = (page - 1) * limit;
+
+            const totalOrd = await Order.countDocuments({
+
+                userId: req.session.user._id,
+
+            });
+
+            const totalPages = Math.ceil(totalOrd / limit);
+
+            const orderData = await Order.find({ userId: req.session.user._id })
+                
+                .populate("products.productId")
+                .skip(skip)
+                .limit(limit);
+
+            res.render("orders", {
+
+                login: req.session.user,
+                categoryData,
+                address: addressData,
+                orderData,
+                currentPage: page,
+                totalPages,
+
+            });
 
         } else {
- 
-            console.log("Byeee");
- 
+
+            res.redirect("/login");
+
         }
-        
+
     } catch (error) {
 
         console.log(error.message);
-        
+
     }
 
 };
@@ -63,7 +92,7 @@ const orderView = async (req, res) => {
         
     } catch (err) {
         
-        console.log(err.message + 'ORDER VIEW PAGE RENDERING');
+        console.log(err.message);
         
     }
     
@@ -127,6 +156,8 @@ const orderKitty = async (req, res) => {
                     orderDate: Date.now(),
                     orderAmount: cartt.totalCartPrice,
                     peyment: peyMethod,
+                    coupenDis: cartt.coupenDiscount,
+                    percentage: cartt.percentage
         
                 });
                 
@@ -178,7 +209,7 @@ const orderKitty = async (req, res) => {
                         
                     if (cartRemove) {
             
-                        res.redirect('thanks');
+                        res.redirect('/thanks');
             
                     } else {
                             
@@ -262,17 +293,35 @@ const orderCancel = async (req, res) => {
 
         const orderFind = await Order.findOne({ _id: ordId, "products.productId": proId, "products.canceled": true, }, { "products.$": 1, });
 
+        let findOrd; //  Find Order Variable
+        let ordVal;  //  Order Amount Variable
+        let moneyDecrese // Product Price
+
         if (orderFind) {
             
-            const getQuantity = orderFind.products[0].quantity;
+            const getQuantity = orderFind.products[0].quantity;     //  Find Pro Quantity
     
             await Product.findOneAndUpdate({ _id: proId }, { $inc: { stock: getQuantity } });
 
             //  Manage The Money :-
 
-            const moneyDecrese = orderFind.products[0].price
+            moneyDecrese = orderFind.products[0].price    //  Find Pro Price
 
-            await Order.findOneAndUpdate({ _id: ordId, 'products.productId': proId }, { $inc: { orderAmount: -moneyDecrese } });
+            findOrd = await Order.findOne({ _id: ordId, userId: userIdd });   //  Find Order
+
+            ordVal = findOrd.orderAmount;     //  Find Ord Amount
+
+            if (findOrd.percentage >= 1) {
+
+                let newVal = Math.floor((ordVal) - (moneyDecrese - (moneyDecrese * findOrd.percentage / 100)));
+                
+                await Order.findOneAndUpdate({ _id: ordId, 'products.productId': proId }, { $set: { orderAmount: newVal } });
+
+            } else {
+
+                await Order.findOneAndUpdate({ _id: ordId, 'products.productId': proId }, { $inc: { orderAmount: -moneyDecrese } });
+
+            }
 
         }
 
@@ -280,18 +329,30 @@ const orderCancel = async (req, res) => {
 
         if (cancelOrd.peyment != 'Cash on Delivery') {
             
-            await Wallet.findOneAndUpdate({ userId: userIdd },
-            
-                {
-                    $inc: { balance: price },
-                    $push: { transaction: { amount: price, creditOrDebit: 'credit' } }
-                },
+            if (findOrd.percentage >= 1) {
                 
-                { new: true, upsert: true }
+                let newVall = Math.floor((moneyDecrese - (moneyDecrese * findOrd.percentage / 100)));
 
-            );
+                await Wallet.findOneAndUpdate({ userId: userIdd }, { $inc: { balance: newVall }, $push: { transaction: { amount: newVall, creditOrDebit: 'credit' } } }, { new: true, upsert: true });
 
-            res.send({ succ: true });
+                res.send({ succ: true });
+ 
+            } else {
+
+                await Wallet.findOneAndUpdate({ userId: userIdd },
+                
+                    {
+                        $inc: { balance: price },
+                        $push: { transaction: { amount: price, creditOrDebit: 'credit' } }
+                    },
+                    
+                    { new: true, upsert: true }
+    
+                );
+    
+                res.send({ succ: true });
+
+            }
 
         } else {
 
@@ -304,7 +365,7 @@ const orderCancel = async (req, res) => {
         
     }
 
-}
+};
 
 //  ReturnOrder (Post Method) :-
 
@@ -373,15 +434,19 @@ const returnOrd = async (req, res) => {
         
         //  Return Product :-
         
-        const returnMasg = await Order.findOneAndUpdate({ _id: ordId, 'products.productId': proId }, {
-
-            $set: {
-
-                'products.$.retruned': true, "products.$.reason": reason,
-
+        const returnMasg = await Order.findOneAndUpdate(
+        
+            { _id: ordId, "products.productId": proId },
+          
+            {
+                $set: {
+                    "products.$.retruned": true,
+                    "products.$.reason": reason,
+                    "products.$.forButton": true,
+                },
             }
-
-        });
+          
+        );
 
         if (returnMasg) {
          
@@ -407,13 +472,12 @@ const downloadInvoice = async (req, res) => {
     
     try {
 
-        const categoryData = await Category.find({ is_Listed: true });
-
+        
         const ordId = req.query.id
         
-        const ordData = await Order.findOne({ _id: ordId }).populate('products.productId')
+        const ordData = await Order.find({ _id: ordId }).populate('products.productId userId')
 
-        res.render('invoice', { ordData, categoryData })
+        res.render('invoice', { ordData })
         
     } catch (error) {
 

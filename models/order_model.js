@@ -32,6 +32,22 @@ const Order = mongoose.Schema({
     
     },
 
+    coupenDis: {
+        
+        type: Number,
+        required:true,
+        default : 0
+
+    },
+
+    percentage: {
+        
+        type: Number,
+        required :true,
+        default:0
+
+    },
+
     // orderStatus: {
         
     //     type: String,
@@ -89,7 +105,9 @@ const Order = mongoose.Schema({
         
         reason: { type: String, default: '' },
 
-        retruned: { type: Boolean, default: false }
+        retruned: { type: Boolean, default: false },
+
+        forButton : {type : Boolean , default : false}
 
     }],
 
