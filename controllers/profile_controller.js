@@ -28,7 +28,8 @@ const securePassword = async (password) => {
         
     } catch (error) {
         
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
     
@@ -36,7 +37,7 @@ const securePassword = async (password) => {
 
 // Load Profile (Get Method) ;-
  
-const loadProfile = async (req, res) => {
+const loadProfile = async (req, res , next) => {
     
     try {
         
@@ -59,14 +60,15 @@ const loadProfile = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
     }
 
 };
 
 //  editProfile (Post Method) :-
 
-const editProfile = async (req, res) => {
+const editProfile = async (req, res , next) => {
     
     try {
 
@@ -90,7 +92,8 @@ const editProfile = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -98,7 +101,7 @@ const editProfile = async (req, res) => {
 
 //  changePassword (Post Method) :-
 
-const changePassword = async (req, res) => {
+const changePassword = async (req, res , next) => {
     
     try {
         
@@ -142,7 +145,8 @@ const changePassword = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 

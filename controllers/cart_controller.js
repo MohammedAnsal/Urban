@@ -18,7 +18,7 @@ const Coupen = require('../models/coupen_model');
 
 //  Load Cart Page (Get Method) :-
 
-const loadCart = async (req, res) => {
+const loadCart = async (req, res , next) => {
     
     try {
         
@@ -74,7 +74,7 @@ const loadCart = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
 
     }
 
@@ -82,7 +82,7 @@ const loadCart = async (req, res) => {
 
 //  Add Cart (Post Method) :-
 
-const addCart = async (req, res) => {
+const addCart = async (req, res , next) => {
     
     try {
 
@@ -141,15 +141,15 @@ const addCart = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error.message);
-        
+        next(error,req,res);
+
     }
 
 };
 
 //  Delete Cart (Post Method) :-
 
-const deleteCart = async (req, res) => {
+const deleteCart = async (req, res , next) => {
     
     try {
 
@@ -173,15 +173,15 @@ const deleteCart = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error.message);
-        
+        next(error,req,res);
+
     }
 
 };
 
 //  Update Cart (Put Method) : -
 
-const updateCart = async (req, res) => {
+const updateCart = async (req, res , next) => {
 
     try {
       
@@ -235,9 +235,9 @@ const updateCart = async (req, res) => {
 
         res.send({ success: totalCartPrice, productPrice: newValue });
         
-    } catch (err) {
+    } catch (error) {
 
-        console.log(err.message);
+        next(error, req, res);
         
     }
 

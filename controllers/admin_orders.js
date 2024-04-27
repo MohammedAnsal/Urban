@@ -12,7 +12,7 @@ const Wallet = require('../models/wallet_model');
 
 //  loadOrders (Get Method) :-
 
-const loadOrders = async (req, res) => {
+const loadOrders = async (req, res , next) => {
     
     try {
         
@@ -34,15 +34,15 @@ const loadOrders = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
-        
+        next(error,req,res);
+
     }
 
 };
 
 //  ordersDetails (Post Method) :-
 
-const ordersDetails = async (req, res) => {
+const ordersDetails = async (req, res , next) => {
     
     try {
 
@@ -54,7 +54,7 @@ const ordersDetails = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
         
     }
 
@@ -108,7 +108,7 @@ const ordersDetails = async (req, res) => {
 
 //  orderDetails Handling (Put Method) :-
 
-const orderProstatus = async (req, res) => { 
+const orderProstatus = async (req, res , next) => { 
 
     try {
 
@@ -128,18 +128,16 @@ const orderProstatus = async (req, res) => {
         
         res.json({ success: true });
         
-    } catch (err) {
+    } catch (error) {
         
-        console.log(err.message + " orderProstatus");
-        res.status(500).json({ success: false, error: err.message });
-        
+        next(error, req, res);
     }
     
 };
 
 //  Return Managing Admin :-
 
-const returnManaging = async (req, res) => {
+const returnManaging = async (req, res , next) => {
 
     try {
 
@@ -221,8 +219,7 @@ const returnManaging = async (req, res) => {
  
     } catch (error) {
 
-        console.log(error.message);
-
+        next(error,req,res);
     }
 
 };

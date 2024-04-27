@@ -11,7 +11,7 @@ const Offer = require('../models/offer_model');
 
 //  loadOffer (Get Method) :-
 
-const loadOffer = async (req, res) => {
+const loadOffer = async (req, res , next) => {
     
     try {
 
@@ -23,7 +23,7 @@ const loadOffer = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
         
     }
 
@@ -31,7 +31,7 @@ const loadOffer = async (req, res) => {
 
 //  addOffer (Post Method) :-
 
-const addOffer = async (req, res) => {
+const addOffer = async (req, res , next) => {
     
     try {
 
@@ -81,7 +81,8 @@ const addOffer = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -89,7 +90,7 @@ const addOffer = async (req, res) => {
 
 //  offerRemove (Put Method) :-
 
-const offerRemove = async (req, res) => {
+const offerRemove = async (req, res , next) => {
     
     try {
 
@@ -113,8 +114,8 @@ const offerRemove = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error.message);
-        
+        next(error,req,res);
+
     }
 
 };

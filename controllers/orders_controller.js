@@ -21,7 +21,7 @@ const Wallet = require('../models/wallet_model');
 
 //  loadOrder (Get Method) :-
 
-const loadOrder = async (req, res) => {
+const loadOrder = async (req, res , next) => {
 
     try {
 
@@ -72,7 +72,8 @@ const loadOrder = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
 
     }
 
@@ -80,7 +81,7 @@ const loadOrder = async (req, res) => {
 
 //  OrderDetails (Get Method) :-
 
-const orderView = async (req, res) => {
+const orderView = async (req, res , next) => {
       
     try {
         
@@ -90,9 +91,9 @@ const orderView = async (req, res) => {
 
         res.render('orderDetails', { login: req.session.user, order, categoryData });
         
-    } catch (err) {
+    } catch (error) {
         
-        console.log(err.message);
+        next(error, req, res);
         
     }
     
@@ -100,7 +101,7 @@ const orderView = async (req, res) => {
 
 //  Order Kitty (Post Method) :-
 
-const orderKitty = async (req, res) => {
+const orderKitty = async (req, res , next) => {
     
     try {
 
@@ -205,7 +206,7 @@ const orderKitty = async (req, res) => {
             
                     //  Update Cart :-
             
-                    const cartRemove = await Cart.updateOne({ userId: userIdd }, { $unset: { products: 1 }, $set: { totalCartPrice: 0, coupenDiscount: 0 } });
+                    const cartRemove = await Cart.updateOne({ userId: userIdd }, { $unset: { products: 1 }, $set: { totalCartPrice: 0, coupenDiscount: 0, percentage: 0 } });
                         
                     if (cartRemove) {
             
@@ -229,7 +230,8 @@ const orderKitty = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -237,7 +239,7 @@ const orderKitty = async (req, res) => {
 
 //  Load Thanks Page (Get Method) :-
 
-const loadThanks = async (req, res) => {
+const loadThanks = async (req, res , next) => {
     
     try {
 
@@ -254,7 +256,8 @@ const loadThanks = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -262,7 +265,7 @@ const loadThanks = async (req, res) => {
 
 //  orderCancel (Post Method) :-
 
-const orderCancel = async (req, res) => {
+const orderCancel = async (req, res , next) => {
     
     try {
 
@@ -361,7 +364,8 @@ const orderCancel = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -369,7 +373,7 @@ const orderCancel = async (req, res) => {
 
 //  ReturnOrder (Post Method) :-
 
-const returnOrd = async (req, res) => {
+const returnOrd = async (req, res , next) => {
     
     try {
 
@@ -460,7 +464,8 @@ const returnOrd = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -468,11 +473,10 @@ const returnOrd = async (req, res) => {
 
 //  Download Invoice (Put Method) :-
 
-const downloadInvoice = async (req, res) => {
+const downloadInvoice = async (req, res , next) => {
     
     try {
 
-        
         const ordId = req.query.id
         
         const ordData = await Order.find({ _id: ordId }).populate('products.productId userId')
@@ -481,7 +485,8 @@ const downloadInvoice = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 

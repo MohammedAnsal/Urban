@@ -35,16 +35,16 @@ const Order = mongoose.Schema({
     coupenDis: {
         
         type: Number,
-        required:true,
-        default : 0
+        required: true,
+        default:0
 
     },
 
     percentage: {
         
         type: Number,
-        required :true,
-        default:0
+        required: true,
+        default: 0
 
     },
 
@@ -107,7 +107,7 @@ const Order = mongoose.Schema({
 
         retruned: { type: Boolean, default: false },
 
-        forButton : {type : Boolean , default : false}
+        forButton: { type: Boolean, default: false }
 
     }],
 

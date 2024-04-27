@@ -15,7 +15,7 @@ const Cart = require('../models/cart_model');
 
 //  loadWishlist (Get Method) :-
 
-const loadWishlist = async (req, res) => {
+const loadWishlist = async (req, res , next) => {
     
     try {
         
@@ -54,7 +54,8 @@ const loadWishlist = async (req, res) => {
         
     } catch (error) {
         
-        console.log(error.message);
+        next(error,req,res);
+
 
     }
 
@@ -62,7 +63,7 @@ const loadWishlist = async (req, res) => {
 
 //   addWishlist (Post Method) :-
 
-const addWishlist = async (req, res) => {
+const addWishlist = async (req, res , next) => {
     
     try {
     
@@ -84,8 +85,9 @@ const addWishlist = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error.message);
-        res.status(500).send({ suc: false, message: 'Internal Server Error' });
+        next(error,req,res);
+
+        // res.status(500).send({ suc: false, message: 'Internal Server Error' });
         
     }
 
@@ -93,7 +95,7 @@ const addWishlist = async (req, res) => {
 
 //  removeWishlist (Put Method) :-
 
-const removeWishlist = async (req, res) => {
+const removeWishlist = async (req, res , next) => {
     
     try {
 
@@ -113,7 +115,8 @@ const removeWishlist = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -121,7 +124,7 @@ const removeWishlist = async (req, res) => {
 
 //  addCart (Post Method) :-
 
-const addCart = async (req, res) => {
+const addCart = async (req, res , next) => {
     
     try {
 
@@ -151,7 +154,8 @@ const addCart = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 

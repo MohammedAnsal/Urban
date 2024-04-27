@@ -12,7 +12,7 @@ const Category = require('../models/category_model');
 
 //  loadAddress (Get Method) :-
 
-const loadAddress = async (req, res) => {
+const loadAddress = async (req, res , next) => {
     
     try {
 
@@ -36,7 +36,8 @@ const loadAddress = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -44,7 +45,7 @@ const loadAddress = async (req, res) => {
 
 //  addAddress (Post Method) :-
 
-const addAddress = async (req, res) => {
+const addAddress = async (req, res , next) => {
     
     try {
         
@@ -92,7 +93,8 @@ const addAddress = async (req, res) => {
     } catch (error) {
 
         res.status(400);
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -100,7 +102,7 @@ const addAddress = async (req, res) => {
 
 //  deleteAddress (Post Method) :-
 
-const deleteAddress = async (req, res) => {
+const deleteAddress = async (req, res , next) => {
     
     try {
 
@@ -117,7 +119,8 @@ const deleteAddress = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -125,7 +128,7 @@ const deleteAddress = async (req, res) => {
 
 //  Edit Address (Put Method) :-
 
-const editAddress = async (req, res) => {
+const editAddress = async (req, res , next) => {
     
     try {
 
@@ -137,7 +140,8 @@ const editAddress = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -145,7 +149,7 @@ const editAddress = async (req, res) => {
 
 //  Verify Edit Address (Post Method) :-
 
-const verifyEditAddress = async (req, res) => {
+const verifyEditAddress = async (req, res , next) => {
     
     try {
 
@@ -163,7 +167,8 @@ const verifyEditAddress = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 

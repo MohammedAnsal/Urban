@@ -2,7 +2,7 @@ const Order = require('../models/order_model');
 
 //  Sales Report (Get Method) :-  
 
-const loadReport = async (req, res) => {
+const loadReport = async (req, res , next) => {
 
     try {
 
@@ -64,9 +64,9 @@ const loadReport = async (req, res) => {
             res.redirect("/admin");
         }
 
-    } catch (err) {
+    } catch (error) {
 
-        console.log(err.message);
+        next(error, req, res);
 
     }
 
@@ -74,7 +74,7 @@ const loadReport = async (req, res) => {
 
 //  Sales Custom Report :-
 
-const customReport = async (req, res) => {
+const customReport = async (req, res , next) => {
 
     try {
 
@@ -86,9 +86,9 @@ const customReport = async (req, res) => {
 
         res.send({ getData });
 
-    } catch (err) {
+    } catch (error) {
 
-        console.log(err.message);
+        next(error, req, res);
 
     }
 

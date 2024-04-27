@@ -21,7 +21,7 @@ const sceurePassword = async (password) => {
 
 //  Load Login (Get Method) :-
 
-const loadLogin = async (req, res) => {
+const loadLogin = async (req, res , next) => {
     
     try {
 
@@ -35,15 +35,15 @@ const loadLogin = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
-        
+        next(error,req,res);
+
     }
 
 };
 
 //  VerifyLogin (Post Method) :-
 
-const verifyLogin = async (req, res) => {
+const verifyLogin = async (req, res , next) => {
     
     try {
 
@@ -77,7 +77,7 @@ const verifyLogin = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
         
     }
 
@@ -85,7 +85,7 @@ const verifyLogin = async (req, res) => {
 
 //  Load ListUser (Get Method) :-
 
-const loadListUser = async (req, res) => {
+const loadListUser = async (req, res , next) => {
     
     try {
 
@@ -111,7 +111,7 @@ const loadListUser = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
         
     }
 
@@ -119,7 +119,7 @@ const loadListUser = async (req, res) => {
 
 //  Load verifyUser BlockandUnblock (Post Method) :-
 
-const verifyUserAction = async (req, res) => {
+const verifyUserAction = async (req, res , next) => {
     
     try {
         
@@ -129,15 +129,15 @@ const verifyUserAction = async (req, res) => {
         
     } catch (error) {
  
-        console.log(error.message);
-        
+        next(error,req,res);
+
     }
 
 };
 
 //  Load Logout (Post Method) :-
 
-const loadLogout = async (req, res) => {
+const loadLogout = async (req, res , next) => {
     
     try {
 
@@ -148,7 +148,7 @@ const loadLogout = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
         
     }
 

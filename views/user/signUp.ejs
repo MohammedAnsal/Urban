@@ -193,14 +193,17 @@
 			}
 
 			// Validate password :-
-			if (password.trim() === '' || password.trim().length < 5) {
+			const passwordErrors = checkPasswordStrength(password);
 
-				showError('Please enter a valid password (minimum 5 characters)', 'password-error');
+			if (passwordErrors.length > 0) {
+
+				showError(passwordErrors.join(' '), 'password-error');
 				return false;
 
 			} else {
 
 				clearError('password-error');
+
 			}
 
 			// Validate confirm password :-
@@ -249,6 +252,46 @@
 			const key = event.key;
 			return (key >= '0' && key <= '9');
 
+		}
+
+		//Define password strength requirements
+
+		function checkPasswordStrength(password) {
+
+			// Define password strength requirements
+
+			const minLength = 6; // Minimum length of 8 characters
+			const hasUpperCase = /[A-Z]/.test(password); // At least one uppercase letter
+			const hasLowerCase = /[a-z]/.test(password); // At least one lowercase letter
+			const hasNumber = /[0-9]/.test(password); // At least one number
+			const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password); // At least one special character
+
+			// Create an array to hold error messages
+
+			let errors = [];
+
+			if (password.length < minLength) {
+
+				errors.push(`Password must be at least ${minLength} characters long.`);
+			}
+			if (!hasUpperCase) {
+
+				errors.push("Password must contain at least one uppercase letter.");
+			}
+			if (!hasLowerCase) {
+
+				errors.push("Password must contain at least one lowercase letter.");
+			}
+			if (!hasNumber) {
+
+				errors.push("Password must contain at least one number.");
+			}
+			if (!hasSpecialChar) {
+
+				errors.push("Password must contain at least one special character.");
+			}
+
+			return errors;
 		}
 
 	</script>

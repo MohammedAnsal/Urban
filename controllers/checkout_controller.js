@@ -24,7 +24,7 @@ const Coupen = require('../models/coupen_model');
 
 //    Load Checkout (Get Method) :-
 
-const loadCheckout = async (req, res) => {
+const loadCheckout = async (req, res , next) => {
     
     try {
 
@@ -74,7 +74,8 @@ const loadCheckout = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -82,7 +83,7 @@ const loadCheckout = async (req, res) => {
 
 //  VerifyCartAddress (Post Method) :-
 
-const verifyCheckOutAddress = async (req, res) => {
+const verifyCheckOutAddress = async (req, res , next) => {
 
     try {
           
@@ -139,7 +140,8 @@ const verifyCheckOutAddress = async (req, res) => {
     } catch (error) {
 
         res.status(400);
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -147,7 +149,7 @@ const verifyCheckOutAddress = async (req, res) => {
 
 //  Delete Address (Post Method) :-
 
-const deleteAdd = async (req, res) => {
+const deleteAdd = async (req, res , next) => {
     
     try {
 
@@ -163,6 +165,8 @@ const deleteAdd = async (req, res) => {
         }
         
     } catch (error) {
+
+        next(error, req, res);
         
     }
 
@@ -170,7 +174,7 @@ const deleteAdd = async (req, res) => {
 
 //  Edit Address (Put Method) :-
 
-const editAddress = async (req, res) => {
+const editAddress = async (req, res , next) => {
     
     try {
 
@@ -181,7 +185,8 @@ const editAddress = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -189,7 +194,7 @@ const editAddress = async (req, res) => {
 
 //  Verify Edit Address (Post Method) :-
 
-const verifyEditAddress = async (req, res) => {
+const verifyEditAddress = async (req, res , next) => {
     
     try {
 
@@ -208,7 +213,8 @@ const verifyEditAddress = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -216,7 +222,7 @@ const verifyEditAddress = async (req, res) => {
 
 //  Choosee Address (Post Method) :-
 
-const chooseAddress = async (req, res) => {
+const chooseAddress = async (req, res , next) => {
     
     try {
 
@@ -252,7 +258,8 @@ const chooseAddress = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -260,7 +267,7 @@ const chooseAddress = async (req, res) => {
 
 //  Paymen Method (RazorPay Post Method) :-
 
-const RazorPay = async (req, res) => {
+const RazorPay = async (req, res , next) => {
     
     try {
 
@@ -328,7 +335,8 @@ const RazorPay = async (req, res) => {
     
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 

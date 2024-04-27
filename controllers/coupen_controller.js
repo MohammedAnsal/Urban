@@ -24,7 +24,7 @@ const Coupen = require('../models/coupen_model');
 
 //  loadCoupen (Get Method) :- (User)
 
-const loadCoupen = async (req, res) => {
+const loadCoupen = async (req, res , next) => {
     
     try {
         
@@ -46,7 +46,8 @@ const loadCoupen = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -54,7 +55,7 @@ const loadCoupen = async (req, res) => {
 
 //  Coupen Checking (Post Method) :- (User)
 
-const coupenCheck = async (req, res) => {
+const coupenCheck = async (req, res , next) => {
     
     try {
 
@@ -74,7 +75,8 @@ const coupenCheck = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -82,7 +84,7 @@ const coupenCheck = async (req, res) => {
 
 //  Use Coupen (Post Method) :- (User)
 
-const useCoupen = async (req, res) => {
+const useCoupen = async (req, res , next) => {
     
     try {
 
@@ -132,7 +134,8 @@ const useCoupen = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -140,7 +143,7 @@ const useCoupen = async (req, res) => {
 
 //  RemoveCoupen (Put Method) :- (User)
 
-const removeCop = async (req, res) => {
+const removeCop = async (req, res , next) => {
     
     try {
 
@@ -161,7 +164,8 @@ const removeCop = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -169,7 +173,7 @@ const removeCop = async (req, res) => {
 
 //  loadCoupen (Get Method) :- (Admin)
 
-const loadAdminCoupen = async (req, res) => {
+const loadAdminCoupen = async (req, res , next) => {
     
     try {
 
@@ -181,7 +185,8 @@ const loadAdminCoupen = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -189,7 +194,7 @@ const loadAdminCoupen = async (req, res) => {
 
 //  AddCoupen (Post Method) :- (Admin)
 
-const addCoupen = async (req, res) => {
+const addCoupen = async (req, res , next) => {
     
     try {
 
@@ -218,7 +223,8 @@ const addCoupen = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -226,7 +232,7 @@ const addCoupen = async (req, res) => {
 
 //  CoupenAction (Put Method) :-
 
-const coupenAction = async (req, res) => {
+const coupenAction = async (req, res , next) => {
     
     try {
 
@@ -239,6 +245,7 @@ const coupenAction = async (req, res) => {
         
     } catch (error) {
 
+        next(error, req, res);
         
     }
 
@@ -246,7 +253,7 @@ const coupenAction = async (req, res) => {
 
 //  DeleteCoupen (Put Method) :-
 
-const deleteCoupen = async (req, res) => {
+const deleteCoupen = async (req, res , next) => {
     
     try {
 
@@ -262,7 +269,8 @@ const deleteCoupen = async (req, res) => {
                 
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 

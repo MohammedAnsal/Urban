@@ -13,7 +13,7 @@ const path = require("path");
 
 //  loadProduct (Get Method) :-
 
-const loadProduct = async (req, res) => {
+const loadProduct = async (req, res , next) => {
     
     try {
 
@@ -32,7 +32,8 @@ const loadProduct = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -40,7 +41,7 @@ const loadProduct = async (req, res) => {
 
 //  loadAddProduct (Get Method) :-
 
-const loadAddProduct = async (req, res) => {
+const loadAddProduct = async (req, res , next) => {
     
     try {
 
@@ -51,7 +52,8 @@ const loadAddProduct = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -59,7 +61,7 @@ const loadAddProduct = async (req, res) => {
 
 //  verifyAddProduct (Post Method) :-
 
-const verifyAddProduct = async (req, res) => {
+const verifyAddProduct = async (req, res , next) => {
     
     try {
 
@@ -100,7 +102,8 @@ const verifyAddProduct = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -108,7 +111,7 @@ const verifyAddProduct = async (req, res) => {
 
 //  productAction (Post Methdo) :-
 
-const productAction = async (req, res) => {
+const productAction = async (req, res , next) => {
     
     try {
 
@@ -123,7 +126,8 @@ const productAction = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -131,7 +135,7 @@ const productAction = async (req, res) => {
 
 //  Product Edit (Get Method) :-
 
-const productEdit = async (req, res) => {
+const productEdit = async (req, res , next) => {
     
     try {
 
@@ -142,7 +146,8 @@ const productEdit = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 
@@ -150,7 +155,7 @@ const productEdit = async (req, res) => {
 
 //  Product Edit (Post Method) :-
 
-const verifyProductEdit = async (req, res) => {
+const verifyProductEdit = async (req, res , next) => {
     
     try {
 
@@ -188,7 +193,8 @@ const verifyProductEdit = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
+
         
     }
 

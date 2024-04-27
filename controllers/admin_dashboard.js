@@ -12,7 +12,7 @@ const Category = require("../models/category_model");
 
 //  loadDahboard (Get Method) :-
 
-const loadDahboard = async (req, res) => {
+const loadDahboard = async (req, res , next) => {
     
   try {
 
@@ -179,7 +179,8 @@ const loadDahboard = async (req, res) => {
         
   } catch (error) {
 
-    console.log(error.message);
+    next(error,req,res);
+
         
   }
 
@@ -187,7 +188,7 @@ const loadDahboard = async (req, res) => {
 
 //  Year Chart (Put Method) :-
 
-const chartYear = async (req, res) => {
+const chartYear = async (req, res , next) => {
 
   try {
 
@@ -228,9 +229,10 @@ const chartYear = async (req, res) => {
 
     res.send({ yearChart });
 
-  } catch (err) {
+  } catch (error) {
 
-    console.log(err.message);
+    next(error,req,res);
+
 
   }
 
@@ -238,7 +240,7 @@ const chartYear = async (req, res) => {
 
 //  Month Chart (Put Method) :-
 
-const monthChart = async (req, res) => {
+const monthChart = async (req, res , next) => {
 
   try {
     
@@ -298,10 +300,10 @@ const monthChart = async (req, res) => {
 
     res.json({ months: monthName, salesData });
 
-  } catch (err) {
+  } catch (error) {
 
-    console.log(err.message);
-   
+    next(error,req,res);
+
   }
 
 };

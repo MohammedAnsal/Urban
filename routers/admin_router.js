@@ -117,7 +117,7 @@ admin_route.post('/addProduct', upload.array('images', 3), admin_product.verifyA
 admin_route.put('/productAction', admin_product.productAction);
 
 //  Admin Edit Product (get)
-admin_route.get('/editProduct', admin_product.productEdit);
+admin_route.get('/editProduct', admin_middilware.isLogin, admin_product.productEdit);
 
 //  Admin Edit Product (post)
 admin_route.post('/editProduct/:id', upload.fields([{ name: 'image0', maxCount: 1 }, { name: 'image1', maxCount: 1 }, { name: 'image2', maxCount: 1 }]), admin_product.verifyProductEdit);
@@ -133,7 +133,7 @@ admin_route.post('/addBrand', admin_category.BrandAdd);
 admin_route.get('/orders', admin_middilware.isLogin, admin_orders.loadOrders);
 
 //  Admin Orders Details (post)
-admin_route.get('/ordDetails', admin_orders.ordersDetails);
+admin_route.get('/ordDetails', admin_middilware.isLogin, admin_orders.ordersDetails);
 
 //  Admin OrderStatus Handling (put)
 admin_route.put("/orderStatusHandling", admin_orders.orderProstatus);

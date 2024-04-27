@@ -6,7 +6,7 @@ const brand = require('../models/brand_model');
 
 //  load category (Get Method) :-
 
-const loadAdminCategory = async (req, res) => {
+const loadAdminCategory = async (req, res , next) => {
 
     try {
 
@@ -27,7 +27,8 @@ const loadAdminCategory = async (req, res) => {
         
     } catch (error) {
         
-        console.log(error.message);
+        next(error,req,res);
+
 
     }
 
@@ -35,7 +36,7 @@ const loadAdminCategory = async (req, res) => {
 
 //  addCategory (Post Method) :-
 
-const addCategory = async (req, res) => {
+const addCategory = async (req, res , next) => {
     
     try {
 
@@ -69,7 +70,7 @@ const addCategory = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
         
     }
 
@@ -77,7 +78,7 @@ const addCategory = async (req, res) => {
 
 //  categoryAction (Post Method) :-
 
-const categoryAction = async (req, res) => {
+const categoryAction = async (req, res , next) => {
 
     try {
       
@@ -91,7 +92,7 @@ const categoryAction = async (req, res) => {
    
     } catch (error) {
         
-        console.log(error.message);
+        next(error,req,res);
         
     }
     
@@ -99,7 +100,7 @@ const categoryAction = async (req, res) => {
 
 //  categoryEdit (Post Method) :-
 
-const categoryEdit = async (req, res) => {
+const categoryEdit = async (req, res , next) => {
     
     try {
 
@@ -125,7 +126,7 @@ const categoryEdit = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        next(error,req,res);
         
     }
 
@@ -133,7 +134,7 @@ const categoryEdit = async (req, res) => {
 
 //  BrandAdd (Post Method) :-
 
-const BrandAdd = async (req, res) => {
+const BrandAdd = async (req, res , next) => {
     
     try {
 
@@ -177,8 +178,8 @@ const BrandAdd = async (req, res) => {
         
     } catch (error) {
 
-        console.log(error.message);
-        
+        next(error,req,res);
+
     }
 
 };

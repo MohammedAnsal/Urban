@@ -114,7 +114,7 @@ user_route.get('/confirmPass', forgotPass_middilware.forgotPass , user_controlle
 user_route.post('/confirmPass', user_controller.verifyConfirmPassword);
 
 //  wallet (get)
-user_route.get('/wallet', user_controller.loadWallet);
+user_route.get('/wallet', user_middilware.user, user_controller.loadWallet);
 
 //  Profile Section :-
 
@@ -130,7 +130,7 @@ user_route.post('/changePassword', profile_controller.changePassword);
 //   Address Section :-
 
 //   address (get)
-user_route.get('/address', user_middilware.user , addres_controller.loadAddress);
+user_route.get('/address', user_middilware.user, addres_controller.loadAddress);
 
 //   addAddress (post)
 user_route.post('/addAddress', addres_controller.addAddress);
