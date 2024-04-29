@@ -54,9 +54,7 @@
 											<br><br>
 
 											<div>
-												<p id="timer">
-
-												</p>
+												<p id="timer"></p>
 											</div>
 
 											<% if (locals.tokkken != null) { %>
@@ -149,6 +147,8 @@
 
 <script>
 	
+	//	Input Box Movee :-
+
 	function moveToNext(current, nextFieldID) {
 
 		if (current.value.length >= current.maxLength) {
@@ -158,51 +158,54 @@
 		}
 	}
 
-	document.getElementById("verifyBtn").addEventListener("click", function() {
-
-        var successBox = document.getElementById("successBox");
-        successBox.style.display = "block";
-		
-    });
+	//	Time Setting :-
 	
-	
-	// Resend-OTP Script :-
-	
-	 const timerDuration = 60;
+	function startTimer() {
 
-    function startTimer() {
+		const urlParams = new URLSearchParams(window.location.search);
+		const createdAt = parseInt(urlParams.get("time"), 10); // OTP creation timestamp
 
-        let timeLeft = timerDuration;
-        const timerElement = document.getElementById("timer");
+		const currentTime = Date.now();
 
-        const countdown = setInterval(() => {
+		const totalOtpTime = 60; // Total time for OTP expiration
 
-            timerElement.textContent = `Resend OTP in ${timeLeft} seconds`;
+		const elapsedSeconds = Math.floor((currentTime - createdAt) / 1000); // Calculate elapsed time
+		let timeLeft = totalOtpTime - elapsedSeconds; // Calculate remaining time
 
-            timeLeft--;
+		const timerElement = document.getElementById("timer");
+		const buttonContainer = document.getElementById("button-container");
 
-            if (timeLeft < 0) {
+		if (timeLeft <= 0) {
 
-                    clearInterval(countdown);
-                    document.getElementById("resend-btn").disabled = false;
-                    timerElement.textContent = "Resend OTP";
+			timerElement.textContent = "Resend OTP";
+			document.getElementById("resend-btn").disabled = false;
+			buttonContainer.style.display = "block"; // Show the "Resend OTP" button
 
-            }
+		} else {
 
-        }, 1000);
+			timerElement.textContent = `Resend OTP in ${timeLeft} seconds`;
 
-    }
+			const countdown = setInterval(() => {
 
-    window.onload = startTimer;
+				if (timeLeft <= 0) {
 
-	//	Timer For Visible Re-Send Button :-
-		
-	setTimeout(function() {
-		
-		document.getElementById('button-container').style.display = 'block';
-		
-	}, 60000); 
-	
+					clearInterval(countdown);
+					timerElement.textContent = "Resend OTP";
+					document.getElementById("resend-btn").disabled = false;
+					buttonContainer.style.display = "block"; // Show the "Resend OTP" button
+
+				} else {
+
+					timeLeft -= 1; // Decrement time left
+					timerElement.textContent = `Resend OTP in ${timeLeft} seconds`;
+
+				}
+
+			}, 1000); // Update the countdown every second
+		}
+	}
+
+	window.onload = startTimer; // Start the timer when the page loads
 
 	//	Sweet Alert :-
 		

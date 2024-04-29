@@ -159,7 +159,7 @@ const insertUser = async (req, res,next) => {
 
                     console.log(generatedOTP);
     
-                    await sendOtpMail(req.body.fullName, req.body.email, generatedOTP, res);     // Sended Otp
+                    await sendOtpMail(req.body.fullName, req.body.email, generatedOTP, res , req);     // Sended Otp
 
                     setTimeout( async () => {   //  Deleting Otp in the Dbs
 
@@ -197,7 +197,7 @@ const insertUser = async (req, res,next) => {
 
 //  Load Verify Email (For Send Mail) (Function) :-
 
-const sendOtpMail = async (name , email , otpp , res , token , next) => {
+const sendOtpMail = async (name , email , otpp , res , req , token ) => {
     
     try {
 
@@ -247,13 +247,14 @@ const sendOtpMail = async (name , email , otpp , res , token , next) => {
 
         await newUserOtp.save();    //  (Otp Saved in Dbs)
 
-        res.redirect(`/otpVerification?email=${email}`);  //  Calling Otp Pageee and also passing query to the page
+        const timer = Date.now()    //  Creating Timer For OTP
+        req.session.time = timer    //  Time Daving Session
 
-        
+        res.redirect(`/otpVerification?email=${email}&time=${timer}`);  //  Calling Otp Pageee and also passing query to the page
+
     } catch (error) {
 
-        next(error,req,res);
-
+        console.log(error.message);
         
     }
 
@@ -333,7 +334,7 @@ const verifyOtpp = async (req , res , next) => {
             } else {
 
                 req.flash('flash', "Invalid OTP!!!");
-                res.redirect(`/otpVerification?email=${getQueryEMail}&&token=${getToken}`);
+                res.redirect(`/otpVerification?email=${getQueryEMail}&&token=${getToken}&&time=${req.session.time}`);
 
             }
 
@@ -374,7 +375,7 @@ const verifyOtpp = async (req , res , next) => {
             } else {
 
                 req.flash('flash', "Invalid OTP...!");      //  Sweet Alert
-                res.redirect(`/otpVerification?email=${getQueryEMail}`);
+                res.redirect(`/otpVerification?email=${getQueryEMail}&&time=${req.session.time}`);
 
             }
 
@@ -407,9 +408,9 @@ const loadResendOtp = async (req, res , next) => {
             
             console.log(generatedotp + " Re-send Otp");
 
-            await sendOtpMail(userSessionnn.fullName, userSessionnn.email, generatedotp, res);
+            await sendOtpMail(userSessionnn.fullName, userSessionnn.email, generatedotp, res , req);
             
-            setTimeout(async () => {    //  This also Deleting the Otp in Dbs 
+            setTimeout(async () => {    //  This One also Deleting the Otp in Dbs 
                 
                 await Otp.findOneAndDelete({ userEmail: userdata });
                 
@@ -473,6 +474,7 @@ const verifylogin = async (req, res , next) => {
             if (matchPass) {
                 
                 req.session.user = verifiedUser;
+                req.session.time = undefined;
                 res.redirect('/');
 
             } else {
@@ -824,7 +826,7 @@ const verifyEmailForgottPass = async (req, res,next) => {
 
             req.session.otp = OTPP;        //   Otp save in session
 
-            sndMailForgotPassword(name , bodyEmail, OTPP, res , token);    
+            sndMailForgotPassword(name , bodyEmail, OTPP, res , req , token);    
 
         } else {
 
@@ -846,7 +848,7 @@ const verifyEmailForgottPass = async (req, res,next) => {
 
 //  SendMail For ForgotPassword :-
 
-const sndMailForgotPassword = async (name , email, otpp, res , token , next) => {
+const sndMailForgotPassword = async (name , email, otpp, res , req , token ) => {
     
     try {
         
@@ -900,12 +902,11 @@ const sndMailForgotPassword = async (name , email, otpp, res , token , next) => 
         });
 
         forgotpassdData.save();
-        res.redirect(`/otpVerification?email=${email}&&token=${token}`);
+        res.redirect(`/otpVerification?email=${email}&&token=${token}&&time=${req.session.time}`);
         
     } catch (error) {
         
-        next(error,req,res);
-
+        console.log(error.message);
 
     }
     
