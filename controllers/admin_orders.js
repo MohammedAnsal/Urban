@@ -171,14 +171,18 @@ const returnManaging = async (req, res , next) => {
             
             //  There is Stock Menaging :-
 
-            const findStock = findOrder.products[0].quantity;
+            const ProIdd = findOrder.products[0].productId; //  Find ProId
+
+            const findStock = findOrder.products[0].quantity;   //  Find Quantity
 
             await Product.findOneAndUpdate(
             
                         
-                { _id: proIdd },
+                { _id: ProIdd },
 
-                { $inc: { stock: findStock } }
+                { $inc: { stock: findStock } },
+
+                { new: true }
 
             );
 

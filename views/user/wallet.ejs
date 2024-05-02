@@ -131,22 +131,6 @@
                             <%  }); %>
 
                                 </table>
-                                
-                        <% if(locals.walletData) {%>
-
-                                <div class="wishlist-share">
-
-                                <div class="social-icons social-icons-sm mb-2">
-
-                                    <label class="social-label text-primary">Total:</label>
-
-                                   <p class="text-primary ">$<%= walletData?.balance %></p>
-
-                                </div><!-- End .soial-icons -->
-
-                                </div>
-
-                            <% } %>
 
                     <%  } else { %>
 
@@ -154,7 +138,23 @@
 
                     <% } %>
 
-                                </div>
+                </div>
+
+                    <% if(locals.walletData) {%>
+
+                        <div class="wishlist-share">
+
+                        <div class="social-icons social-icons-sm mb-2">
+
+                            <label class="social-label text-primary">Total:</label>
+
+                           <p class="text-primary ">$<%= walletData?.balance %></p>
+
+                        </div><!-- End .soial-icons -->
+
+                        </div>
+
+                    <% } %>
                             </div>
                         </aside>
                     </div>

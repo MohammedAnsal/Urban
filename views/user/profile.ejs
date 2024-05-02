@@ -508,47 +508,73 @@
 
   document.addEventListener('DOMContentLoaded', function () {
 
-      const oldPasswordInput = document.querySelector('input[name="oldPass"]');
-      const newPasswordInput = document.querySelector('input[name="newPass"]');
-      const confirmPasswordInput = document.querySelector('input[name="confirmPass"]');
-      const passwordError = document.getElementById('passwordError');
-      const savePasswordButton = document.getElementById('savePasswordButton');
+    const oldPasswordInput = document.querySelector('input[name="oldPass"]');
+    const newPasswordInput = document.querySelector('input[name="newPass"]');
+    const confirmPasswordInput = document.querySelector('input[name="confirmPass"]');
+    const passwordError = document.getElementById('passwordError');
+    const savePasswordButton = document.getElementById('savePasswordButton');
 
-      function validatePassword() {
+    // Password validation function
 
-          const oldPassword = oldPasswordInput.value.trim();
-          const newPassword = newPasswordInput.value.trim();
-          const confirmPassword = confirmPasswordInput.value.trim();
+    function validatePassword() {
 
-          const isEmpty = oldPassword === '' || newPassword === '' || confirmPassword === '';
+      // Get input values
 
-          if (isEmpty) {
+      const oldPassword = oldPasswordInput.value.trim();
+      const newPassword = newPasswordInput.value.trim();
+      const confirmPassword = confirmPasswordInput.value.trim();
 
-              passwordError.textContent = 'All fields are required';
-              savePasswordButton.disabled = true;
-              return;
-          }
+      // Check if any fields are empty
 
-          const passwordMatch = newPassword === confirmPassword;
-          const passwordLength = newPassword.length >= 6;
+      const isEmpty = oldPassword === '' || newPassword === '' || confirmPassword === '';
 
-          if (!passwordMatch || !passwordLength) {
+        if (isEmpty) {
 
-              passwordError.textContent = !passwordMatch ? 'Passwords do not match' : 'Password must be at least 6 characters';
-              savePasswordButton.disabled = true;
+          passwordError.textContent = 'All fields are required';
+          savePasswordButton.disabled = true;
+          return;
 
-          } else {
+        }
 
-              passwordError.textContent = '';
-              savePasswordButton.disabled = false;
+        // Check if new password matches confirm password
+        const passwordMatch = newPassword === confirmPassword;
 
-          }
+        // Check password strength
+        const passwordLength = newPassword.length >= 8; // Minimum length requirement
+        const hasUppercase = /[A-Z]/.test(newPassword); // At least one uppercase letter
+        const hasLowercase = /[a-z]/.test(newPassword); // At least one lowercase letter
+        const hasDigit = /[0-9]/.test(newPassword); // At least one digit
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword); // At least one special character
 
-      }
+        // Validate password criteria
 
-      oldPasswordInput.addEventListener('input', validatePassword);
-      newPasswordInput.addEventListener('input', validatePassword);
-      confirmPasswordInput.addEventListener('input', validatePassword);
+        if (!passwordMatch) {
+
+          passwordError.textContent = 'Passwords do not match';
+          savePasswordButton.disabled = true;
+
+        } else if (!passwordLength) {
+
+          passwordError.textContent = 'Password must be at least 8 characters';
+          savePasswordButton.disabled = true;
+
+        } else if (!hasUppercase || !hasLowercase || !hasDigit || !hasSpecialChar) {
+
+          passwordError.textContent = 'Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character';
+          savePasswordButton.disabled = true;
+
+        } else {
+
+          passwordError.textContent = '';
+          savePasswordButton.disabled = false;
+
+        }
+    }
+
+    // Attach event listeners for input changes
+    oldPasswordInput.addEventListener('input', validatePassword);
+    newPasswordInput.addEventListener('input', validatePassword);
+    confirmPasswordInput.addEventListener('input', validatePassword);
 
   });
 

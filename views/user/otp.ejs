@@ -72,11 +72,30 @@
 			            						<i class="icon-long-arrow-right"></i>
 											</button>
 
-											<div class="justify-content-center" id="button-container" style="display: none;">
+											<% if (locals.tokkken !== null) { %>
+
+												<div class="justify-content-center" id="button-container" style="display: none;">
+													<button class="btn btn-outline-primary-2" id="resend-btn" type="submit">
+														<a href="/resendOtp?email=<%= emailQuery %>&token=<%= ttoken %>&time=<%= timme %>">Resend OTP</a>
+													</button>
+                                            	</div>
+												
+											<%	} else { %>
+
+												<div class="justify-content-center" id="button-container" style="display: none;">
+													<button class="btn btn-outline-primary-2" id="resend-btn" type="submit">
+														<a href="/resendOtp?email=<%= emailQuery %>">Resend OTP</a>
+													</button>
+                                            	</div>
+
+											<% } %>
+
+
+											<!-- <div class="justify-content-center" id="button-container" style="display: none;">
                                                 <button class="btn btn-outline-primary-2" id="resend-btn" type="submit">
-                                                    <a href="/resendOtp?email=<%=emailQuery%>">Resend OTP</a>
+                                                    <a href="/resendOtp?email=<%=// emailQuery %>&token=<%=// ttoken %>&time=<%=// timme %>">Resend OTP</a>
                                                 </button>
-                                            </div>
+                                            </div> -->
 											
 			                				<!-- <div class="custom-control custom-checkbox">
 												<input type="checkbox" class="custom-control-input" id="signin-remember-2">

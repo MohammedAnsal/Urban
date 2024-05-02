@@ -95,37 +95,65 @@
 
     <script>
 
-        document.getElementById("passwordForm").addEventListener("submit", function(event) {
+        // Get form elements
 
-            var password = document.getElementById("pass").value;
-            var confirmPassword = document.getElementById("confirmPass").value;
-            var passwordError = document.getElementById("pass-error");
-            var rePasswordError = document.getElementById("confirm-password-error");
-            var valid = true;
+        const passwordForm = document.getElementById('passwordForm');
+        const passwordInput = document.getElementById('pass');
+        const confirmPasswordInput = document.getElementById('confirmPass');
+        const passwordError = document.getElementById('pass-error');
+        const confirmPasswordError = document.getElementById('confirm-password-error');
 
+        // Password validation function
+
+        function validatePassword() {
+
+            // Define password strength requirements
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
             
-            passwordError.textContent = "";
-            rePasswordError.textContent = "";
+            // Define password strength criteria
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasNumber = /[0-9]/.test(password);
+            const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+            const isLongEnough = password.length >= 8;
+
+            // Check if password meets criteria
+
+            if (!hasLowerCase || !hasUpperCase || !hasNumber || !hasSpecialChar || !isLongEnough) {
+                passwordError.textContent = 'Password must contain at least one lowercase letter, one uppercase letter, one number, one special character, and be at least 8 characters long.';
+                return false;
+
+            } else {
+
+                passwordError.textContent = '';
+            }
+
+            // Check if password and confirm password match
 
             if (password !== confirmPassword) {
 
-                rePasswordError.textContent = "Passwords do not match";
-                valid = false;
+                confirmPasswordError.textContent = 'Passwords do not match.';
+                return false;
+
+            } else {
+                
+                confirmPasswordError.textContent = '';
             }
 
-            //  password length
-            if (password.length < 5) {
+            return true;
+        }
 
-                passwordError.textContent = "Password must be at least 5 characters long";
-                valid = false;
-            }
+        // Add event listener to form submission
 
-            
-            if (!valid) {
+        passwordForm.addEventListener('submit', function(event) {
 
+            if (!validatePassword()) {
+
+                // Prevent form submission if validation fails
                 event.preventDefault();
-            }
 
+            }
         });
 
 

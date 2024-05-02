@@ -44,6 +44,10 @@ const loadWishlist = async (req, res , next) => {
                     res.render("wishlist", { login: req.session.user, categoryData, wishlistData });
                 }
                 
+            } else {
+                
+                res.render("wishlist", { login: req.session.user, categoryData, wishlistData });
+
             }
             
         } else {

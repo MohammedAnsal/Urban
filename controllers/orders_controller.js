@@ -303,6 +303,8 @@ const orderCancel = async (req, res , next) => {
         if (orderFind) {
             
             const getQuantity = orderFind.products[0].quantity;     //  Find Pro Quantity
+
+            console.log(getQuantity + 'Quantity');
     
             await Product.findOneAndUpdate({ _id: proId }, { $inc: { stock: getQuantity } });
 

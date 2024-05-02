@@ -35,8 +35,7 @@ const securePassword = async (password) => {
         
     } catch (error) {
         
-        next(error,req,res);
-
+        console.log(error.message);
         
     }
     
@@ -53,7 +52,7 @@ const secureToken = async (token) => {
         
     } catch (error) {
 
-        next(error,req,res);
+        console.log(error.message);
 
         
     }
@@ -197,7 +196,7 @@ const insertUser = async (req, res,next) => {
 
 //  Load Verify Email (For Send Mail) (Function) :-
 
-const sendOtpMail = async (name , email , otpp , res , req , token ) => {
+const sendOtpMail = async (name, email, otpp, res, req) => {
     
     try {
 
@@ -209,7 +208,7 @@ const sendOtpMail = async (name , email , otpp , res , req , token ) => {
             auth: {
                 
                 user: process.env.EMAIL_USER,   //  (Email)
-                pass:process.env.EMAIL_PASSWORD //  (App Password)
+                pass: process.env.EMAIL_PASSWORD //  (App Password)
             }
 
         });
@@ -229,11 +228,11 @@ const sendOtpMail = async (name , email , otpp , res , req , token ) => {
 
             if (error) {
 
-                console.log('Error Sending Email:-' , error.message);
+                console.log('Error Sending Email:-', error.message);
 
             } else {
 
-                console.log("Email Has Been Sended:-" , info.response);
+                console.log("Email Has Been Sended:-", info.response);
             }
         });
 
@@ -250,7 +249,7 @@ const sendOtpMail = async (name , email , otpp , res , req , token ) => {
         const timer = Date.now()    //  Creating Timer For OTP
         req.session.time = timer    //  Time Daving Session
 
-        res.redirect(`/otpVerification?email=${email}&time=${timer}`);  //  Calling Otp Pageee and also passing query to the page
+        res.redirect(`/otpVerification?email=${email}&&time=${timer}`);  //  Calling Otp Pageee and also passing query to the page
 
     } catch (error) {
 
@@ -288,6 +287,8 @@ const loadOtpp = async (req , res , next) => {
         if (req.session.otp) {      //  Otp Checking
 
             const emailQuery = req.query.email;
+            const ttoken = req.query.token || null
+            const timme = req.query.time || null
 
             const tokkken = req.query.token || null;    //  Tokken 
 
@@ -295,7 +296,7 @@ const loadOtpp = async (req , res , next) => {
 
             const categoryData = await Category.find({ is_Listed: true });
 
-            res.render("otp", { emailQuery , tokkken ,  msg: otpMsg , categoryData});
+            res.render("otp", { emailQuery, tokkken, ttoken, timme, msg: otpMsg, categoryData });
 
         } else {
 
@@ -394,33 +395,50 @@ const verifyOtpp = async (req , res , next) => {
 
 //  Load Resend Otp (Get Method) :-
 
-const loadResendOtp = async (req, res , next) => {
+const loadResendOtp = async (req, res, next) => {
     
     try {
+        
+        const queryEmaill = req.query.email;   //  Query Email
 
-        const userdata = req.query.email;   //  Query Email
+        if (req.session.tooken) {
 
-        const userSessionnn = req.session.userSession;  //  Session User Data
+            const usrData = await User.findOne({ email: queryEmaill });     //Finding Data
 
-        if (userSessionnn.email == userdata) {
-            
             const generatedotp = generateOTP();
-            
+                
+            console.log(generatedotp + " Forgott Re-send Otp");
+                
+            await sndMailForgotPassword(usrData.fullName, usrData.email, generatedotp, res, req, req.session.tooken);
+
+            setTimeout(async () => {    //  This One also Deleting the Otp in Dbs
+
+                await Otp.findOneAndDelete({ userEmail: queryEmaill });
+                    
+            }, 60000);
+                
+        } else {
+
+            const userSessionnn = req.session.userSession;  //  Session User Data
+
+            const generatedotp = generateOTP();
+                
             console.log(generatedotp + " Re-send Otp");
 
-            await sendOtpMail(userSessionnn.fullName, userSessionnn.email, generatedotp, res , req);
+            await sendOtpMail(userSessionnn.fullName, userSessionnn.email, generatedotp, res, req);
             
             setTimeout(async () => {    //  This One also Deleting the Otp in Dbs 
                 
-                await Otp.findOneAndDelete({ userEmail: userdata });
+                await Otp.findOneAndDelete({ userEmail: queryEmaill });
                 
             }, 60000);
 
         }
 
+
     } catch (error) {
 
-        next(error,req,res);
+        next(error, req, res);
 
         
     }
@@ -825,8 +843,9 @@ const verifyEmailForgottPass = async (req, res,next) => {
             console.log("Forgott Password :- " + OTPP);
 
             req.session.otp = OTPP;        //   Otp save in session
+            req.session.tooken = token
 
-            sndMailForgotPassword(name , bodyEmail, OTPP, res , req , token);    
+            await sndMailForgotPassword(name , bodyEmail, OTPP, res , req , token);    
 
         } else {
 
@@ -848,7 +867,7 @@ const verifyEmailForgottPass = async (req, res,next) => {
 
 //  SendMail For ForgotPassword :-
 
-const sndMailForgotPassword = async (name , email, otpp, res , req , token ) => {
+const sndMailForgotPassword = async (name, email, otpp, res, req , token) => {
     
     try {
         
@@ -896,13 +915,17 @@ const sndMailForgotPassword = async (name , email, otpp, res , req , token ) => 
         const forgotpassdData = new Otp({
 
             otp: otpp,
-            token : tokenHashed,
+            token: tokenHashed,
             userEmail: email,
             
         });
 
         forgotpassdData.save();
-        res.redirect(`/otpVerification?email=${email}&&token=${token}&&time=${req.session.time}`);
+
+        const tiime = Date.now()    //  Creating Timer For OTP
+        req.session.time = tiime    //  Time Daving Session
+
+        res.redirect(`/otpVerification?email=${email}&&token=${token}&&time=${tiime}`);
         
     } catch (error) {
         
