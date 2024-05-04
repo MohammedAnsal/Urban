@@ -713,7 +713,7 @@
 															<tr>
                                                                 <td>Coupen Offer:</td>
 
-                                                                <td class="text-success ">- $<%= cartData.coupenDiscount %>.00</td>
+                                                                <td class="text-success">- $<%= cartData.coupenDiscount %>.00</td>
 
                                                             </tr>
 																
@@ -826,7 +826,7 @@
 
 											<div>
 
-												<button onclick="sumbitPayment('<%= userData?._id %>',' <%= cartData?.totalCartPrice %>')" type="button" class="btn btn-outline-primary-2 btn-order btn-block">
+												<button type="button" onclick="sumbitPayment('<%= userData?._id %>',' <%= cartData?.totalCartPrice %>')" class="btn btn-outline-primary-2 btn-order btn-block">
 
 													<span class="btn-text">Place Order</span>
 													<span class="btn-hover-text">Proceed to Checkout</span>
@@ -1134,7 +1134,7 @@ function sumbitPayment(amount, userId){
 
 function razorPay(userId, amount) {
 
-    const form = document.getElementById('myForm'); 
+    const form = document.getElementById('myForm');
 
         fetch('/razorPay', {
 
@@ -1170,15 +1170,12 @@ function razorPay(userId, amount) {
 
                 let razorpayObject = new Razorpay(options);
 
-                razorpayObject.on('payment.failed', (response) => {
+				//	Payment Failed Area :- 
 
-                    // Swal.fire({
+                razorpayObject.on('payment.failed', (response) => {		
 
-					// 	icon: "error",
-					// 	title: "Oops...",
-					// 	text: "Your Payment Failed!",
-
-					// });
+                   form.action = '/failedRazorpay'
+				   form.submit()
 
                 });
 
@@ -1266,7 +1263,6 @@ function removeCoupen(){
 	})
 
 }
-
 
 //  Validation For Add Address :-
 
@@ -1429,6 +1425,5 @@ function validateForm() {
 }
 
 </style>
-
 
 <%- include('../layouts/footer') %>

@@ -207,6 +207,15 @@ user_route.post('/deleteCheckAdd', checkout_controller.deleteAdd);
 //  razorPay (post)
 user_route.post("/razorPay", checkout_controller.RazorPay);
 
+//  razorpPay Failed (post)
+user_route.post("/failedRazorpay", checkout_controller.razorpayFailed);
+
+//  razorpay for failedPayment (post)
+user_route.post('/sucRazorpay', checkout_controller.failedRazorpay);
+
+//  this one changing failedPayment statust changing (post)
+user_route.post("/changeStatus", checkout_controller.changeProStatus);
+
 //  Wishlist Section :-
 
 //  wishList (get)

@@ -22,6 +22,9 @@ const Wallet = require('../models/wallet_model');
 //  Import Coupen Model :-
 const Coupen = require('../models/coupen_model');
 
+//  Import Order Modal :-
+const Order = require('../models/order_model');
+
 //    Load Checkout (Get Method) :-
 
 const loadCheckout = async (req, res , next) => {
@@ -265,7 +268,7 @@ const chooseAddress = async (req, res , next) => {
 
 };
 
-//  Paymen Method (RazorPay Post Method) :-
+//  Payment Method (RazorPay Post Method) :-
 
 const RazorPay = async (req, res , next) => {
     
@@ -342,6 +345,170 @@ const RazorPay = async (req, res , next) => {
 
 };
 
+//  Razorpay Failed (Post Method) :-
+
+const razorpayFailed = async (req, res, next) => {
+    
+    try {
+
+        const userIdd = req.session.user._id
+
+        const cartt = await Cart.findOne({ userId: userIdd });
+
+        const payMethod = req.body.peyment;
+
+        const addresss = await Address.findOne({ userId: userIdd, 'addresss.status': true }, { 'addresss.$': 1 });
+
+        const { name, phone, address, pincode, locality, state, city } = addresss?.addresss?.[0] ?? {};
+
+        const getFailedOrd = await Order.create({
+
+            userId: userIdd,
+
+            products: cartt.products.map((val) => ({
+
+                productId: val.productId,
+                quantity: val.quantity,
+                price: val.price,
+                orderProStatus: 'payment pending'
+
+            })),
+
+            deliveryAddress: {
+
+                name: name,
+                phone: phone,
+                address: address,
+                locality: locality,
+                city: city,
+                state: state,
+                pincode: pincode,
+            },
+
+            orderDate: Date.now(),
+            orderAmount: cartt.totalCartPrice,
+            peyment: payMethod,
+            coupenDis: cartt.coupenDiscount,
+            percentage: cartt.percentage,
+
+        });
+
+        await Cart.updateOne({userId : userIdd} , {$unset : {products : 1 , coupenDiscount : 0, percentage:0 , totalCartPrice :0}});
+
+        if (getFailedOrd) {
+            
+            res.redirect("/orders");
+
+        }
+        
+    } catch (error) {
+
+        next(error, req, res);
+        
+    }
+
+};
+
+//  Razorpay For Failed Payment (Post Method) :-
+
+const failedRazorpay = async (req, res, next) => {
+    
+    try {
+
+        const userIdd = req.session.user._id;
+
+        if (userIdd) {
+
+
+            const user = await User.findOne({ _id: req.body.userId });
+            const amount = req.body.amount * 100;
+        
+            const options = {
+        
+                amount: amount,
+                currency: "INR",
+                receipt: "absharameen625@gmail.com",
+                    
+            };
+        
+            instance.orders.create(options, (err, order) => {
+        
+                if (!err) {
+        
+                    res.send({
+        
+                        succes: true,
+                        msg: "ORDER created",
+                        order_id: order.id,
+                        amount: amount,
+                        key_id: process.env.RAZORPAY_IDKEY,
+                        name: user.fullName,
+                        email: user.email,
+        
+                    });
+        
+                } else {
+        
+                    console.error("Error creating order:", err);
+        
+                    res.status(500).send({ success: false, msg: "Failed to create order" });
+                }
+        
+            });
+
+        } else {
+
+            res.redirect('/login');
+
+        }
+    
+    } catch (error) {
+
+        next(error, req, res);
+
+        
+    }
+
+};
+
+//  Changing ProStatus (Post Method) :-
+
+const changeProStatus = async (req, res, next) => {
+    
+    try {
+
+        const ordIdd = req.body.ordIdd
+
+        const ord = await Order.findOne({ _id: ordIdd });
+
+        const updation = await Order.findOneAndUpdate({ _id: ordIdd }, { $set: { 'products.$[].orderProStatus': 'pending' } });
+
+        //  Stock Managing :-
+
+        ord.products.forEach(async (e) => {
+            
+            let productt = await Product.findOne({ _id: e.productId });
+            
+            let newStock = productt.stock - e.quantity;
+            
+            await Product.findOneAndUpdate({ _id: e.productId }, { $set: { stock: newStock } });
+            
+        });
+
+        if (updation) {
+            
+            res.send({ suc: true })
+
+        }
+        
+    } catch (error) {
+
+        next(error, req, res)
+        
+    }
+
+};
+
 module.exports = {
 
     loadCheckout,
@@ -351,5 +518,8 @@ module.exports = {
     verifyEditAddress,
     chooseAddress,
     RazorPay,
+    razorpayFailed,
+    failedRazorpay,
+    changeProStatus
 
 }; 

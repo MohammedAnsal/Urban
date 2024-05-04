@@ -135,7 +135,13 @@
    
                                         <td><%= ordVal?._id %></td>
    
-                                        <td class="text-primary"><%= ordVal?.peyment %></td>
+                                        <td class="text-primary">
+
+                                            <p class="<%= ordVal.products[0].orderProStatus == 'payment pending' ? 'text-danger' : '' %> fs-5"><%= ordVal.products[0].orderProStatus == 'payment pending' ? 'failed payment' : '' %></p>
+
+                                            <%= ordVal?.peyment %>
+
+                                        </td>
    
                                         <td class="">$<%= ordVal?.orderAmount %></td>
    

@@ -36,7 +36,7 @@ const Order = mongoose.Schema({
         
         type: Number,
         required: true,
-        default:0
+        default: 0
 
     },
 
@@ -96,7 +96,7 @@ const Order = mongoose.Schema({
                 
             type: String,
             required: true,
-            enum: ['pending', 'shipped', 'delivered', 'canceled', 'returned'],
+            enum: ['pending', 'shipped', 'delivered', 'canceled', 'returned', 'payment pending'],
             default: 'pending',
 
         },
