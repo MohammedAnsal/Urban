@@ -71,11 +71,11 @@ const loadhome = async (req, res,next) => {
 
         if (req.session.user) {
             
-            res.render("homepage", { login: req.session.user , categoryData });
+            res.render("homePage", { login: req.session.user , categoryData });
 
         } else {
 
-            res.render("homepage", { categoryData });
+            res.render("homePage", { categoryData });
 
         }
 
