@@ -53,6 +53,8 @@ const addAddress = async (req, res , next) => {
         
         const exist = await Address.findOne({ userId: userId, addresss: { $elemMatch: { address: req.body.addressData.address } } });
 
+        console.log(exist);
+
         if (!exist) {
             
             const verifyAddress = await Address.findOneAndUpdate(

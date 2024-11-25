@@ -74,8 +74,12 @@ const verifyAddProduct = async (req, res , next) => {
             
             imageArry.push(file.filename);
         });
+
+        let disPrice = req.body.Discountprice;
+
+        console.log(typeof disPrice);
  
-        const offerPorice = Math.round((price / 100) * (100 - req.body.Discountprice));
+        const offerPorice = Math.round((price / 100) * (100 - disPrice));
 
         const categoryyy = await category.findOne({ name: req.body.category });
         const brandd = await brand.findOne({ name: req.body.brand });
