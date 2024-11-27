@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: urban-ecommerce-config
+  namespace: urban-ecommerce-ns
+data:
+  MONGO_URL: mongodb+srv://ansalshaah:ansal123@urban.73rvnrf.mongodb.net/urban_dbs?retryWrites=true&w=majority&appName=urban
+  PORT: "7007"
+  EMAIL_USER: ansalshaah786@gmail.com
+  EMAIL_PASSWORD: virf lttd czmh cobp
+  RAZORPAY_IDKEY: rzp_test_jIotm3SaZbXO9x
+  RAZORPAY_SECRET_KEY: dwZipHebtZ6PN2XDbEKyygS9
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: urban-ecommerce
+  namespace: urban-ecommerce-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: urban-ecommerce
+  template:
+    metadata:
+      labels:
+        app: urban-ecommerce
+    spec:
+      containers:
+      - name: urban-ecommerce
+        image: ansalshaah/urban
+        ports:
+        - containerPort: 7007
+        envFrom:
+        - configMapRef:
+            name: urban-ecommerce-config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: urban-ecommerce-service
+  namespace: urban-ecommerce-ns
+spec:
+  selector:
+    app: urban-ecommerce
+  type: NodePort  
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 7007
+      nodePort: 30008
